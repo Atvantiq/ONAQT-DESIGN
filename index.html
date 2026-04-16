@@ -1547,15 +1547,29 @@
         /* ── EXPAND ROW – flat inline sub-table ── */
         .expand-row td { padding:0; border-bottom:2px solid var(--gray-200); }
         [data-dark="true"] .expand-row td { border-bottom-color:#363b52 !important; }
-        .expand-content { background:color-mix(in srgb,var(--primary) 3%,var(--white)); }
-        [data-dark="true"] .expand-content { background:#1a1d27 !important; }
+        .expand-content {
+            background: color-mix(in srgb,var(--primary) 2%,var(--white));
+            border-left: 3px solid color-mix(in srgb,var(--primary) 30%,transparent);
+        }
+        [data-dark="true"] .expand-content { background:#1a1d27 !important; border-left-color:rgba(45,74,53,.4) !important; }
+        .sub-table-wrap { padding: 0 14px 0 36px; overflow-x: auto; }
         /* Sub-table */
-        .sub-table { width:100%; border-collapse:collapse; }
-        .sub-table-header tr { background:color-mix(in srgb,var(--primary) 8%,var(--white)); border-bottom:1px solid color-mix(in srgb,var(--primary) 15%,transparent); }
+        .sub-table { width:100%; border-collapse:collapse; table-layout:fixed; }
+        .sub-table colgroup col.col-chk  { width:30px; }
+        .sub-table colgroup col.col-date { width:100px; }
+        .sub-table colgroup col.col-who  { width:145px; }
+        .sub-table colgroup col.col-type { width:135px; }
+        .sub-table colgroup col.col-act  { } /* auto remaining */
+        .sub-table colgroup col.col-st   { width:102px; }
+        .sub-table colgroup col.col-wd   { width:165px; }
+        .sub-table colgroup col.col-amt  { width:78px; }
+        .sub-table-header tr { background:color-mix(in srgb,var(--primary) 7%,var(--white)); border-bottom:1.5px solid color-mix(in srgb,var(--primary) 13%,transparent); }
         [data-dark="true"] .sub-table-header tr { background:#252836 !important; border-bottom-color:#363b52 !important; }
-        .sub-table th { padding:4px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--primary); white-space:nowrap; }
+        .sub-table th { padding:5px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         [data-dark="true"] .sub-table th { color:var(--gray-400) !important; }
-        .sub-table td { padding:4px 10px; font-size:12px; color:var(--gray-700); border-bottom:1px solid color-mix(in srgb,var(--gray-100) 60%,transparent); white-space:nowrap; vertical-align:middle; }
+        .sub-table td { padding:5px 10px; font-size:12px; color:var(--gray-700); border-bottom:1px solid color-mix(in srgb,var(--gray-100) 80%,transparent); white-space:nowrap; vertical-align:middle; }
+        .sub-table td.td-chk { overflow:visible; text-align:center; padding:0 4px; }
+        .sub-table td.td-clamp { overflow:hidden; text-overflow:ellipsis; }
         [data-dark="true"] .sub-table td { border-color:#2d3145 !important; color:#9ca3af !important; }
         .sub-table tbody tr:last-child td { border-bottom:none; }
         .sub-table tbody tr:hover td { background:color-mix(in srgb,var(--primary) 5%,var(--white)); }
@@ -1576,7 +1590,7 @@
         .activity-checkbox:checked::after { content:''; position:absolute; left:1.5px; top:-0.5px; width:8px; height:5px; border-left:1.5px solid #fff; border-bottom:1.5px solid #fff; transform:rotate(-45deg); }
         .activity-checkbox:disabled { opacity:.3; cursor:not-allowed; }
         /* Submit bar */
-        .expand-submit-bar { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding:7px 14px; border-top:1px solid color-mix(in srgb,var(--primary) 12%,transparent); background:color-mix(in srgb,var(--primary) 5%,var(--white)); }
+        .expand-submit-bar { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding:6px 14px 6px 36px; border-top:1px solid color-mix(in srgb,var(--primary) 10%,transparent); background:color-mix(in srgb,var(--primary) 4%,var(--white)); }
         [data-dark="true"] .expand-submit-bar { background:#1e2130 !important; border-color:#2d3145 !important; }
         .expand-submit-count { font-size:12px; color:var(--gray-500); }
         .expand-submit-count strong { color:var(--primary); font-weight:700; }
@@ -6841,10 +6855,15 @@
                           <colgroup><col style="width:66px;"><col style="width:96px;"><col style="width:96px;"><col style="width:130px;"><col style="width:120px;"><col style="width:80px;"><col style="width:150px;"><col style="width:66px;"><col style="width:96px;"><col style="width:100px;"><col style="width:80px;"><col style="width:70px;"><col style="width:72px;"><col style="width:72px;"><col style="width:80px;"><col style="width:72px;"><col style="width:60px;"><col style="width:90px;"><col style="width:80px;"></colgroup>
                           <thead>
                             <tr>
-                              <th style="padding:9px 10px;"><div style="display:flex;align-items:center;gap:6px;"><span id="wdThChkWrap"><input type="checkbox" class="row-checkbox" id="wdSelectAllChk" onchange="wdToggleSelectAll(this.checked)" style="display:none;"></span></div></th>
-                              <th class="sortable"><span class="th-sort">Start Date<span class="sort-arrows"><svg viewBox="0 0 8 8" fill="currentColor"><path d="M4 0L8 6H0z"/></svg><svg viewBox="0 0 8 8" fill="currentColor" style="transform:rotate(180deg)"><path d="M4 0L8 6H0z"/></svg></span></span></th>
-                              <th class="sortable"><span class="th-sort">End Date<span class="sort-arrows"><svg viewBox="0 0 8 8" fill="currentColor"><path d="M4 0L8 6H0z"/></svg><svg viewBox="0 0 8 8" fill="currentColor" style="transform:rotate(180deg)"><path d="M4 0L8 6H0z"/></svg></span></span></th>
-                              <th class="sortable"><span class="th-sort">Site ID<span class="sort-arrows"><svg viewBox="0 0 8 8" fill="currentColor"><path d="M4 0L8 6H0z"/></svg><svg viewBox="0 0 8 8" fill="currentColor" style="transform:rotate(180deg)"><path d="M4 0L8 6H0z"/></svg></span></span></th>
+                              <th style="padding:9px 10px;"><div style="display:flex;align-items:center;gap:6px;">
+                                <button id="wdExpandAllBtn" onclick="wdToggleExpandAll()" title="Expand all rows" style="width:24px;height:24px;border-radius:6px;background:transparent;border:1.5px solid var(--gray-200);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-400);transition:var(--transition);flex-shrink:0;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)';this.style.background='var(--primary-light)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-400)';this.style.background='transparent'">
+                                  <svg id="wdExpandAllIco" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                                </button>
+                                <span id="wdThChkWrap"><input type="checkbox" class="row-checkbox" id="wdSelectAllChk" onchange="wdToggleSelectAll(this.checked)" style="display:none;"></span>
+                              </div></th>
+                              <th>Start Date</th>
+                              <th>End Date</th>
+                              <th>Site ID</th>
                               <th>Circle</th><th>PM</th><th>Project</th>
                               <th style="text-align:center;">Visit</th><th>PO No.</th><th>Status</th>
                               <th style="text-align:right;">W.D</th><th style="text-align:right;">Vendor</th><th style="text-align:right;">Claims</th>
@@ -11283,7 +11302,12 @@ document.addEventListener('DOMContentLoaded', () => {
           let rowSubmittable=0, rowSelected=0;
           assignees.forEach(person=>{(person.type||[]).forEach(typeObj=>{(typeObj.activities||[]).forEach(act=>{if(act.status?.label==='COMPLETED'&&act.work_done?.status?.label!=='SUBMITTED'){rowSubmittable++;const key=wdMakeKey(sid,person.id,typeObj.id,act.work_assignment_id);if(wdSelectedActivities.has(key))rowSelected++;}});});});
 
-          html+=`<table class="sub-table">`;
+          html+=`<div class="sub-table-wrap"><table class="sub-table">`;
+          /* Colgroup for fixed column widths */
+          html+=`<colgroup>`;
+          if(showSubmit) html+=`<col class="col-chk">`;
+          html+=`<col class="col-date"><col class="col-who"><col class="col-type"><col class="col-act"><col class="col-st"><col class="col-wd"><col class="col-amt">`;
+          html+=`</colgroup>`;
           /* Column headers */
           html+=`<thead class="sub-table-header"><tr>`;
           if(showSubmit) html+=`<th style="width:28px;"></th>`;
@@ -11302,7 +11326,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isSubmitted=act.work_done?.status?.label==='SUBMITTED';
                 const canCheck=isCompleted&&!isSubmitted&&showSubmit;
                 html+=`<tr>`;
-                if(showSubmit) html+=`<td><input type="checkbox" class="activity-checkbox" ${isChecked?'checked':''} ${!canCheck?'disabled':''} data-key="${key}" data-sid="${sid}" onchange="wdToggleActivity('${key}','${sid}',this.checked)"></td>`;
+                if(showSubmit) html+=`<td class="td-chk"><input type="checkbox" class="activity-checkbox" ${isChecked?'checked':''} ${!canCheck?'disabled':''} data-key="${key}" data-sid="${sid}" onchange="wdToggleActivity('${key}','${sid}',this.checked)"></td>`;
                 html+=`<td class="meta-text">${person.start_date?wdFmtDate(person.start_date):'<span class="null-dash">—</span>'}</td>`;
                 html+=`<td><div class="sub-person-cell"><div class="person-avatar">${wdInitials(person.name)}</div><span class="person-name">${person.name}</span></div></td>`;
                 html+=`<td><span style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 7px;border-radius:4px;white-space:nowrap;">${typeObj.name}</span></td>`;
@@ -11321,7 +11345,7 @@ document.addEventListener('DOMContentLoaded', () => {
               (ua.type||[]).forEach(typeObj=>{
                 (typeObj.activities||[]).forEach(act=>{
                   html+=`<tr class="sub-row-unassigned">`;
-                  if(showSubmit) html+=`<td><input type="checkbox" class="activity-checkbox" disabled></td>`;
+                  if(showSubmit) html+=`<td class="td-chk"><input type="checkbox" class="activity-checkbox" disabled></td>`;
                   html+=`<td class="meta-text"><span class="null-dash">—</span></td>`;
                   html+=`<td><span style="font-size:11px;color:var(--warning);font-weight:600;">Unassigned</span></td>`;
                   html+=`<td><span style="font-size:11px;font-weight:600;color:var(--warning);background:var(--warning-light);padding:2px 7px;border-radius:4px;">${typeObj.name}</span></td>`;
@@ -11339,7 +11363,7 @@ document.addEventListener('DOMContentLoaded', () => {
             html+=`<tr><td colspan="${showSubmit?8:7}" style="padding:12px 14px;color:var(--gray-400);font-size:12px;">No activities for this site.</td></tr>`;
           }
 
-          html+=`</tbody></table>`;
+          html+=`</tbody></table></div>`;
 
           if(showSubmit&&rowSubmittable>0){
             html+=`<div class="expand-submit-bar"><span class="expand-submit-count" id="wdSubcount-${sid}"><strong>${rowSelected}</strong> of ${rowSubmittable} completed activit${rowSubmittable===1?'y':'ies'} selected</span><button class="expand-submit-btn" id="wdSubbtn-${sid}" ${rowSelected===0?'disabled':''} onclick="wdSubmitRow(${sid})"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Submit Work Done</button></div>`;
@@ -11348,9 +11372,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       tbody.innerHTML=html;
+      wdSyncExpandAllIcon();
     }
 
-    function wdToggleRow(sid){if(wdExpandedRows.has(sid))wdExpandedRows.delete(sid);else wdExpandedRows.add(sid);wdRender();}
+    function wdSyncExpandAllIcon(){
+      const list=wdGetFilteredRecords();
+      const allExp=list.length>0&&list.every(r=>wdExpandedRows.has(r.work_site_id));
+      const ico=document.getElementById('wdExpandAllIco');
+      if(ico) ico.style.transform=allExp?'rotate(180deg)':'';
+    }
+    function wdToggleExpandAll(){
+      const list=wdGetFilteredRecords();
+      const allExpanded=list.length>0&&list.every(r=>wdExpandedRows.has(r.work_site_id));
+      if(allExpanded){
+        wdExpandedRows.clear();
+      } else {
+        list.forEach(r=>wdExpandedRows.add(r.work_site_id));
+      }
+      // Update icon direction
+      const ico=document.getElementById('wdExpandAllIco');
+      if(ico) ico.style.transform=allExpanded?'':'rotate(180deg)';
+      wdRender();
+    }
+    function wdToggleRow(sid){if(wdExpandedRows.has(sid))wdExpandedRows.delete(sid);else wdExpandedRows.add(sid);wdSyncExpandAllIcon();wdRender();}
     function wdToggleActivity(key,sid,checked){if(checked)wdSelectedActivities.add(key);else wdSelectedActivities.delete(key);wdUpdateRowSubmitBar(sid);}
     function wdUpdateRowSubmitBar(sid){
       const record=wdRecords.find(r=>String(r.work_site_id)===String(sid));if(!record)return;
