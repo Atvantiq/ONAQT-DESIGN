@@ -1513,6 +1513,15 @@
         .site-id-cell{display:flex;align-items:center;gap:9px;}
         .site-id-text{font-weight:600;color:var(--gray-800);font-size:13px;}
         #page-work-done .visit-badge{display:inline-flex;align-items:center;padding:2px 7px;background:var(--primary-light);color:var(--primary);border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.3px;}
+        /* Work Done – horizontal + vertical scroll */
+        #page-work-done .table-card { flex:1; display:flex; flex-direction:column; min-height:0; overflow:hidden; }
+        #page-work-done .table-wrap { flex:1; overflow:auto; min-height:0; }
+        #page-work-done .table-wrap::-webkit-scrollbar { width:6px; height:6px; }
+        #page-work-done .table-wrap::-webkit-scrollbar-thumb { background:var(--gray-200); border-radius:6px; }
+        #page-work-done .table-wrap::-webkit-scrollbar-corner { background:transparent; }
+        #page-work-done .table-footer { flex-shrink:0; }
+        #page-work-done .wcc-action-bar { flex-shrink:0; }
+        #page-work-done > .tab-bar { flex-shrink:0; border-bottom:none !important; }
         /* Status pills */
         .status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap;}
         .status-pill::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
@@ -1535,49 +1544,46 @@
         .meta-text{font-size:12px;color:var(--gray-600);}
         .meta-null{font-size:12px;color:var(--gray-300);}
         .null-dash{color:var(--gray-300);font-size:14px;}
-        /* Expand row */
-        .expand-row td{padding:0;border-bottom:1px solid var(--gray-200);}
-        .expand-content{background:var(--gray-50);padding:0;}
-        [data-dark="true"] .expand-content{background:#1a1d27!important;}
-        .assignee-block{padding:12px 16px 12px 44px;}
-        .assignee-section{margin-bottom:12px;}
-        .assignee-section:last-child{margin-bottom:0;}
-        .assignee-person-header{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
-        .person-avatar{width:28px;height:28px;border-radius:7px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:10px;flex-shrink:0;}
-        .person-name{font-weight:600;color:var(--gray-800);font-size:12px;line-height:1.2;}
-        .person-meta{font-size:11px;color:var(--gray-500);}
-        /* Type blocks */
-        .type-block{margin-left:37px;margin-bottom:6px;}
-        .type-block:last-child{margin-bottom:0;}
-        .type-block-header{display:flex;align-items:center;gap:7px;margin-bottom:4px;}
-        .type-block-label{display:inline-flex;align-items:center;gap:4px;padding:2px 8px 2px 7px;background:var(--primary-light);color:var(--primary);border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;}
-        .type-block-label svg{width:10px;height:10px;opacity:.65;}
-        .type-act-count{font-size:11px;color:var(--gray-400);}
-        /* Activity rows */
-        .activities-list{display:flex;flex-direction:column;gap:2px;}
-        .activity-row{display:grid;grid-template-columns:20px 1fr 90px 110px 90px;align-items:center;gap:8px;padding:6px 10px;background:var(--white);border-radius:6px;border:1px solid var(--gray-100);transition:border-color .15s;}
-        [data-dark="true"] .activity-row{background:#1e2130!important;border-color:#2d3145!important;}
-        .activity-row:hover{border-color:var(--gray-200);}
-        .activity-checkbox{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--gray-300);cursor:pointer;flex-shrink:0;appearance:none;-webkit-appearance:none;position:relative;transition:var(--transition);background:var(--white);}
-        .activity-checkbox:checked{background:var(--primary);border-color:var(--primary);}
-        .activity-checkbox:checked::after{content:'';position:absolute;left:2px;top:0px;width:8px;height:5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg);}
-        .activity-checkbox:disabled{opacity:.3;cursor:not-allowed;}
-        .activity-name{font-size:12px;font-weight:500;color:var(--gray-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-        .activity-amount{font-size:12px;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
-        .activity-status-col{text-align:center;}
-        .activity-wd-col{text-align:right;}
-        /* Per-row submit */
-        .expand-submit-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:8px 16px 10px;border-top:1px solid var(--gray-100);}
-        [data-dark="true"] .expand-submit-bar{border-top-color:#2d3145!important;}
-        .expand-submit-count{font-size:12px;color:var(--gray-500);}
-        .expand-submit-count strong{color:var(--primary);}
-        .expand-submit-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;background:var(--primary);border:none;border-radius:7px;color:#fff;font-weight:600;font-size:12px;cursor:pointer;transition:var(--transition);}
-        .expand-submit-btn:hover{background:var(--primary-dark);}
-        .expand-submit-btn:disabled{opacity:.38;cursor:not-allowed;}
-        .expand-submit-btn svg{width:12px;height:12px;}
-        /* Unassigned */
-        .unassigned-section{border-top:1px dashed var(--gray-200);margin-top:10px;padding-top:10px;}
-        .unassigned-label{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;background:var(--warning-light);color:var(--warning);border-radius:5px;font-size:10px;font-weight:700;margin-bottom:6px;}
+        /* ── EXPAND ROW – flat inline sub-table ── */
+        .expand-row td { padding:0; border-bottom:2px solid var(--gray-200); }
+        [data-dark="true"] .expand-row td { border-bottom-color:#363b52 !important; }
+        .expand-content { background:color-mix(in srgb,var(--primary) 3%,var(--white)); }
+        [data-dark="true"] .expand-content { background:#1a1d27 !important; }
+        /* Sub-table */
+        .sub-table { width:100%; border-collapse:collapse; }
+        .sub-table-header tr { background:color-mix(in srgb,var(--primary) 8%,var(--white)); border-bottom:1px solid color-mix(in srgb,var(--primary) 15%,transparent); }
+        [data-dark="true"] .sub-table-header tr { background:#252836 !important; border-bottom-color:#363b52 !important; }
+        .sub-table th { padding:4px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--primary); white-space:nowrap; }
+        [data-dark="true"] .sub-table th { color:var(--gray-400) !important; }
+        .sub-table td { padding:4px 10px; font-size:12px; color:var(--gray-700); border-bottom:1px solid color-mix(in srgb,var(--gray-100) 60%,transparent); white-space:nowrap; vertical-align:middle; }
+        [data-dark="true"] .sub-table td { border-color:#2d3145 !important; color:#9ca3af !important; }
+        .sub-table tbody tr:last-child td { border-bottom:none; }
+        .sub-table tbody tr:hover td { background:color-mix(in srgb,var(--primary) 5%,var(--white)); }
+        [data-dark="true"] .sub-table tbody tr:hover td { background:#252836 !important; }
+        /* Unassigned row tint */
+        .sub-row-unassigned td { background:color-mix(in srgb,var(--warning-light) 40%,transparent); }
+        .sub-row-unassigned:hover td { background:color-mix(in srgb,var(--warning-light) 60%,transparent) !important; }
+        /* Assignee group header */
+        .sub-group-hdr td { background:color-mix(in srgb,var(--primary) 5%,var(--white)); border-bottom:1px solid color-mix(in srgb,var(--primary) 12%,transparent); padding:4px 10px; }
+        [data-dark="true"] .sub-group-hdr td { background:#1e2130 !important; border-color:#2d3145 !important; }
+        .sub-person-cell { display:flex; align-items:center; gap:7px; }
+        .person-avatar { width:20px; height:20px; border-radius:4px; background:var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:8.5px; flex-shrink:0; }
+        .person-name { font-weight:600; color:var(--gray-800); font-size:11.5px; }
+        .person-meta { font-size:10.5px; color:var(--gray-400); }
+        /* Checkbox */
+        .activity-checkbox { width:13px; height:13px; flex-shrink:0; border-radius:3px; border:1.5px solid var(--gray-300); cursor:pointer; appearance:none; -webkit-appearance:none; position:relative; transition:var(--transition); background:var(--white); vertical-align:middle; }
+        .activity-checkbox:checked { background:var(--primary); border-color:var(--primary); }
+        .activity-checkbox:checked::after { content:''; position:absolute; left:1.5px; top:-0.5px; width:8px; height:5px; border-left:1.5px solid #fff; border-bottom:1.5px solid #fff; transform:rotate(-45deg); }
+        .activity-checkbox:disabled { opacity:.3; cursor:not-allowed; }
+        /* Submit bar */
+        .expand-submit-bar { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding:7px 14px; border-top:1px solid color-mix(in srgb,var(--primary) 12%,transparent); background:color-mix(in srgb,var(--primary) 5%,var(--white)); }
+        [data-dark="true"] .expand-submit-bar { background:#1e2130 !important; border-color:#2d3145 !important; }
+        .expand-submit-count { font-size:12px; color:var(--gray-500); }
+        .expand-submit-count strong { color:var(--primary); font-weight:700; }
+        .expand-submit-btn { display:inline-flex; align-items:center; gap:5px; padding:5px 14px; background:var(--primary); border:none; border-radius:6px; color:#fff; font-weight:600; font-size:12px; cursor:pointer; transition:var(--transition); }
+        .expand-submit-btn:hover { background:var(--primary-dark); }
+        .expand-submit-btn:disabled { opacity:.38; cursor:not-allowed; }
+        .expand-submit-btn svg { width:11px; height:11px; }
         /* Empty state */
         .wd-empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px;}
         .wd-empty-icon{width:56px;height:56px;border-radius:14px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400);}
@@ -5758,7 +5764,7 @@
                       <button class="cb-icon-btn" title="Export">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                       </button>
-                      <button class="cb-icon-btn" onclick="reimApplyFilters()" title="Refresh">
+                      <button class="cb-icon-btn" title="Refresh">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                       </button>
                     </div>
@@ -5771,6 +5777,13 @@
 
                     <!-- Table Card -->
                     <div class="table-card" style="overflow:visible;">
+                      <div class="table-card-header">
+                        <span class="table-card-title">Reimbursement Claims</span>
+                        <div class="tca">
+                          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+                          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                        </div>
+                      </div>
                       <div class="premium-table-wrapper">
                         <table class="premium-table">
                           <thead><tr>
@@ -6795,27 +6808,27 @@
                       <div class="stats-banner-item"><div class="stats-banner-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="stats-banner-content"><div class="stats-banner-label">Total Cost</div><div class="stats-banner-value">₹507</div><div class="stats-banner-sub">Completed sites</div></div></div>
                     </div>
 
-                    <!-- Table Card -->
-                    <div class="table-card">
-                      <!-- Tab Bar -->
-                      <div class="tab-bar">
-                        <div class="tab-list">
-                          <div class="tab-item active" data-tab="all" onclick="wdSwitchTab('all')">All Sites <span class="tab-badge" id="wdBadgeAll">20</span></div>
-                          <div class="tab-item" data-tab="completed" onclick="wdSwitchTab('completed')">Completed <span class="tab-badge" id="wdBadgeCompleted">0</span></div>
-                          <div class="tab-item" data-tab="pending" onclick="wdSwitchTab('pending')">Pending <span class="tab-badge" id="wdBadgePending">0</span></div>
-                          <div class="tab-item" data-tab="unassigned" onclick="wdSwitchTab('unassigned')">Unassigned <span class="tab-badge" id="wdBadgeUnassigned">0</span></div>
-                          <div class="tab-item" data-tab="submission" onclick="wdSwitchTab('submission')">Work Done Submission <span class="tab-badge" id="wdBadgeSubmission">0</span></div>
-                        </div>
-                        <div class="tab-actions">
-                          <div class="wd-search-wrap">
-                            <span class="wd-search-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-                            <input class="wd-search-input" id="wdSearchInput" type="text" placeholder="Search site, PO, project…" oninput="wdFilterTable()">
-                          </div>
-                          <button class="filter-chip"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filter</button>
-                          <button class="export-btn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export</button>
-                        </div>
+                    <!-- Tab Bar — outside table card -->
+                    <div class="tab-bar" style="background:var(--white);border-radius:14px 14px 0 0;border:1px solid var(--gray-100);border-bottom:none;flex-shrink:0;">
+                      <div class="tab-list">
+                        <div class="tab-item active" data-tab="all" onclick="wdSwitchTab('all')">All Sites <span class="tab-badge" id="wdBadgeAll">20</span></div>
+                        <div class="tab-item" data-tab="completed" onclick="wdSwitchTab('completed')">Completed <span class="tab-badge" id="wdBadgeCompleted">0</span></div>
+                        <div class="tab-item" data-tab="pending" onclick="wdSwitchTab('pending')">Pending <span class="tab-badge" id="wdBadgePending">0</span></div>
+                        <div class="tab-item" data-tab="unassigned" onclick="wdSwitchTab('unassigned')">Unassigned <span class="tab-badge" id="wdBadgeUnassigned">0</span></div>
+                        <div class="tab-item" data-tab="submission" onclick="wdSwitchTab('submission')">Work Done Submission <span class="tab-badge" id="wdBadgeSubmission">0</span></div>
                       </div>
+                      <div class="tab-actions">
+                        <div class="wd-search-wrap">
+                          <span class="wd-search-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                          <input class="wd-search-input" id="wdSearchInput" type="text" placeholder="Search site, PO, project…" oninput="wdFilterTable()">
+                        </div>
+                        <button class="cb-icon-btn" title="Filter"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg></button>
+                        <button class="cb-icon-btn" title="Export"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                      </div>
+                    </div>
 
+                    <!-- Table Card -->
+                    <div class="table-card" style="border-radius:0 0 14px 14px;">
                       <!-- WCC Action Bar -->
                       <div class="wcc-action-bar" id="wdWccActionBar">
                         <div class="wcc-sel-text"><span id="wdWccSelCount">0</span> sites selected for WCC submission <span>· Select rows to submit to WCC</span></div>
@@ -11269,32 +11282,68 @@ document.addEventListener('DOMContentLoaded', () => {
           const assignees=record.assignee||[], unassigned=record.unassigned||[];
           let rowSubmittable=0, rowSelected=0;
           assignees.forEach(person=>{(person.type||[]).forEach(typeObj=>{(typeObj.activities||[]).forEach(act=>{if(act.status?.label==='COMPLETED'&&act.work_done?.status?.label!=='SUBMITTED'){rowSubmittable++;const key=wdMakeKey(sid,person.id,typeObj.id,act.work_assignment_id);if(wdSelectedActivities.has(key))rowSelected++;}});});});
-          if(assignees.length>0){
-            html+=`<div class="assignee-block">`;
-            assignees.forEach((person)=>{
-              html+=`<div class="assignee-section"><div class="assignee-person-header"><div class="person-avatar">${wdInitials(person.name)}</div><div><div class="person-name">${person.name}</div><div class="person-meta">Assigned by: ${person.assigned_by?.name||'—'}${person.start_date?' &nbsp;·&nbsp; '+wdFmtDate(person.start_date):''}</div></div></div>`;
-              (person.type||[]).forEach(typeObj=>{
-                const visibleActs=(typeObj.activities||[]).filter(act=>{ if(wdCurrentTab==='submission') return act.work_done?.status?.label==='SUBMITTED'; return true; });
-                if(!visibleActs.length) return;
-                html+=`<div class="type-block"><div class="type-block-header"><span class="type-block-label"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>${typeObj.name}</span><span class="type-act-count">${visibleActs.length} activit${visibleActs.length===1?'y':'ies'}</span></div><div class="activities-list">`;
-                visibleActs.forEach(act=>{
-                  const key=wdMakeKey(sid,person.id,typeObj.id,act.work_assignment_id), isChecked=wdSelectedActivities.has(key), isCompleted=act.status?.label==='COMPLETED', isSubmitted=act.work_done?.status?.label==='SUBMITTED', canCheck=isCompleted&&!isSubmitted&&showSubmit;
-                  html+=`<div class="activity-row">${showSubmit?`<input type="checkbox" class="activity-checkbox" ${isChecked?'checked':''} ${(!canCheck)?'disabled':''} data-key="${key}" data-sid="${sid}" onchange="wdToggleActivity('${key}','${sid}',this.checked)">`:''}<span class="activity-name">${act.name}</span><span class="activity-amount">₹${(act.work_done?.amount||0).toLocaleString('en-IN')}</span><span class="activity-status-col">${act.status?wdStatusPill(act.status.label):'<span class="null-dash">—</span>'}</span><span class="activity-wd-col">${act.work_done?.status?wdWdPill(act.work_done.status.label):''}</span></div>`;
-                });
-                html+=`</div></div>`;
+
+          html+=`<table class="sub-table">`;
+          /* Column headers */
+          html+=`<thead class="sub-table-header"><tr>`;
+          if(showSubmit) html+=`<th style="width:28px;"></th>`;
+          html+=`<th>Start Date</th><th>Assignee</th><th>Type</th><th>Activity</th><th>Status</th><th>WD Status</th><th style="text-align:right;">Amount</th>`;
+          html+=`</tr></thead><tbody>`;
+
+          /* Assigned rows */
+          assignees.forEach(person=>{
+            (person.type||[]).forEach(typeObj=>{
+              const visibleActs=(typeObj.activities||[]).filter(act=>{ if(wdCurrentTab==='submission') return act.work_done?.status?.label==='SUBMITTED'; return true; });
+              if(!visibleActs.length) return;
+              visibleActs.forEach((act,ai)=>{
+                const key=wdMakeKey(sid,person.id,typeObj.id,act.work_assignment_id);
+                const isChecked=wdSelectedActivities.has(key);
+                const isCompleted=act.status?.label==='COMPLETED';
+                const isSubmitted=act.work_done?.status?.label==='SUBMITTED';
+                const canCheck=isCompleted&&!isSubmitted&&showSubmit;
+                html+=`<tr>`;
+                if(showSubmit) html+=`<td><input type="checkbox" class="activity-checkbox" ${isChecked?'checked':''} ${!canCheck?'disabled':''} data-key="${key}" data-sid="${sid}" onchange="wdToggleActivity('${key}','${sid}',this.checked)"></td>`;
+                html+=`<td class="meta-text">${person.start_date?wdFmtDate(person.start_date):'<span class="null-dash">—</span>'}</td>`;
+                html+=`<td><div class="sub-person-cell"><div class="person-avatar">${wdInitials(person.name)}</div><span class="person-name">${person.name}</span></div></td>`;
+                html+=`<td><span style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 7px;border-radius:4px;white-space:nowrap;">${typeObj.name}</span></td>`;
+                html+=`<td style="font-size:12px;font-weight:500;color:var(--gray-700);">${act.name}</td>`;
+                html+=`<td>${act.status?wdStatusPill(act.status.label):'<span class="null-dash">—</span>'}</td>`;
+                html+=`<td>${act.work_done?.status?wdWdPill(act.work_done.status.label):'<span class="null-dash">—</span>'}</td>`;
+                html+=`<td style="text-align:right;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;">₹${(act.work_done?.amount||0).toLocaleString('en-IN')}</td>`;
+                html+=`</tr>`;
               });
-              html+=`</div>`;
             });
-            html+=`</div>`;
-            if(unassigned.length>0&&wdCurrentTab!=='submission'){
-              html+=`<div class="assignee-block" style="padding-top:0;"><div class="unassigned-section"><div class="unassigned-label"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Unassigned Activities</div>`;
-              unassigned.forEach(ua=>{(ua.type||[]).forEach(typeObj=>{const acts=typeObj.activities||[];if(!acts.length)return;html+=`<div class="type-block"><div class="type-block-header"><span class="type-block-label" style="background:var(--warning-light);color:var(--warning);">${typeObj.name}</span><span class="type-act-count">${acts.length} activit${acts.length===1?'y':'ies'} · unassigned</span></div><div class="activities-list">`;acts.forEach(act=>{html+=`<div class="activity-row" style="opacity:.75;background:color-mix(in srgb,var(--warning-light) 40%,var(--white));"><input type="checkbox" class="activity-checkbox" disabled><span class="activity-name">${act.name}</span><span class="activity-amount" style="color:var(--warning);">₹${(act.work_done?.amount||0).toLocaleString('en-IN')}</span><span class="activity-status-col"><span class="status-pill status-OPEN" style="background:var(--warning-light);color:var(--warning);">UNASSIGNED</span></span><span class="activity-wd-col">${wdWdPill('NOT_ADDED')}</span></div>`;});html+=`</div></div>`;});});
-              html+=`</div></div>`;
-            }
-            if(showSubmit&&rowSubmittable>0){
-              html+=`<div class="expand-submit-bar"><span class="expand-submit-count" id="wdSubcount-${sid}"><strong>${rowSelected}</strong> of ${rowSubmittable} completed activit${rowSubmittable===1?'y':'ies'} selected</span><button class="expand-submit-btn" id="wdSubbtn-${sid}" ${rowSelected===0?'disabled':''} onclick="wdSubmitRow(${sid})"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Submit Work Done</button></div>`;
-            }
-          } else if(unassigned.length===0){ html+=`<div class="assignee-block"><div style="color:var(--gray-400);font-size:13px;padding:8px 0;">No activities for this site.</div></div>`; }
+          });
+
+          /* Unassigned rows */
+          if(unassigned.length>0&&wdCurrentTab!=='submission'){
+            unassigned.forEach(ua=>{
+              (ua.type||[]).forEach(typeObj=>{
+                (typeObj.activities||[]).forEach(act=>{
+                  html+=`<tr class="sub-row-unassigned">`;
+                  if(showSubmit) html+=`<td><input type="checkbox" class="activity-checkbox" disabled></td>`;
+                  html+=`<td class="meta-text"><span class="null-dash">—</span></td>`;
+                  html+=`<td><span style="font-size:11px;color:var(--warning);font-weight:600;">Unassigned</span></td>`;
+                  html+=`<td><span style="font-size:11px;font-weight:600;color:var(--warning);background:var(--warning-light);padding:2px 7px;border-radius:4px;">${typeObj.name}</span></td>`;
+                  html+=`<td style="font-size:12px;font-weight:500;color:var(--gray-700);">${act.name}</td>`;
+                  html+=`<td><span class="status-pill status-OPEN" style="background:var(--warning-light);color:var(--warning);">UNASSIGNED</span></td>`;
+                  html+=`<td>${wdWdPill('NOT_ADDED')}</td>`;
+                  html+=`<td style="text-align:right;font-weight:700;color:var(--warning);font-variant-numeric:tabular-nums;">₹${(act.work_done?.amount||0).toLocaleString('en-IN')}</td>`;
+                  html+=`</tr>`;
+                });
+              });
+            });
+          }
+
+          if(assignees.length===0&&unassigned.length===0){
+            html+=`<tr><td colspan="${showSubmit?8:7}" style="padding:12px 14px;color:var(--gray-400);font-size:12px;">No activities for this site.</td></tr>`;
+          }
+
+          html+=`</tbody></table>`;
+
+          if(showSubmit&&rowSubmittable>0){
+            html+=`<div class="expand-submit-bar"><span class="expand-submit-count" id="wdSubcount-${sid}"><strong>${rowSelected}</strong> of ${rowSubmittable} completed activit${rowSubmittable===1?'y':'ies'} selected</span><button class="expand-submit-btn" id="wdSubbtn-${sid}" ${rowSelected===0?'disabled':''} onclick="wdSubmitRow(${sid})"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Submit Work Done</button></div>`;
+          }
           html+=`</div></td></tr>`;
         }
       });
