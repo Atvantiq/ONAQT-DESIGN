@@ -5737,7 +5737,7 @@
 
                     <!-- Control Bar -->
                     <div class="control-bar" style="margin-bottom:10px;">
-                      <div class="cb-title">
+                      <div class="cb-title" style="flex-shrink:0;">
                         <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--primary);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                         <span>All Reimbursement Claims</span>
                         <span class="rec-pill" id="reimRecPill">8 records</span>
@@ -5746,37 +5746,31 @@
                         <span class="search-icon"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
                         <input type="text" class="search-input" id="reimGSearch" placeholder="Search employee, purpose, route..." oninput="reimApplyFilters()"/>
                       </div>
-                      <select class="filter-btn" id="reimFEmp" onchange="reimApplyFilters()" style="cursor:pointer">
-                        <option value="">All Employees</option>
-                        <option>Jaspal Kumar</option>
-                        <option>Simarpreet  Singh</option>
-                        <option>Adminnew</option>
-                      </select>
-                      <select class="filter-btn" id="reimFCat" onchange="reimApplyFilters()" style="cursor:pointer">
-                        <option value="">All Categories</option>
-                        <option value="local">Local</option>
-                        <option value="outstation">Outstation</option>
-                      </select>
-                      <select class="filter-btn" id="reimFStatus" onchange="reimApplyFilters()" style="cursor:pointer">
-                        <option value="">All Status</option>
-                        <option value="Submitted">Submitted</option>
-                        <option value="Approved by PM">Approved by PM</option>
-                        <option value="Approved">Approved</option>
-                      </select>
-                      <button class="filter-btn" onclick="reimCollapseAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>Collapse All</button>
-                      <button class="filter-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Export</button>
-                      <button class="filter-btn" title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+                      <button class="cb-icon-btn" id="reimFilterBtn" onclick="reimOpenFilterPanel()" title="Filter">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <span class="cb-badge" id="reimFilterBadge" style="display:none;"></span>
+                      </button>
+                      <button class="cb-text-btn" onclick="reimCollapseAll()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+                        Collapse All
+                      </button>
+                      <div class="cb-divider"></div>
+                      <button class="cb-icon-btn" title="Export">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                      </button>
+                      <button class="cb-icon-btn" onclick="reimApplyFilters()" title="Refresh">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                      </button>
+                    </div>
+                    <!-- Active filters bar -->
+                    <div class="emp-active-filters-bar" id="reimActiveFiltersBar" style="display:none;margin-bottom:8px;">
+                      <span style="font-size:12px;font-weight:600;color:var(--gray-600);white-space:nowrap;">Active Filters:</span>
+                      <div id="reimActiveFilterTags" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+                      <button onclick="reimClearFilters()" style="margin-left:auto;font-size:11px;color:var(--danger);background:none;border:none;cursor:pointer;white-space:nowrap;font-weight:600;">Clear all</button>
                     </div>
 
                     <!-- Table Card -->
                     <div class="table-card" style="overflow:visible;">
-                      <div class="table-card-header">
-                        <span class="table-card-title">Reimbursement Claims</span>
-                        <div class="tca">
-                          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
-                          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
-                        </div>
-                      </div>
                       <div class="premium-table-wrapper">
                         <table class="premium-table">
                           <thead><tr>
@@ -6110,8 +6104,8 @@
 
                     <!-- Control Bar -->
                     <div class="control-bar">
-                        <div class="cb-left">
-                            <div class="cb-title">
+                        <div class="cb-left" style="flex:1;display:flex;align-items:center;gap:7px;">
+                            <div class="cb-title" style="flex-shrink:0;">
                                 <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--primary);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                                 <span>Work Assignments</span>
                                 <span class="rec-pill" id="atRecPill">23 records</span>
@@ -6120,31 +6114,27 @@
                                 <span class="search-icon"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
                                 <input type="text" class="search-input" id="atGSearch" placeholder="Search employee, project, site..." oninput="atApplyFilters()"/>
                             </div>
-                            <select class="filter-btn" id="atFStatus" onchange="atApplyFilters()" style="cursor:pointer">
-                                <option value="">All Status</option>
-                                <option value="OPEN">Open</option><option value="ACCEPTED">Accepted</option>
-                                <option value="WIP">WIP</option><option value="COMPLETED">Completed</option>
-                                <option value="CANCELLED">Cancelled</option><option value="REVISIT">Revisit</option><option value="REJECTED">Rejected</option>
-                            </select>
-                            <select class="filter-btn" id="atFEmployee" onchange="atApplyFilters()" style="cursor:pointer">
-                                <option value="">All Employees</option>
-                                <option value="Tashu  Goyal">Tashu Goyal</option>
-                                <option value="Jaspal Kumar">Jaspal Kumar</option>
-                                <option value="Inder Jeet">Inder Jeet</option>
-                            </select>
-                            <select class="filter-btn" id="atFProject" onchange="atApplyFilters()" style="cursor:pointer">
-                                <option value="">All Projects</option>
-                                <option value="Voult">Voult</option><option value="TestP">TestP</option><option value="jio4g">jio4g</option>
-                            </select>
-                            <button class="filter-btn" onclick="atClearFilters()">
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                                Reset
+                            <button class="cb-icon-btn" id="atFilterBtn" onclick="atOpenFilterPanel()" title="Filter">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                                <span class="cb-badge" id="atFilterBadge" style="display:none;"></span>
+                            </button>
+                            <button class="cb-icon-btn" onclick="atRenderTable(atFilteredData)" title="Refresh">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            </button>
+                            <button class="cb-icon-btn" title="Export">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             </button>
                         </div>
                         <button class="btn-add-task" onclick="atOpenModal()">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                             Add Task
                         </button>
+                    </div>
+                    <!-- Active filters bar -->
+                    <div class="emp-active-filters-bar" id="atActiveFiltersBar" style="display:none;margin-bottom:8px;">
+                        <span style="font-size:12px;font-weight:600;color:var(--gray-600);white-space:nowrap;">Active Filters:</span>
+                        <div id="atActiveFilterTags" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+                        <button onclick="atClearFilters()" style="margin-left:auto;font-size:11px;color:var(--danger);background:none;border:none;cursor:pointer;white-space:nowrap;font-weight:600;">Clear all</button>
                     </div>
 
                     <!-- Table Card -->
@@ -7263,7 +7253,67 @@
     </div>
 
     <!-- ══ EMPLOYEE: FILTER PANEL ══ -->
-    <div class="emp-panel-overlay" id="empPanelOverlay" onclick="empClosePanels()"></div>
+    <!-- ══ REIMBURSEMENT: FILTER PANEL ══ -->
+    <div class="emp-filter-panel" id="reimFilterPanel" style="z-index:2002;">
+        <div class="efp-header">
+            <span class="efp-title">Filters</span>
+            <button class="efp-clear-all" onclick="reimClearFilters()">Clear All</button>
+        </div>
+        <div class="efp-body">
+            <div class="efp-cat-col">
+                <div class="efp-cat-item active" data-cat="employee" onclick="reimSelectCat('employee',this)">
+                    Employee
+                    <span class="efp-cat-badge" id="reim-badge-employee" style="display:none;"></span>
+                </div>
+                <div class="efp-cat-item" data-cat="category" onclick="reimSelectCat('category',this)">
+                    Category
+                    <span class="efp-cat-badge" id="reim-badge-category" style="display:none;"></span>
+                </div>
+                <div class="efp-cat-item" data-cat="status" onclick="reimSelectCat('status',this)">
+                    Status
+                    <span class="efp-cat-badge" id="reim-badge-status" style="display:none;"></span>
+                </div>
+            </div>
+            <div class="efp-opt-col" id="reimOptCol"></div>
+        </div>
+        <div class="efp-footer">
+            <button class="efp-btn-close" onclick="reimCloseFilterPanel()">Close</button>
+            <button class="efp-btn-apply" onclick="reimApplyFilters();reimCloseFilterPanel()">Apply</button>
+        </div>
+    </div>
+    <div class="emp-panel-overlay" id="reimPanelOverlay" onclick="reimCloseFilterPanel()"></div>
+
+        <!-- ══ ASSIGN TASK: FILTER PANEL ══ -->
+    <div class="emp-filter-panel" id="atFilterPanel" style="z-index:2002;">
+        <div class="efp-header">
+            <span class="efp-title">Filters</span>
+            <button class="efp-clear-all" onclick="atClearFilters()">Clear All</button>
+        </div>
+        <div class="efp-body">
+            <div class="efp-cat-col">
+                <div class="efp-cat-item active" data-cat="status" onclick="atSelectCat('status',this)">
+                    Status
+                    <span class="efp-cat-badge" id="at-badge-status" style="display:none;"></span>
+                </div>
+                <div class="efp-cat-item" data-cat="employee" onclick="atSelectCat('employee',this)">
+                    Employee
+                    <span class="efp-cat-badge" id="at-badge-employee" style="display:none;"></span>
+                </div>
+                <div class="efp-cat-item" data-cat="project" onclick="atSelectCat('project',this)">
+                    Project
+                    <span class="efp-cat-badge" id="at-badge-project" style="display:none;"></span>
+                </div>
+            </div>
+            <div class="efp-opt-col" id="atOptCol"></div>
+        </div>
+        <div class="efp-footer">
+            <button class="efp-btn-close" onclick="atCloseFilterPanel()">Close</button>
+            <button class="efp-btn-apply" onclick="atApplyFilters();atCloseFilterPanel()">Apply</button>
+        </div>
+    </div>
+    <div class="emp-panel-overlay" id="atPanelOverlay" onclick="atCloseFilterPanel()"></div>
+
+        <div class="emp-panel-overlay" id="empPanelOverlay" onclick="empClosePanels()"></div>
     <!-- ══ EMPLOYEE: FILTER PANEL (Myntra two-column, right-side drawer) ══ -->
     <div class="emp-filter-panel" id="empFilterPanel">
         <!-- Header -->
@@ -9372,24 +9422,115 @@
     function atChangePage(dir){atCurrentPage+=dir;atRenderTable(atFilteredData);}
     function atGoPage(p){atCurrentPage=p;atRenderTable(atFilteredData);}
 
+    /* ── AT FILTER STATE ── */
+    var atFilterSels = { status: new Set(), employee: new Set(), project: new Set() };
+    var atCurrentCat = 'status';
+    var atCheckSVG = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+
+    var atCatOptions = {
+        status:   [{val:'Open',key:'OPEN'},{val:'Accepted',key:'ACCEPTED'},{val:'WIP',key:'WIP'},{val:'Completed',key:'COMPLETED'},{val:'Cancelled',key:'CANCELLED'},{val:'Revisit',key:'REVISIT'},{val:'Rejected',key:'REJECTED'}],
+        employee: [{val:'Tashu Goyal'},{val:'Jaspal Kumar'},{val:'Inder Jeet'}],
+        project:  [{val:'Voult'},{val:'TestP'},{val:'jio4g'}]
+    };
+
+    window.atSelectCat = function(cat, el) {
+        atCurrentCat = cat;
+        document.querySelectorAll('#atFilterPanel .efp-cat-item').forEach(function(i){ i.classList.remove('active'); });
+        if (el) el.classList.add('active');
+        atRenderFilterOpts(cat);
+    };
+
+    function atRenderFilterOpts(cat) {
+        var col = document.getElementById('atOptCol'); if (!col) return;
+        var opts = atCatOptions[cat] || [];
+        var sel  = atFilterSels[cat];
+        col.innerHTML = opts.map(function(o) {
+            var enc = encodeURIComponent(o.val);
+            var selected = sel.has(o.val);
+            return '<div class="efp-opt-item' + (selected ? ' selected' : '') + '" data-cat="' + cat + '" data-val="' + enc + '" onclick="atToggleFilterOpt(this)">' +
+                '<span class="efp-opt-check">' + atCheckSVG + '</span>' +
+                '<span class="efp-opt-text">' + o.val + '</span>' +
+                '</div>';
+        }).join('');
+    }
+
+    window.atToggleFilterOpt = function(el) {
+        var cat = el.dataset.cat;
+        var val = decodeURIComponent(el.dataset.val);
+        var sel = atFilterSels[cat];
+        if (sel.has(val)) { sel.delete(val); el.classList.remove('selected'); }
+        else              { sel.add(val);    el.classList.add('selected'); }
+        atUpdateFilterBadge(cat);
+    };
+
+    function atUpdateFilterBadge(cat) {
+        var b = document.getElementById('at-badge-' + cat); if (!b) return;
+        var n = atFilterSels[cat].size;
+        b.textContent = n; b.style.display = n > 0 ? '' : 'none';
+        // update main button badge
+        var total = atFilterSels.status.size + atFilterSels.employee.size + atFilterSels.project.size;
+        var mainBadge = document.getElementById('atFilterBadge');
+        var mainBtn   = document.getElementById('atFilterBtn');
+        if (mainBadge) { mainBadge.textContent = total; mainBadge.style.display = total > 0 ? 'flex' : 'none'; }
+        if (mainBtn)   mainBtn.classList.toggle('filter-active', total > 0);
+    }
+
+    window.atOpenFilterPanel = function() {
+        atCurrentCat = 'status';
+        document.querySelectorAll('#atFilterPanel .efp-cat-item').forEach(function(i){ i.classList.toggle('active', i.dataset.cat === 'status'); });
+        atRenderFilterOpts('status');
+        document.getElementById('atFilterPanel').classList.add('active');
+        document.getElementById('atPanelOverlay').classList.add('active');
+    };
+    window.atCloseFilterPanel = function() {
+        document.getElementById('atFilterPanel').classList.remove('active');
+        document.getElementById('atPanelOverlay').classList.remove('active');
+    };
+
     function atApplyFilters(){
       var q=(document.getElementById('atGSearch')?document.getElementById('atGSearch').value||'':'').toLowerCase();
-      var st=document.getElementById('atFStatus')?document.getElementById('atFStatus').value:'';
-      var emp=document.getElementById('atFEmployee')?document.getElementById('atFEmployee').value:'';
-      var proj=document.getElementById('atFProject')?document.getElementById('atFProject').value:'';
+      var statuses  = atFilterSels.status;
+      var employees = atFilterSels.employee;
+      var projects  = atFilterSels.project;
       atFilteredData=AT_TASKS.filter(function(r){
         var mq=!q||r.employee.name.toLowerCase().includes(q)||r.project.name.toLowerCase().includes(q)||r.site.site_id.toLowerCase().includes(q)||r.site.name.toLowerCase().includes(q)||r.po.po_number.toLowerCase().includes(q);
-        var ms=!st||r.status.label===st;
-        var me=!emp||r.employee.name.trim()===emp.trim();
-        var mp=!proj||r.project.name===proj;
+        var ms=statuses.size===0||statuses.has(r.status.label);
+        var me=employees.size===0||employees.has(r.employee.name.trim());
+        var mp=projects.size===0||projects.has(r.project.name);
         return mq&&ms&&me&&mp;
       });
       atCurrentPage=1;
       atRenderTable(atFilteredData);
+      atUpdateActiveFiltersBar();
     }
+
+    function atUpdateActiveFiltersBar() {
+        var bar  = document.getElementById('atActiveFiltersBar');
+        var tags = document.getElementById('atActiveFilterTags');
+        if (!bar || !tags) return;
+        var all = [];
+        atFilterSels.status.forEach(function(v)   { all.push('Status: ' + v); });
+        atFilterSels.employee.forEach(function(v)  { all.push('Employee: ' + v); });
+        atFilterSels.project.forEach(function(v)   { all.push('Project: ' + v); });
+        if (all.length) {
+            bar.style.display = 'flex';
+            tags.innerHTML = all.map(function(t) {
+                return '<span class="filter-tag">' + t + '<span class="filter-tag-remove" onclick="atClearFilters()"><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></span></span>';
+            }).join('');
+        } else {
+            bar.style.display = 'none';
+            tags.innerHTML = '';
+        }
+    }
+
     function atClearFilters(){
-      ['atGSearch','atFStatus','atFEmployee','atFProject'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-      atFilteredData=AT_TASKS.slice();atCurrentPage=1;atRenderTable(atFilteredData);
+        Object.keys(atFilterSels).forEach(function(k){ atFilterSels[k].clear(); });
+        ['status','employee','project'].forEach(function(k){ atUpdateFilterBadge(k); });
+        atRenderFilterOpts(atCurrentCat);
+        var gs = document.getElementById('atGSearch'); if (gs) gs.value = '';
+        atFilteredData=AT_TASKS.slice(); atCurrentPage=1; atRenderTable(atFilteredData);
+        var bar = document.getElementById('atActiveFiltersBar'); if (bar) bar.style.display = 'none';
+        var tags = document.getElementById('atActiveFilterTags'); if (tags) tags.innerHTML = '';
     }
 
     /* ══ WIZARD STATE ══ */
@@ -9841,19 +9982,113 @@
       });
     }
 
+    /* ── REIM FILTER STATE ── */
+    var reimFilterSels = { employee: new Set(), category: new Set(), status: new Set() };
+    var reimCurrentCat = 'employee';
+    var reimCheckSVG = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+
+    var reimCatOptions = {
+        employee: [{val:'Jaspal Kumar'},{val:'Simarpreet Singh'},{val:'Adminnew'}],
+        category: [{val:'Local',key:'local'},{val:'Outstation',key:'outstation'}],
+        status:   [{val:'Submitted'},{val:'Approved by PM'},{val:'Approved'}]
+    };
+
+    window.reimSelectCat = function(cat, el) {
+        reimCurrentCat = cat;
+        document.querySelectorAll('#reimFilterPanel .efp-cat-item').forEach(function(i){ i.classList.remove('active'); });
+        if (el) el.classList.add('active');
+        reimRenderFilterOpts(cat);
+    };
+
+    function reimRenderFilterOpts(cat) {
+        var col = document.getElementById('reimOptCol'); if (!col) return;
+        var opts = reimCatOptions[cat] || [];
+        var sel  = reimFilterSels[cat];
+        col.innerHTML = opts.map(function(o) {
+            var enc = encodeURIComponent(o.val);
+            return '<div class="efp-opt-item' + (sel.has(o.key || o.val) ? ' selected' : '') +
+                '" data-cat="' + cat + '" data-val="' + enc + '" data-key="' + encodeURIComponent(o.key || o.val) + '" onclick="reimToggleFilterOpt(this)">' +
+                '<span class="efp-opt-check">' + reimCheckSVG + '</span>' +
+                '<span class="efp-opt-text">' + o.val + '</span>' +
+                '</div>';
+        }).join('');
+    }
+
+    window.reimToggleFilterOpt = function(el) {
+        var cat = el.dataset.cat;
+        var key = decodeURIComponent(el.dataset.key);
+        var sel = reimFilterSels[cat];
+        if (sel.has(key)) { sel.delete(key); el.classList.remove('selected'); }
+        else              { sel.add(key);    el.classList.add('selected'); }
+        reimUpdateFilterBadge(cat);
+    };
+
+    function reimUpdateFilterBadge(cat) {
+        var b = document.getElementById('reim-badge-' + cat); if (!b) return;
+        var n = reimFilterSels[cat].size;
+        b.textContent = n; b.style.display = n > 0 ? '' : 'none';
+        var total = reimFilterSels.employee.size + reimFilterSels.category.size + reimFilterSels.status.size;
+        var mainBadge = document.getElementById('reimFilterBadge');
+        var mainBtn   = document.getElementById('reimFilterBtn');
+        if (mainBadge) { mainBadge.textContent = total; mainBadge.style.display = total > 0 ? 'flex' : 'none'; }
+        if (mainBtn)   mainBtn.classList.toggle('filter-active', total > 0);
+    }
+
+    window.reimOpenFilterPanel = function() {
+        reimCurrentCat = 'employee';
+        document.querySelectorAll('#reimFilterPanel .efp-cat-item').forEach(function(i){ i.classList.toggle('active', i.dataset.cat === 'employee'); });
+        reimRenderFilterOpts('employee');
+        document.getElementById('reimFilterPanel').classList.add('active');
+        document.getElementById('reimPanelOverlay').classList.add('active');
+    };
+    window.reimCloseFilterPanel = function() {
+        document.getElementById('reimFilterPanel').classList.remove('active');
+        document.getElementById('reimPanelOverlay').classList.remove('active');
+    };
+
     function reimApplyFilters(){
       var q=(document.getElementById('reimGSearch')?document.getElementById('reimGSearch').value||'':'').toLowerCase();
-      var emp=document.getElementById('reimFEmp')?document.getElementById('reimFEmp').value:'';
-      var cat=document.getElementById('reimFCat')?document.getElementById('reimFCat').value:'';
-      var st=document.getElementById('reimFStatus')?document.getElementById('reimFStatus').value:'';
+      var empSels  = reimFilterSels.employee;
+      var catSels  = reimFilterSels.category;
+      var stSels   = reimFilterSels.status;
       var out=CLAIMS.filter(function(r){
         var mq=!q||r.employee.employee_name.toLowerCase().includes(q)||String(r.id).includes(q)||(r.claim_purpose||'').toLowerCase().includes(q)||r.travelling_from.toLowerCase().includes(q)||r.travelling_to.toLowerCase().includes(q);
-        var me=!emp||r.employee.employee_name===emp;
-        var mc=!cat||r.claim_category===cat;
-        var ms=!st||r.status===st;
+        var me=empSels.size===0||empSels.has(r.employee.employee_name.trim());
+        var mc=catSels.size===0||catSels.has(r.claim_category);
+        var ms=stSels.size===0||stSels.has(r.status);
         return mq&&me&&mc&&ms;
       });
       reimRenderTable(out);
+      reimUpdateActiveFiltersBar();
+    }
+
+    function reimUpdateActiveFiltersBar() {
+        var bar  = document.getElementById('reimActiveFiltersBar');
+        var tags = document.getElementById('reimActiveFilterTags');
+        if (!bar || !tags) return;
+        var all = [];
+        reimFilterSels.employee.forEach(function(v) { all.push('Employee: ' + v); });
+        reimFilterSels.category.forEach(function(v) { all.push('Category: ' + v); });
+        reimFilterSels.status.forEach(function(v)   { all.push('Status: ' + v); });
+        if (all.length) {
+            bar.style.display = 'flex';
+            tags.innerHTML = all.map(function(t) {
+                return '<span class="filter-tag">' + t + '<span class="filter-tag-remove" onclick="reimClearFilters()"><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></span></span>';
+            }).join('');
+        } else {
+            bar.style.display = 'none';
+            tags.innerHTML = '';
+        }
+    }
+
+    function reimClearFilters() {
+        Object.keys(reimFilterSels).forEach(function(k){ reimFilterSels[k].clear(); });
+        ['employee','category','status'].forEach(function(k){ reimUpdateFilterBadge(k); });
+        reimRenderFilterOpts(reimCurrentCat);
+        var gs = document.getElementById('reimGSearch'); if (gs) gs.value = '';
+        reimRenderTable(CLAIMS);
+        var bar = document.getElementById('reimActiveFiltersBar'); if (bar) bar.style.display = 'none';
+        var tags = document.getElementById('reimActiveFilterTags'); if (tags) tags.innerHTML = '';
     }
 
     document.addEventListener('DOMContentLoaded',function(){
@@ -11686,24 +11921,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function atChangePage(dir){atCurrentPage+=dir;atRenderTable(atFilteredData);}
     function atGoPage(p){atCurrentPage=p;atRenderTable(atFilteredData);}
 
-    function atApplyFilters(){
-      var q=(document.getElementById('atGSearch').value||'').toLowerCase();
-      var st=document.getElementById('atFStatus').value;
-      var emp=document.getElementById('atFEmployee').value;
-      var proj=document.getElementById('atFProject').value;
-      atFilteredData=AT_TASKS.filter(function(r){
-        var mq=!q||r.employee.name.toLowerCase().includes(q)||r.project.name.toLowerCase().includes(q)||r.site.site_id.toLowerCase().includes(q)||r.site.name.toLowerCase().includes(q)||r.po.po_number.toLowerCase().includes(q);
-        var ms=!st||r.status.label===st;
-        var me=!emp||r.employee.name.trim()===emp.trim();
-        var mp=!proj||r.project.name===proj;
-        return mq&&ms&&me&&mp;
-      });
-      atCurrentPage=1; atRenderTable(atFilteredData);
-    }
-    function atClearFilters(){
-      ['atGSearch','atFStatus','atFEmployee','atFProject'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-      atFilteredData=AT_TASKS.slice(); atCurrentPage=1; atRenderTable(atFilteredData);
-    }
     function atOpenModal(){atOpenWiz();}
 
     /* ══ WIZARD STATE ══ */
