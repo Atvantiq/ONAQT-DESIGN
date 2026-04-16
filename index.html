@@ -1547,11 +1547,8 @@
         /* ── EXPAND ROW – flat inline sub-table ── */
         .expand-row td { padding:0; border-bottom:2px solid var(--gray-200); }
         [data-dark="true"] .expand-row td { border-bottom-color:#363b52 !important; }
-        .expand-content {
-            background: color-mix(in srgb,var(--primary) 2%,var(--white));
-            border-left: 3px solid color-mix(in srgb,var(--primary) 30%,transparent);
-        }
-        [data-dark="true"] .expand-content { background:#1a1d27 !important; border-left-color:rgba(45,74,53,.4) !important; }
+        .expand-content { background: color-mix(in srgb,var(--primary) 2%,var(--white)); }
+        [data-dark="true"] .expand-content { background:#1a1d27 !important; }
         .sub-table-wrap { padding: 0 14px 0 36px; overflow-x: auto; }
         /* Sub-table */
         .sub-table { width:100%; border-collapse:collapse; table-layout:fixed; }
@@ -1563,8 +1560,8 @@
         .sub-table colgroup col.col-st   { width:102px; }
         .sub-table colgroup col.col-wd   { width:165px; }
         .sub-table colgroup col.col-amt  { width:78px; }
-        .sub-table-header tr { background:color-mix(in srgb,var(--primary) 7%,var(--white)); border-bottom:1.5px solid color-mix(in srgb,var(--primary) 13%,transparent); }
-        [data-dark="true"] .sub-table-header tr { background:#252836 !important; border-bottom-color:#363b52 !important; }
+        .sub-table-header tr { border-bottom:1.5px solid color-mix(in srgb,var(--primary) 13%,transparent); }
+        [data-dark="true"] .sub-table-header tr { border-bottom-color:#363b52 !important; }
         .sub-table th { padding:5px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         [data-dark="true"] .sub-table th { color:var(--gray-400) !important; }
         .sub-table td { padding:5px 10px; font-size:12px; color:var(--gray-700); border-bottom:1px solid color-mix(in srgb,var(--gray-100) 80%,transparent); white-space:nowrap; vertical-align:middle; }
@@ -4647,8 +4644,7 @@
         #page-invoice-tracking .sum-amt{font-family:'Fraunces',serif;font-size:12px;font-weight:700;color:var(--gray-900)}
 
         /* ══ WCC PAGE CSS ══ */
-        #page-wcc
-        #page-wcc .wcc-page-content { padding: 12px 0 0; flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; min-height: 0; }
+        #page-wcc .wcc-page-content { padding: 16px 0 0; flex: 1; display: flex; flex-direction: column; gap: 12px; overflow: hidden; min-height: 0; }
 
         /* PO Card */
         #page-wcc .po-card { background: var(--white); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; flex-shrink: 0; }
@@ -4780,27 +4776,28 @@
         #page-wcc .amt-zero { color: var(--gray-400); }
         #page-wcc .null-val { color: var(--gray-300); }
 
-        /* Expand panel */
-        #page-wcc .assignee-block { padding: 12px 16px 12px 44px; }
-        #page-wcc .assignee-section { margin-bottom: 12px; }
-        #page-wcc .assignee-section:last-child { margin-bottom: 0; }
-        #page-wcc .person-header { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-        #page-wcc .person-av { width: 28px; height: 28px; border-radius: 7px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 10px; flex-shrink: 0; }
-        #page-wcc .person-name { font-weight: 600; color: var(--gray-800); font-size: 12px; }
-        #page-wcc .person-meta { font-size: 11px; color: var(--gray-500); }
-        #page-wcc .type-block { margin-left: 37px; margin-bottom: 6px; }
-        #page-wcc .type-block:last-child { margin-bottom: 0; }
-        #page-wcc .type-block-header { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
-        #page-wcc .type-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--primary-light); color: var(--primary); border-radius: 5px; font-size: 10px; font-weight: 700; }
-        #page-wcc .type-count { font-size: 11px; color: var(--gray-400); }
-        #page-wcc .activities-list { display: flex; flex-direction: column; gap: 2px; }
-        #page-wcc .activity-row { display: grid; grid-template-columns: 1fr 100px 120px 90px; align-items: center; gap: 8px; padding: 6px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--gray-100); }
-        [data-dark="true"] #page-wcc .activity-row { background: #1e2130 !important; border-color: #2d3145 !important; }
-        #page-wcc .act-name { font-size: 12px; font-weight: 500; color: var(--gray-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #page-wcc .act-amt { font-size: 12px; font-weight: 700; color: var(--primary); text-align: right; font-variant-numeric: tabular-nums; }
-        #page-wcc .act-st { text-align: center; }
-        #page-wcc .act-wd { text-align: right; }
-
+        /* ── WCC Expand panel – sub-table (mirrors Work Done design) ── */
+        #page-wcc .expand-row td { padding: 0; border-bottom: 1px solid var(--gray-100); }
+        #page-wcc .expand-content { background: color-mix(in srgb,var(--primary) 2%,var(--white)); }
+        [data-dark="true"] #page-wcc .expand-content { background: #1a1d27 !important; }
+        /* Expanded main row gets a highlight; sub-table rows stay white */
+        #page-wcc .site-row.expanded td { background: color-mix(in srgb,var(--primary-light) 55%,var(--white)) !important; border-bottom: none; }
+        [data-dark="true"] #page-wcc .site-row.expanded td { background: rgba(45,74,53,.18) !important; }
+        #page-wcc .wcc-sub-table td { background: var(--white); }
+        [data-dark="true"] #page-wcc .wcc-sub-table td { background: #1e2130 !important; }
+        #page-wcc .wcc-sub-wrap { padding: 0 14px 0 36px; overflow-x: auto; }
+        #page-wcc .wcc-sub-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        #page-wcc .wcc-sub-table thead tr { border-bottom: 1.5px solid color-mix(in srgb,var(--primary) 13%,transparent); }
+        [data-dark="true"] #page-wcc .wcc-sub-table thead tr { border-bottom-color: #363b52 !important; }
+        #page-wcc .wcc-sub-table th { padding: 5px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        [data-dark="true"] #page-wcc .wcc-sub-table th { color: var(--gray-400) !important; }
+        #page-wcc .wcc-sub-table td { padding: 5px 10px; font-size: 12px; color: var(--gray-700); border-bottom: 1px solid color-mix(in srgb,var(--gray-100) 80%,transparent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+        #page-wcc .wcc-sub-table td.td-who { overflow: visible; }
+        [data-dark="true"] #page-wcc .wcc-sub-table td { border-color: #2d3145 !important; color: #9ca3af !important; }
+        #page-wcc .wcc-sub-table tbody tr:last-child td { border-bottom: none; }
+        #page-wcc .wcc-sub-table tbody tr:hover td { background: color-mix(in srgb,var(--primary) 5%,var(--white)) !important; }
+        [data-dark="true"] #page-wcc .wcc-sub-table tbody tr:hover td { background: #252836 !important; }
+        #page-wcc .wcc-sub-av { width: 20px; height: 20px; border-radius: 4px; background: var(--primary); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 8.5px; flex-shrink: 0; }
         /* Editable fields */
         #page-wcc .edit-wrap { display: flex; align-items: center; gap: 5px; }
         #page-wcc .edit-val { font-size: 12px; color: var(--gray-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
@@ -4811,14 +4808,6 @@
         #page-wcc .edit-input { width: 100%; padding: 3px 7px; background: var(--white); border: 1.5px solid var(--primary); border-radius: 5px; color: var(--gray-800); outline: none; font-size: 12px; font-family: 'DM Sans',sans-serif; }
 
         /* Table footer */
-        #page-wcc
-        [data-dark="true"] #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
 
         /* Empty state */
         #page-wcc .wcc-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; gap: 12px; }
@@ -4828,8 +4817,7 @@
         #page-wcc .wcc-empty-sub { font-size: 12px; color: var(--gray-400); }
 
         /* ══ WCC PAGE CSS ══ */
-        #page-wcc
-        #page-wcc .wcc-page-content { padding: 12px 0 0; flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; min-height: 0; }
+        #page-wcc .wcc-page-content { padding: 16px 0 0; flex: 1; display: flex; flex-direction: column; gap: 12px; overflow: hidden; min-height: 0; }
 
         /* PO Card */
         #page-wcc .po-card { background: var(--white); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; flex-shrink: 0; }
@@ -4961,27 +4949,6 @@
         #page-wcc .amt-zero { color: var(--gray-400); }
         #page-wcc .null-val { color: var(--gray-300); }
 
-        /* Expand panel */
-        #page-wcc .assignee-block { padding: 12px 16px 12px 44px; }
-        #page-wcc .assignee-section { margin-bottom: 12px; }
-        #page-wcc .assignee-section:last-child { margin-bottom: 0; }
-        #page-wcc .person-header { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-        #page-wcc .person-av { width: 28px; height: 28px; border-radius: 7px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 10px; flex-shrink: 0; }
-        #page-wcc .person-name { font-weight: 600; color: var(--gray-800); font-size: 12px; }
-        #page-wcc .person-meta { font-size: 11px; color: var(--gray-500); }
-        #page-wcc .type-block { margin-left: 37px; margin-bottom: 6px; }
-        #page-wcc .type-block:last-child { margin-bottom: 0; }
-        #page-wcc .type-block-header { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
-        #page-wcc .type-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--primary-light); color: var(--primary); border-radius: 5px; font-size: 10px; font-weight: 700; }
-        #page-wcc .type-count { font-size: 11px; color: var(--gray-400); }
-        #page-wcc .activities-list { display: flex; flex-direction: column; gap: 2px; }
-        #page-wcc .activity-row { display: grid; grid-template-columns: 1fr 100px 120px 90px; align-items: center; gap: 8px; padding: 6px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--gray-100); }
-        [data-dark="true"] #page-wcc .activity-row { background: #1e2130 !important; border-color: #2d3145 !important; }
-        #page-wcc .act-name { font-size: 12px; font-weight: 500; color: var(--gray-700); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #page-wcc .act-amt { font-size: 12px; font-weight: 700; color: var(--primary); text-align: right; font-variant-numeric: tabular-nums; }
-        #page-wcc .act-st { text-align: center; }
-        #page-wcc .act-wd { text-align: right; }
-
         /* Editable fields */
         #page-wcc .edit-wrap { display: flex; align-items: center; gap: 5px; }
         #page-wcc .edit-val { font-size: 12px; color: var(--gray-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
@@ -4992,14 +4959,6 @@
         #page-wcc .edit-input { width: 100%; padding: 3px 7px; background: var(--white); border: 1.5px solid var(--primary); border-radius: 5px; color: var(--gray-800); outline: none; font-size: 12px; font-family: 'DM Sans',sans-serif; }
 
         /* Table footer */
-        #page-wcc
-        [data-dark="true"] #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
-        #page-wcc
 
         /* Empty state */
         #page-wcc .wcc-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; gap: 12px; }
@@ -5132,6 +5091,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 12px;
+            padding: 16px 0 0;
             min-height: 0;
             overflow: hidden;
         }
@@ -5144,7 +5105,6 @@
             overflow: hidden;
         }
         #page-wcc .wcc-table-wrap { flex: 1; overflow: auto; min-height: 0; }
-        #page-wcc
 
         /* ════════════════════════════════
            UNIFIED PAGINATION — All Pages
@@ -6768,7 +6728,12 @@
                             <col style="width:130px;">
                           </colgroup>
                           <thead><tr>
-                            <th><div style="display:flex;align-items:center;gap:8px;"><input type="checkbox" class="row-chk" id="wccSelectAllChk" onchange="wccToggleAll(this.checked)" style="display:none;"></div></th>
+                            <th><div style="display:flex;align-items:center;gap:7px;">
+                              <button id="wccExpandAllBtn" onclick="wccToggleExpandAll()" title="Expand all rows" style="width:24px;height:24px;border-radius:6px;background:transparent;border:1.5px solid var(--gray-200);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-400);transition:var(--transition);flex-shrink:0;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)';this.style.background='var(--primary-light)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-400)';this.style.background='transparent'">
+                                <svg id="wccExpandAllIco" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                              </button>
+                              <input type="checkbox" class="row-chk" id="wccSelectAllChk" onchange="wccToggleAll(this.checked)" style="display:none;">
+                            </div></th>
                             <th>Date</th>
                             <th>Site ID</th>
                             <th>Sign Completion</th>
@@ -14375,15 +14340,15 @@ function wccRender(){
     const isExp=wccExpanded.has(r.id);
     const isSel=wccSelected.has(r.id);
     const isLock=wccSubmitted.has(r.id)||r.status==='ACCEPTED';
-    html+=`<tr class="site-row${isSel?' selected':''}${isLock?' locked':''}" data-id="${r.id}">
+    html+=`<tr class="site-row${isExp?' expanded':''}${isSel?' selected':''}${isLock?' locked':''}" data-id="${r.id}">
       <td><div style="display:flex;align-items:center;gap:7px;">
+        <button class="expand-toggle${isExp?' open':''}" onclick="wccToggleExp(${r.id})">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
         ${isPending?(isLock
           ?`<span class="locked-badge"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>WCC</span>`
           :`<input type="checkbox" class="row-chk" ${isSel?'checked':''} onchange="wccToggleSel(${r.id},this.checked)">`
         ):''}
-        <button class="expand-toggle${isExp?' open':''}" onclick="wccToggleExp(${r.id})">
-          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
       </div></td>
       <td>${wccFmtD(r.date)}</td>
       <td><span style="font-weight:600;color:var(--gray-800);">${r.site_id}</span></td>
@@ -14399,26 +14364,53 @@ function wccRender(){
       <td>${wccEditable(r.id,'invoice_no',r.invoice_no,'Invoice no…',!isLock)}</td>
     </tr>`;
     if(isExp){
-      html+=`<tr class="expand-row"><td colspan="13"><div class="expand-content"><div class="assignee-block">`;
+      html+=`<tr class="expand-row"><td colspan="13"><div class="expand-content">`;
+      html+=`<div class="wcc-sub-wrap"><table class="wcc-sub-table">`;
+      html+=`<colgroup><col style="width:148px"><col style="width:100px"><col style="width:138px"><col><col style="width:104px"><col style="width:168px"><col style="width:80px"></colgroup>`;
+      html+=`<thead><tr>`;
+      html+=`<th>Assignee</th><th>Start Date</th><th>Type</th><th>Activity</th><th>Status</th><th>WD Status</th><th style="text-align:right;">Amount</th>`;
+      html+=`</tr></thead><tbody>`;
+      let hasRows=false;
       (r.assignees||[]).forEach(person=>{
-        html+=`<div class="assignee-section">
-          <div class="person-header"><div class="person-av">${person.av}</div><div><div class="person-name">${person.name}</div><div class="person-meta">${person.start?wccFmtD(person.start):''}</div></div></div>`;
         (person.types||[]).forEach(typeObj=>{
-          html+=`<div class="type-block"><div class="type-block-header"><span class="type-tag">${typeObj.name}</span><span class="type-count">${typeObj.acts.length} activit${typeObj.acts.length===1?'y':'ies'}</span></div><div class="activities-list">`;
           (typeObj.acts||[]).forEach(act=>{
-            html+=`<div class="activity-row"><span class="act-name">${act.name}</span><span class="act-amt">₹${act.amt.toLocaleString('en-IN')}</span><span class="act-st">${act.status?wccSp(act.status):'<span class="null-val">—</span>'}</span><span class="act-wd">${act.wd?wccWdp(act.wd):''}</span></div>`;
+            hasRows=true;
+            html+=`<tr>`;
+            html+=`<td class="td-who"><div style="display:flex;align-items:center;gap:7px;"><span class="wcc-sub-av">${person.av}</span><span style="font-size:12px;font-weight:500;color:var(--gray-700);">${person.name}</span></div></td>`;
+            html+=`<td>${person.start?wccFmtD(person.start):'<span class="null-val">—</span>'}</td>`;
+            html+=`<td><span style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 7px;border-radius:4px;white-space:nowrap;">${typeObj.name}</span></td>`;
+            html+=`<td style="font-size:12px;font-weight:500;color:var(--gray-700);">${act.name}</td>`;
+            html+=`<td>${act.status?wccSp(act.status):'<span class="null-val">—</span>'}</td>`;
+            html+=`<td>${act.wd?wccWdp(act.wd):'<span class="null-val">—</span>'}</td>`;
+            html+=`<td style="text-align:right;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;">₹${act.amt.toLocaleString('en-IN')}</td>`;
+            html+=`</tr>`;
           });
-          html+=`</div></div>`;
         });
-        html+=`</div>`;
       });
-      html+=`</div></div></td></tr>`;
+      if(!hasRows){
+        html+=`<tr><td colspan="7" style="padding:12px 14px;color:var(--gray-400);font-size:12px;">No activities for this site.</td></tr>`;
+      }
+      html+=`</tbody></table></div>`;
+      html+=`</div></td></tr>`;
     }
   });
   body.innerHTML=html;
+  wccSyncExpandAllIcon();
 }
 
-window.wccToggleExp=function(id){if(wccExpanded.has(id))wccExpanded.delete(id);else wccExpanded.add(id);wccRender();};
+window.wccToggleExp=function(id){if(wccExpanded.has(id))wccExpanded.delete(id);else wccExpanded.add(id);wccSyncExpandAllIcon();wccRender();};
+function wccSyncExpandAllIcon(){
+  const list=wccGetList();
+  const allExp=list.length>0&&list.every(r=>wccExpanded.has(r.id));
+  const ico=document.getElementById('wccExpandAllIco');
+  if(ico) ico.style.transform=allExp?'rotate(180deg)':'';
+}
+window.wccToggleExpandAll=function(){
+  const list=wccGetList();
+  const allExpanded=list.length>0&&list.every(r=>wccExpanded.has(r.id));
+  if(allExpanded){wccExpanded.clear();}else{list.forEach(r=>wccExpanded.add(r.id));}
+  wccRender();
+};
 window.wccToggleSel=function(id,v){if(v)wccSelected.add(id);else wccSelected.delete(id);const bar=document.getElementById('wccBulkBar');if(bar)bar.classList.toggle('visible',wccSelected.size>0);const bc=document.getElementById('wccBulkCount');if(bc)bc.textContent=wccSelected.size;};
 window.wccToggleAll=function(v){const list=wccGetList();list.forEach(r=>{if(!wccSubmitted.has(r.id)&&r.status!=='ACCEPTED'){if(v)wccSelected.add(r.id);else wccSelected.delete(r.id);}});wccRender();};
 window.wccClearSel=function(){wccSelected.clear();const c=document.getElementById('wccSelectAllChk');if(c)c.checked=false;wccRender();};
@@ -14427,6 +14419,7 @@ window.wccSwitchTab=function(tab){
   wccCurrentTab=tab;wccSelected.clear();wccExpanded.clear();
   document.querySelectorAll('#page-wcc .tab-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
   const c=document.getElementById('wccSelectAllChk');if(c)c.checked=false;
+  wccSyncExpandAllIcon();
   wccRender();
 };
 window.wccFilterRecords=function(q){wccSearchQ=q;wccRender();};
