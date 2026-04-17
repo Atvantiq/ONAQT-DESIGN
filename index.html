@@ -5260,6 +5260,443 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%239ca3af' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
         }
 
+        /* ═══════════════════════════════════════════════════════════
+           EXPENSE SUMMARY PAGE  —  scoped under #page-expense-summary
+        ═══════════════════════════════════════════════════════════ */
+        #page-expense-summary .es-scroll-wrap {
+            flex: 1; min-height: 0;
+            overflow-y: auto; overflow-x: hidden;
+            padding: 2px 2px 20px;
+            margin: -2px -2px 0;
+        }
+        #page-expense-summary .es-scroll-wrap::-webkit-scrollbar { width: 6px; }
+        #page-expense-summary .es-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
+        #page-expense-summary .es-scroll-wrap::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+
+        /* Stats banner */
+        #page-expense-summary .es-stats-banner {
+            display: flex; align-items: stretch;
+            background: linear-gradient(120deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 60%, var(--cta)) 60%, var(--cta) 100%);
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+            overflow: hidden; margin-bottom: 14px; position: relative;
+        }
+        #page-expense-summary .es-stats-banner::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        #page-expense-summary .es-sb-item {
+            flex: 1; display: flex; align-items: center; gap: 10px;
+            padding: 11px 16px; position: relative; transition: var(--transition);
+        }
+        #page-expense-summary .es-sb-item:not(:last-child)::after {
+            content: ''; position: absolute; right: 0; top: 15%; bottom: 15%;
+            width: 1px; background: rgba(255,255,255,0.2);
+        }
+        #page-expense-summary .es-sb-item:hover { background: rgba(255,255,255,0.10); }
+        #page-expense-summary .es-sb-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; background: rgba(255,255,255,0.18); color: #fff;
+        }
+        #page-expense-summary .es-sb-icon svg { width: 15px; height: 15px; }
+        #page-expense-summary .es-sb-content { display: flex; flex-direction: column; gap: 1px; }
+        #page-expense-summary .es-sb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: rgba(255,255,255,0.72); }
+        #page-expense-summary .es-sb-value { font-size: 18px; font-weight: 700; color: #fff; font-family: 'Fraunces', serif; line-height: 1.2; }
+
+        /* Split layout */
+        #page-expense-summary .es-split {
+            display: grid; grid-template-columns: 360px 1fr;
+            gap: 14px; align-items: start;
+        }
+
+        /* List panel */
+        #page-expense-summary .es-list-panel {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            position: sticky; top: 0;
+        }
+        #page-expense-summary .es-list-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        #page-expense-summary .es-list-title {
+            font-family: 'Fraunces', serif;
+            font-size: 14px; font-weight: 700;
+            color: var(--gray-900);
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 10px;
+        }
+        #page-expense-summary .es-list-title span {
+            font-size: 11px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            background: color-mix(in srgb, var(--primary) 12%, transparent);
+            color: var(--primary);
+            border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
+            border-radius: 5px; padding: 2px 7px;
+        }
+        #page-expense-summary .es-search-box { position: relative; display: flex; align-items: center; }
+        #page-expense-summary .es-search-icon {
+            position: absolute; left: 10px; color: var(--gray-400);
+            display: flex; align-items: center; pointer-events: none;
+        }
+        #page-expense-summary .es-search-input {
+            width: 100%; padding: 8px 10px 8px 32px;
+            border: 1px solid var(--gray-200); border-radius: 9px;
+            background: var(--gray-50); color: var(--gray-800);
+            font-size: 12px; outline: none; transition: var(--transition);
+        }
+        #page-expense-summary .es-search-input:focus { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent); }
+        [data-dark="true"] #page-expense-summary .es-list-panel,
+        [data-dark="true"] #page-expense-summary .es-detail-panel { background: #1e2130 !important; }
+        [data-dark="true"] #page-expense-summary .es-search-input { background: #252836 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+
+        /* Employee list rows */
+        #page-expense-summary .es-emp-list { max-height: 60vh; overflow-y: auto; }
+        #page-expense-summary .es-emp-list::-webkit-scrollbar { width: 4px; }
+        #page-expense-summary .es-emp-list::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+        #page-expense-summary .es-emp-row {
+            display: grid; grid-template-columns: 36px 1fr auto 14px;
+            align-items: center; gap: 10px;
+            padding: 10px 14px; cursor: pointer;
+            border-bottom: 1px solid var(--gray-100);
+            transition: var(--transition);
+        }
+        #page-expense-summary .es-emp-row:last-child { border-bottom: none; }
+        #page-expense-summary .es-emp-row:hover { background: var(--gray-50); }
+        #page-expense-summary .es-emp-row.selected {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            padding-left: 11px;
+        }
+        [data-dark="true"] #page-expense-summary .es-emp-row:hover { background: #252836 !important; }
+        [data-dark="true"] #page-expense-summary .es-emp-row.selected { background: #2d3145 !important; }
+        #page-expense-summary .es-emp-avatar {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-light), color-mix(in srgb, var(--primary) 20%, white));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: var(--primary);
+        }
+        #page-expense-summary .es-emp-row.selected .es-emp-avatar {
+            background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, var(--cta)));
+            color: white;
+        }
+        #page-expense-summary .es-emp-name-block { min-width: 0; }
+        #page-expense-summary .es-emp-name { font-size: 12px; font-weight: 600; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+        #page-expense-summary .es-emp-row.selected .es-emp-name { color: var(--primary-dark); }
+        #page-expense-summary .es-emp-meta { font-size: 10px; color: var(--gray-400); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #page-expense-summary .es-emp-right {
+            display: flex; flex-direction: column; align-items: flex-end;
+            gap: 3px; min-width: 78px;
+        }
+        #page-expense-summary .es-emp-amount {
+            font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700;
+            color: var(--gray-900); font-variant-numeric: tabular-nums; line-height: 1;
+        }
+        #page-expense-summary .es-emp-row.selected .es-emp-amount { color: var(--primary); }
+        #page-expense-summary .es-emp-claims-meta { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; }
+        #page-expense-summary .es-emp-claim-count { color: var(--gray-500); display: inline-flex; align-items: center; gap: 3px; }
+        #page-expense-summary .es-emp-claim-count strong { color: var(--gray-700); font-weight: 700; }
+        #page-expense-summary .es-pend-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warning); flex-shrink: 0; }
+        #page-expense-summary .es-emp-pending { color: var(--warning); font-weight: 700; display: inline-flex; align-items: center; gap: 3px; }
+        #page-expense-summary .es-emp-no-claims { font-size: 10px; color: var(--gray-400); font-style: italic; }
+        #page-expense-summary .es-chevron { color: var(--gray-300); }
+        #page-expense-summary .es-emp-row.selected .es-chevron { color: var(--primary); }
+
+        /* List footer */
+        #page-expense-summary .es-list-footer {
+            padding: 10px 16px; border-top: 1px solid var(--gray-100);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        #page-expense-summary .es-page-info { font-size: 11px; color: var(--gray-500); }
+        #page-expense-summary .es-pag-controls { display: flex; gap: 4px; }
+        #page-expense-summary .es-page-btn {
+            min-width: 28px; height: 28px; padding: 0 7px;
+            border: 1px solid var(--gray-200); background: var(--white);
+            border-radius: 7px; font-size: 12px; font-weight: 600;
+            color: var(--gray-600); cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #page-expense-summary .es-page-btn:hover { border-color: var(--primary); color: var(--primary); }
+        #page-expense-summary .es-page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+        #page-expense-summary .es-page-btn:disabled { opacity: 0.4; pointer-events: none; }
+        [data-dark="true"] #page-expense-summary .es-page-btn { background: #252836 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+
+        /* Detail panel */
+        #page-expense-summary .es-detail-panel {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            min-height: 500px; overflow: hidden;
+        }
+        #page-expense-summary .es-detail-empty {
+            height: 500px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; color: var(--gray-400); background: var(--white);
+        }
+        [data-dark="true"] #page-expense-summary .es-detail-empty { background: #1e2130 !important; }
+        #page-expense-summary .es-detail-empty-icon {
+            width: 64px; height: 64px; border-radius: 18px;
+            background: var(--gray-50);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gray-300);
+        }
+        #page-expense-summary .es-detail-empty-title { font-family: 'Fraunces', serif; font-size: 16px; color: var(--gray-600); font-weight: 600; }
+        #page-expense-summary .es-detail-empty-sub { font-size: 12px; color: var(--gray-400); text-align: center; max-width: 220px; line-height: 1.6; }
+
+        /* Detail header */
+        #page-expense-summary .es-detail-header {
+            background: linear-gradient(120deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 60%, var(--cta)) 100%);
+            padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+        }
+        #page-expense-summary .es-detail-avatar-lg {
+            width: 52px; height: 52px; border-radius: 14px;
+            background: rgba(255,255,255,0.22);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 700; color: white;
+            font-family: 'Fraunces', serif; flex-shrink: 0;
+        }
+        #page-expense-summary .es-detail-hinfo { flex: 1; min-width: 0; }
+        #page-expense-summary .es-detail-hname { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: white; line-height: 1.2; }
+        #page-expense-summary .es-detail-hmeta { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
+        #page-expense-summary .es-detail-hid { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+        #page-expense-summary .es-detail-htotal { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+        #page-expense-summary .es-detail-tlabel { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.72); text-transform: uppercase; letter-spacing: 0.6px; }
+        #page-expense-summary .es-detail-tvalue { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: white; line-height: 1; }
+
+        /* Stats row */
+        #page-expense-summary .es-stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid var(--gray-100);
+        }
+        #page-expense-summary .es-stat { padding: 16px 20px; border-right: 1px solid var(--gray-100); text-align: center; }
+        #page-expense-summary .es-stat:last-child { border-right: none; }
+        #page-expense-summary .es-stat-val { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; line-height: 1.1; }
+        #page-expense-summary .es-stat-val.blue { color: var(--info); }
+        #page-expense-summary .es-stat-val.green { color: var(--success); }
+        #page-expense-summary .es-stat-val.red { color: var(--danger); }
+        #page-expense-summary .es-stat-val.orange { color: var(--warning); }
+        #page-expense-summary .es-stat-val.purple { color: var(--primary); }
+        #page-expense-summary .es-stat-lbl { font-size: 11px; font-weight: 600; color: var(--gray-500); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Breakdown */
+        #page-expense-summary .es-breakdown {
+            padding: 14px 24px 16px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        #page-expense-summary .es-bk-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        #page-expense-summary .es-bk-title { font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700; color: var(--gray-700); }
+        #page-expense-summary .es-bk-total { font-size: 11px; color: var(--gray-500); font-weight: 600; }
+        #page-expense-summary .es-bk-bar { display: flex; height: 12px; border-radius: 8px; overflow: hidden; background: var(--gray-100); margin-bottom: 10px; }
+        #page-expense-summary .es-bk-seg { display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; transition: var(--transition); }
+        #page-expense-summary .es-bk-seg:hover { filter: brightness(1.1); }
+        #page-expense-summary .es-bk-legend { display: flex; flex-wrap: wrap; gap: 14px; }
+        #page-expense-summary .es-bk-lg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        #page-expense-summary .es-bk-lg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+        #page-expense-summary .es-bk-lg-label { color: var(--gray-600); font-weight: 600; text-transform: capitalize; }
+        #page-expense-summary .es-bk-lg-value { color: var(--gray-900); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        /* Status pills */
+        #page-expense-summary .es-status-strip {
+            padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px;
+            border-bottom: 1px solid var(--gray-100); align-items: center;
+        }
+        #page-expense-summary .es-strip-label {
+            font-size: 11px; font-weight: 600; color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px;
+        }
+        #page-expense-summary .es-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        #page-expense-summary .es-pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+        #page-expense-summary .es-pill.submitted { background: var(--info-light); color: var(--info); }
+        #page-expense-summary .es-pill.submitted .es-pill-dot { background: var(--info); }
+        #page-expense-summary .es-pill.approved { background: var(--success-light); color: var(--success); }
+        #page-expense-summary .es-pill.approved .es-pill-dot { background: var(--success); }
+        #page-expense-summary .es-pill.pending { background: var(--warning-light); color: var(--warning); }
+        #page-expense-summary .es-pill.pending .es-pill-dot { background: var(--warning); }
+        #page-expense-summary .es-pill.rejected { background: var(--danger-light); color: var(--danger); }
+        #page-expense-summary .es-pill.rejected .es-pill-dot { background: var(--danger); }
+
+        /* Claims section */
+        #page-expense-summary .es-cs-header { padding: 14px 24px 10px; display: flex; align-items: center; justify-content: space-between; }
+        #page-expense-summary .es-cs-title { font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700; color: var(--gray-700); }
+        #page-expense-summary .es-cs-hint { font-size: 11px; color: var(--gray-400); display: inline-flex; align-items: center; gap: 5px; }
+
+        #page-expense-summary .es-summary-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px; background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-100);
+        }
+        [data-dark="true"] #page-expense-summary .es-summary-bar { background: #252836 !important; border-color: #2d3145 !important; }
+        #page-expense-summary .es-sum-info { font-size: 11px; color: var(--gray-500); }
+        #page-expense-summary .es-sum-info strong { color: var(--gray-700); }
+        #page-expense-summary .es-sum-stats { display: flex; gap: 14px; }
+        #page-expense-summary .es-sum-mini { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+        #page-expense-summary .es-sum-mini-dot { width: 6px; height: 6px; border-radius: 50%; }
+        #page-expense-summary .es-sum-mini-label { color: var(--gray-500); }
+        #page-expense-summary .es-sum-mini-val { font-weight: 700; color: var(--gray-700); }
+
+        /* Claims table */
+        #page-expense-summary .es-table-wrap { overflow-x: auto; }
+        #page-expense-summary .es-table { width: 100%; border-collapse: collapse; }
+        #page-expense-summary .es-table thead tr { background: var(--gray-50); }
+        #page-expense-summary .es-table th {
+            padding: 9px 14px; text-align: left;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.6px;
+            color: var(--gray-500);
+            border-bottom: 1px solid var(--gray-100);
+            white-space: nowrap;
+        }
+        #page-expense-summary .es-table td {
+            padding: 12px 14px; font-size: 12px; color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100); vertical-align: middle;
+        }
+        #page-expense-summary .es-claim-main { cursor: pointer; transition: var(--transition); }
+        #page-expense-summary .es-claim-main:hover td { background: var(--gray-50); }
+        #page-expense-summary .es-claim-main.expanded td { background: var(--primary-light); }
+        #page-expense-summary .es-claim-expanded td { background: var(--gray-50); padding: 0; }
+        [data-dark="true"] #page-expense-summary .es-table thead tr { background: #252836 !important; }
+        [data-dark="true"] #page-expense-summary .es-claim-main:hover td { background: #252836 !important; }
+        [data-dark="true"] #page-expense-summary .es-claim-expanded td { background: #252836 !important; }
+        [data-dark="true"] #page-expense-summary .es-table td,
+        [data-dark="true"] #page-expense-summary .es-table th { border-color: #2d3145 !important; }
+
+        #page-expense-summary .es-claim-date { font-weight: 700; color: var(--gray-800); white-space: nowrap; }
+        #page-expense-summary .es-claim-day { font-size: 10px; color: var(--gray-400); font-weight: 500; }
+        #page-expense-summary .es-type-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 8px; border-radius: 6px;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.4px;
+            background: var(--gray-100); color: var(--gray-700);
+            white-space: nowrap;
+        }
+        #page-expense-summary .es-type-badge.travelling { background: var(--info-light); color: var(--info); }
+        #page-expense-summary .es-type-badge.multiple { background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); }
+        #page-expense-summary .es-type-badge svg { width: 10px; height: 10px; }
+        #page-expense-summary .es-sites-col { display: flex; flex-direction: column; gap: 2px; }
+        #page-expense-summary .es-sites-line { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-700); font-weight: 600; }
+        #page-expense-summary .es-sites-line svg { color: var(--gray-400); }
+        #page-expense-summary .es-route-line { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: var(--gray-500); }
+        #page-expense-summary .es-route-line svg { color: var(--info); flex-shrink: 0; }
+
+        #page-expense-summary .es-exp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+        #page-expense-summary .es-exp-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 8px; border-radius: 5px;
+            font-size: 10px; font-weight: 700; white-space: nowrap;
+        }
+        #page-expense-summary .es-exp-dot { width: 6px; height: 6px; border-radius: 50%; }
+        #page-expense-summary .es-exp-chip.da { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+        #page-expense-summary .es-exp-chip.da .es-exp-dot { background: var(--success); }
+        #page-expense-summary .es-exp-chip.travel { background: color-mix(in srgb, var(--info) 12%, transparent); color: var(--info); }
+        #page-expense-summary .es-exp-chip.travel .es-exp-dot { background: var(--info); }
+        #page-expense-summary .es-exp-chip.other { background: color-mix(in srgb, var(--warning) 12%, transparent); color: var(--warning); }
+        #page-expense-summary .es-exp-chip.other .es-exp-dot { background: var(--warning); }
+
+        #page-expense-summary .es-claim-total {
+            font-family: 'Fraunces', serif; font-size: 14px; font-weight: 700;
+            color: var(--gray-900); font-variant-numeric: tabular-nums; white-space: nowrap;
+        }
+        #page-expense-summary .es-st-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 9px; border-radius: 20px;
+            font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+        #page-expense-summary .es-st-badge.submitted { background: var(--info-light); color: var(--info); }
+        #page-expense-summary .es-st-badge.approved { background: var(--success-light); color: var(--success); }
+        #page-expense-summary .es-st-badge.pending { background: var(--warning-light); color: var(--warning); }
+        #page-expense-summary .es-st-badge.rejected { background: var(--danger-light); color: var(--danger); }
+
+        #page-expense-summary .es-caret {
+            width: 22px; height: 22px; border-radius: 6px;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--gray-400); transition: var(--transition);
+        }
+        #page-expense-summary .es-claim-main:hover .es-caret { color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, transparent); }
+        #page-expense-summary .es-claim-main.expanded .es-caret { color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); transform: rotate(180deg); }
+
+        /* Expanded */
+        #page-expense-summary .es-exp-inner {
+            padding: 14px 18px 16px 38px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+        }
+        @media (max-width: 1100px) { #page-expense-summary .es-exp-inner { grid-template-columns: 1fr; } }
+        #page-expense-summary .es-subcard {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+        [data-dark="true"] #page-expense-summary .es-subcard { background: #1e2130 !important; border-color: #363b52 !important; }
+        #page-expense-summary .es-sub-title {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 10px; font-weight: 700; color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.6px;
+            margin-bottom: 10px;
+        }
+        #page-expense-summary .es-sub-title svg { color: var(--primary); width: 12px; height: 12px; }
+        #page-expense-summary .es-sub-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 6px 0; border-bottom: 1px dashed var(--gray-100); font-size: 12px;
+        }
+        #page-expense-summary .es-sub-row:last-child { border-bottom: none; }
+        #page-expense-summary .es-sub-left { display: flex; align-items: center; gap: 8px; }
+        #page-expense-summary .es-sub-icon {
+            width: 22px; height: 22px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700;
+        }
+        #page-expense-summary .es-sub-icon.da { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
+        #page-expense-summary .es-sub-icon.travel { background: color-mix(in srgb, var(--info) 15%, transparent); color: var(--info); }
+        #page-expense-summary .es-sub-icon.other { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
+        #page-expense-summary .es-sub-icon.site { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary); }
+        #page-expense-summary .es-sub-name { font-weight: 600; color: var(--gray-700); font-size: 12px; }
+        #page-expense-summary .es-sub-sub { font-size: 10px; color: var(--gray-400); margin-top: 1px; }
+        #page-expense-summary .es-sub-amt { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--gray-800); font-size: 12px; }
+        #page-expense-summary .es-travel-banner {
+            margin-top: 10px; padding: 10px 12px;
+            background: color-mix(in srgb, var(--info) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--info) 20%, transparent);
+            border-radius: 8px;
+            display: flex; align-items: center; gap: 10px; font-size: 11px;
+        }
+        #page-expense-summary .es-tb-icon {
+            width: 28px; height: 28px; border-radius: 7px;
+            background: color-mix(in srgb, var(--info) 15%, transparent); color: var(--info);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        #page-expense-summary .es-tb-text { color: var(--gray-600); flex: 1; }
+        #page-expense-summary .es-tb-route { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--gray-900); text-transform: capitalize; }
+
+        /* Loading */
+        #page-expense-summary .es-loading {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 48px 24px; gap: 12px;
+        }
+        #page-expense-summary .es-spinner {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 3px solid var(--gray-200); border-top-color: var(--primary);
+            animation: es-spin 0.7s linear infinite;
+        }
+        @keyframes es-spin { to { transform: rotate(360deg); } }
+        #page-expense-summary .es-loading-lbl { font-size: 12px; color: var(--gray-400); }
+
+        /* No claims */
+        #page-expense-summary .es-no-claims {
+            padding: 48px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        #page-expense-summary .es-no-icon {
+            width: 56px; height: 56px; border-radius: 14px;
+            background: var(--gray-50); color: var(--gray-300);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #page-expense-summary .es-no-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; color: var(--gray-600); }
+        #page-expense-summary .es-no-sub { font-size: 12px; color: var(--gray-400); text-align: center; max-width: 280px; line-height: 1.6; }
+
     </style>
 </head>
 <body>
@@ -5294,17 +5731,29 @@
                         </div>
                         <span class="nav-badge">462</span>
                     </a>
+                </div>
 
-                    <a href="#" class="nav-link" onclick="showPage('reimbursements','Reimbursements');return false;">
+                <!-- Reimbursements Collapsible -->
+                <div class="nav-item-collapsible">
+                    <button class="nav-toggle" onclick="toggleNavItem(this)">
                         <div class="nav-link-content">
                             <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
                             Reimbursements
                         </div>
-                        <span class="nav-badge warning">12</span>
-                    </a>
+                        <svg class="nav-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="nav-submenu">
+                        <a href="#" class="nav-submenu-link" onclick="showPage('reimbursements','Expense Records');return false;">Expense Records</a>
+                        <a href="#" class="nav-submenu-link" onclick="showPage('expense-summary','Expense Summary');return false;">Summary</a>
+                        <a href="#" class="nav-submenu-link" onclick="showPage('disbursement','Disbursement');return false;">Disbursement</a>
+                    </div>
+                </div>
 
+                <div class="nav-group">
                     <a href="#" class="nav-link" onclick="showPage('vendor','Vendor');return false;">
                         <div class="nav-link-content">
                             <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5786,6 +6235,93 @@
                     </div>
 
                 </div><!-- /#page-reimbursements -->
+
+                <!-- ═══════════════════════════════════════════════
+                     #page-expense-summary — Claims summary by employee
+                ═══════════════════════════════════════════════ -->
+                <div id="page-expense-summary" class="page-section">
+                    <div class="es-scroll-wrap">
+
+                        <!-- Stats Banner -->
+                        <div class="es-stats-banner">
+                            <div class="es-sb-item">
+                                <div class="es-sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg></div>
+                                <div class="es-sb-content">
+                                    <div class="es-sb-label">Employees with Claims</div>
+                                    <div class="es-sb-value" id="es-stat-emp">—</div>
+                                </div>
+                            </div>
+                            <div class="es-sb-item">
+                                <div class="es-sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                                <div class="es-sb-content">
+                                    <div class="es-sb-label">Total Claimed</div>
+                                    <div class="es-sb-value" id="es-stat-amount">—</div>
+                                </div>
+                            </div>
+                            <div class="es-sb-item">
+                                <div class="es-sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                                <div class="es-sb-content">
+                                    <div class="es-sb-label">Total Claims</div>
+                                    <div class="es-sb-value" id="es-stat-claims">—</div>
+                                </div>
+                            </div>
+                            <div class="es-sb-item">
+                                <div class="es-sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                                <div class="es-sb-content">
+                                    <div class="es-sb-label">Pending Review</div>
+                                    <div class="es-sb-value" id="es-stat-pending">—</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Split Layout -->
+                        <div class="es-split">
+                            <!-- Employee List Panel -->
+                            <div class="es-list-panel">
+                                <div class="es-list-header">
+                                    <div class="es-list-title">
+                                        Employees
+                                        <span id="es-record-badge">— records</span>
+                                    </div>
+                                    <div class="es-search-box">
+                                        <span class="es-search-icon">
+                                            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                        </span>
+                                        <input type="text" class="es-search-input" id="es-emp-search" placeholder="Search by name or circle..." oninput="esFilterEmployees()">
+                                    </div>
+                                </div>
+                                <div class="es-emp-list" id="es-emp-list"></div>
+                                <div class="es-list-footer">
+                                    <div class="es-page-info" id="es-page-info">—</div>
+                                    <div class="es-pag-controls" id="es-pag-controls"></div>
+                                </div>
+                            </div>
+
+                            <!-- Detail Panel -->
+                            <div class="es-detail-panel" id="es-detail-panel">
+                                <div class="es-detail-empty" id="es-detail-empty">
+                                    <div class="es-detail-empty-icon">
+                                        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                    </div>
+                                    <div class="es-detail-empty-title">Select an employee</div>
+                                    <div class="es-detail-empty-sub">Tap any employee on the left to view their expense claims and breakdown here.</div>
+                                </div>
+                                <div id="es-detail-content" style="display:none;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- /#page-expense-summary -->
+
+                <!-- ═══════════════════════════════════════════════
+                     #page-disbursement — placeholder
+                ═══════════════════════════════════════════════ -->
+                <div id="page-disbursement" class="page-section">
+                    <div class="coming-soon">
+                        <div class="coming-soon-icon"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+                        <h2>Disbursement</h2><p>Page content will be added here</p>
+                    </div>
+                </div>
 
                 <div id="page-invoice-tracking" class="page-section">
     <div class="it-content">
@@ -14425,6 +14961,469 @@ window.wccSwitchTab=function(tab){
 window.wccFilterRecords=function(q){wccSearchQ=q;wccRender();};
 
 document.addEventListener('DOMContentLoaded',function(){wccRender();});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     EXPENSE SUMMARY  —  scoped logic (IIFE), IDs prefixed with es-
+═══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+    // Real API response (per attached JSON) — used as detail records for Tashu Goyal
+    const ES_CLAIMS_API = {
+        "code":200,"message":"Claims summary fetched successfully.",
+        "data":{"page":1,"page_size":20,"total_count":11,"total_records":5,"total_pages":1,"records":[
+            {"claim_id":965035674028,"date":"2026-04-15","employee":{"employee_id":598092769043,"employee_code":"ATQ/PB/0001","employee_name":"Tashu  Goyal"},"claim_type":"multiple_site","sites":[{"site_id":729099203755,"site_name":"jioA","amount_site":90.0},{"site_id":539673760920,"site_name":"jioB","amount_site":90.0}],"expenses":[{"expense_id":653926936288,"expense_type":"DA","claimed_amount":90.0,"amount_per_site":45.0},{"expense_id":200470938007,"expense_type":"other","claimed_amount":90.0,"amount_per_site":45.0}],"travelling_from":null,"travelling_to":null,"total_amount":180.0,"status":"Submitted"},
+            {"claim_id":707648255637,"date":"2026-04-15","employee":{"employee_id":598092769043,"employee_code":"ATQ/PB/0001","employee_name":"Tashu  Goyal"},"claim_type":"multiple_site","sites":[{"site_id":977100912060,"site_name":"TestA","amount_site":618.6666666666667},{"site_id":652917813976,"site_name":"TestB","amount_site":1237.3333333333333},{"site_id":652917813976,"site_name":"TestB","amount_site":1237.3333333333333}],"expenses":[{"expense_id":199569641334,"expense_type":"travel","claimed_amount":900.0,"amount_per_site":300.0},{"expense_id":253395155703,"expense_type":"travel","claimed_amount":56.0,"amount_per_site":18.666666666666668},{"expense_id":339095008350,"expense_type":"DA","claimed_amount":900.0,"amount_per_site":300.0}],"travelling_from":"ptla","travelling_to":"chd","total_amount":1856.0,"status":"Submitted"},
+            {"claim_id":361419184522,"date":"2026-04-15","employee":{"employee_id":598092769043,"employee_code":"ATQ/PB/0001","employee_name":"Tashu  Goyal"},"claim_type":"multiple_site","sites":[{"site_id":729099203755,"site_name":"jioA","amount_site":89.5},{"site_id":539673760920,"site_name":"jioB","amount_site":89.5}],"expenses":[{"expense_id":621751412094,"expense_type":"DA","claimed_amount":89.0,"amount_per_site":44.5},{"expense_id":247431348528,"expense_type":"other","claimed_amount":90.0,"amount_per_site":45.0}],"travelling_from":null,"travelling_to":null,"total_amount":179.0,"status":"Submitted"},
+            {"claim_id":346606111614,"date":"2026-04-15","employee":{"employee_id":598092769043,"employee_code":"ATQ/PB/0001","employee_name":"Tashu  Goyal"},"claim_type":"multiple_site","sites":[{"site_id":610412865781,"site_name":"TEST-LIVE","amount_site":22.5},{"site_id":136894681062,"site_name":"VoultA","amount_site":67.5},{"site_id":136894681062,"site_name":"VoultA","amount_site":67.5},{"site_id":136894681062,"site_name":"VoultA","amount_site":67.5}],"expenses":[{"expense_id":782301915900,"expense_type":"DA","claimed_amount":90.0,"amount_per_site":22.5}],"travelling_from":null,"travelling_to":null,"total_amount":90.0,"status":"Submitted"},
+            {"claim_id":344703420219,"date":"2026-04-15","employee":{"employee_id":598092769043,"employee_code":"ATQ/PB/0001","employee_name":"Tashu  Goyal"},"claim_type":"multiple_site","sites":[{"site_id":729099203755,"site_name":"jioA","amount_site":45.0},{"site_id":539673760920,"site_name":"jioB","amount_site":45.0}],"expenses":[{"expense_id":654612306720,"expense_type":"travel","claimed_amount":90.0,"amount_per_site":45.0}],"travelling_from":"mumbai","travelling_to":"bathinda","total_amount":90.0,"status":"Submitted"}
+        ]}
+    };
+
+    // Employee roster with claim aggregates
+    const ES_EMPLOYEES = [
+        {employee_id:598092769043,employee_name:"Tashu Goyal",employee_code:"ATQ/PB/0001",circle:"Punjab",reporting_manager:{name:"Karanveer"},total_claims:5,total_amount:2395,submitted:5,approved:0,rejected:0},
+        {employee_id:506189450115,employee_name:"Kareem Baig",employee_code:"ATQ/AP/759",circle:"Andhra Pradesh",reporting_manager:{name:"Akhil Ghalta"},total_claims:4,total_amount:3240,submitted:1,approved:3,rejected:0},
+        {employee_id:218437226949,employee_name:"Darshan AV",employee_code:"ATQ/KA/412",circle:"Karnataka",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:6,total_amount:5180,submitted:2,approved:3,rejected:1},
+        {employee_id:765007283013,employee_name:"Jivan Tayde",employee_code:"ATQ/MH/203",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:3,total_amount:1620,submitted:0,approved:3,rejected:0},
+        {employee_id:926438509767,employee_name:"Simarpreet Singh",employee_code:"ATQ/PB/118",circle:"Punjab",reporting_manager:{name:"Karanveer"},total_claims:0,total_amount:0,submitted:0,approved:0,rejected:0},
+        {employee_id:527575065099,employee_name:"Dharmendra Kumar",employee_code:"ATQ/MH/345",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:7,total_amount:8450,submitted:3,approved:4,rejected:0},
+        {employee_id:322490620556,employee_name:"Pankaj Kumar",employee_code:"ATQ/MH/567",circle:"Maharashtra",reporting_manager:{name:"Vikki Kumar"},total_claims:2,total_amount:940,submitted:1,approved:1,rejected:0},
+        {employee_id:433448047565,employee_name:"Ravi Tiwary",employee_code:"ATQ/MH/789",circle:"Maharashtra",reporting_manager:{name:"Vikki Kumar"},total_claims:1,total_amount:450,submitted:0,approved:0,rejected:1},
+        {employee_id:670691839055,employee_name:"Rohit Tiwari",employee_code:"ATQ/MH/012",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:5,total_amount:3680,submitted:2,approved:3,rejected:0},
+        {employee_id:378003715729,employee_name:"Amarjit Kaur",employee_code:"ATQ/PB/234",circle:"Punjab",reporting_manager:{name:"Akhil Ghalta"},total_claims:0,total_amount:0,submitted:0,approved:0,rejected:0},
+        {employee_id:461594864788,employee_name:"Vikram",employee_code:"ATQ/PB/456",circle:"Punjab",reporting_manager:{name:"Karanveer"},total_claims:3,total_amount:1890,submitted:3,approved:0,rejected:0},
+        {employee_id:513330888344,employee_name:"Vikki Kumar",employee_code:"ATQ/MH/678",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:8,total_amount:12340,submitted:1,approved:7,rejected:0},
+        {employee_id:842136584793,employee_name:"Harichandra Darde",employee_code:"ATQ/MH/890",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:4,total_amount:2560,submitted:1,approved:3,rejected:0},
+        {employee_id:345485748122,employee_name:"Amir Hussain",employee_code:"ATQ/MH/123",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:2,total_amount:1340,submitted:0,approved:2,rejected:0},
+        {employee_id:596682658592,employee_name:"Nitesh Upadhyay",employee_code:"ATQ/MH/100",circle:"Maharashtra",reporting_manager:{name:"Akhil Ghalta"},total_claims:5,total_amount:6720,submitted:2,approved:3,rejected:0},
+        {employee_id:269422670305,employee_name:"Madhav Bhimrao Patil",employee_code:"ATQ/MH/456",circle:"Maharashtra",reporting_manager:{name:"Akhil Ghalta"},total_claims:6,total_amount:4320,submitted:1,approved:5,rejected:0},
+        {employee_id:934193347044,employee_name:"Bhausaheb Ganpat Chandgude",employee_code:"ATQ/MH/779",circle:"Maharashtra",reporting_manager:{name:"Vikki Kumar"},total_claims:3,total_amount:1870,submitted:0,approved:3,rejected:0},
+        {employee_id:290855558510,employee_name:"Mohammad Ekram",employee_code:"ATQ/PB/321",circle:"Punjab",reporting_manager:{name:"Akhil Ghalta"},total_claims:0,total_amount:0,submitted:0,approved:0,rejected:0},
+        {employee_id:121609961711,employee_name:"Md. Anas",employee_code:"ATQ/MH/654",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:4,total_amount:2780,submitted:2,approved:2,rejected:0},
+        {employee_id:591545204015,employee_name:"Tukaram Kumbhar",employee_code:"ATQ/MH/987",circle:"Maharashtra",reporting_manager:{name:"Nitesh Upadhyay"},total_claims:1,total_amount:320,submitted:1,approved:0,rejected:0},
+        {employee_id:688173956272,employee_name:"Jaspal Singh",employee_code:"ATQ/PB/543",circle:"Punjab",reporting_manager:{name:"Karanveer"},total_claims:2,total_amount:890,submitted:0,approved:2,rejected:0},
+        {employee_id:252346656526,employee_name:"Karanveer",employee_code:"ATQ/PB/001",circle:"Punjab",reporting_manager:{name:"Akhil Ghalta"},total_claims:3,total_amount:2450,submitted:1,approved:2,rejected:0},
+        {employee_id:661548528786,employee_name:"Akhil Ghalta",employee_code:"ATQ/HQ/001",circle:"Headquarters",reporting_manager:{name:"—"},total_claims:4,total_amount:5670,submitted:1,approved:3,rejected:0}
+    ];
+
+    // ── State ──
+    let esAllEmployees = ES_EMPLOYEES;
+    let esFiltered = [...esAllEmployees];
+    let esSelectedId = null;
+    let esExpandedClaimId = null;
+    let esCurrentClaims = [];
+    const ES_PAGE_SIZE = 20;
+    let esCurrentPage = 1;
+    let esInited = false;
+
+    // ── Helpers ──
+    function esInitials(name) {
+        return name.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0,2).toUpperCase();
+    }
+    function esCurrency(n) {
+        if (n >= 100000) return '₹' + (n/100000).toFixed(2) + 'L';
+        if (n >= 10000) return '₹' + (n/1000).toFixed(1) + 'k';
+        return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+    function esCurrencyFull(n) {
+        return '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits: 0});
+    }
+    function esFormatDate(iso) {
+        const d = new Date(iso);
+        const day = d.getDate().toString().padStart(2,'0');
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+    function esFormatDay(iso) {
+        const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        return days[new Date(iso).getDay()];
+    }
+    function esDedupeSites(sites) {
+        const seen = new Map();
+        for (const s of sites) if (!seen.has(s.site_id)) seen.set(s.site_id, {...s});
+        return Array.from(seen.values());
+    }
+    function esAggByType(claims) {
+        const agg = {};
+        for (const c of claims) for (const ex of c.expenses) {
+            const t = (ex.expense_type || 'other').toLowerCase();
+            agg[t] = (agg[t] || 0) + Number(ex.claimed_amount || 0);
+        }
+        return agg;
+    }
+    function esExpColor(t) {
+        t = (t||'').toLowerCase();
+        if (t === 'da') return 'var(--success)';
+        if (t === 'travel') return 'var(--info)';
+        return 'var(--warning)';
+    }
+    function esExpClass(t) {
+        t = (t||'').toLowerCase();
+        if (t === 'da') return 'da';
+        if (t === 'travel') return 'travel';
+        return 'other';
+    }
+    function esTypeClass(ct) {
+        if (!ct) return '';
+        if (ct === 'multiple_site') return 'multiple';
+        if (ct.toLowerCase().includes('travel')) return 'travelling';
+        return '';
+    }
+    function esTypeLabel(ct) {
+        if (!ct) return 'Single';
+        if (ct === 'multiple_site') return 'Multi-Site';
+        if (ct === 'single_site') return 'Single Site';
+        if (ct.toLowerCase().includes('travel')) return 'Travelling';
+        return ct.replace(/_/g,' ');
+    }
+
+    // Simulate fetch — substitute employee info into the real API records
+    function esFetchClaims(emp) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                if (emp.total_claims === 0) { resolve([]); return; }
+                const tpl = ES_CLAIMS_API.data.records;
+                const out = [];
+                for (let i = 0; i < emp.total_claims; i++) {
+                    const base = tpl[i % tpl.length];
+                    const clone = JSON.parse(JSON.stringify(base));
+                    clone.claim_id = Number(String(base.claim_id).slice(0,-3) + String(Math.floor(Math.random()*900)+100));
+                    clone.employee = {employee_id:emp.employee_id,employee_code:emp.employee_code,employee_name:emp.employee_name};
+                    if (i < emp.submitted) clone.status = 'Submitted';
+                    else if (i < emp.submitted + emp.approved) clone.status = 'Approved';
+                    else clone.status = 'Rejected';
+                    out.push(clone);
+                }
+                resolve(out);
+            }, 320);
+        });
+    }
+
+    // ── Rendering ──
+    function esComputeStats() {
+        const withClaims = esAllEmployees.filter(e => e.total_claims > 0).length;
+        const totalAmt = esAllEmployees.reduce((s,e) => s + e.total_amount, 0);
+        const totalClaims = esAllEmployees.reduce((s,e) => s + e.total_claims, 0);
+        const pending = esAllEmployees.reduce((s,e) => s + e.submitted, 0);
+        document.getElementById('es-stat-emp').textContent = withClaims;
+        document.getElementById('es-stat-amount').textContent = esCurrency(totalAmt);
+        document.getElementById('es-stat-claims').textContent = totalClaims;
+        document.getElementById('es-stat-pending').textContent = pending;
+    }
+
+    function esRenderList() {
+        const start = (esCurrentPage - 1) * ES_PAGE_SIZE;
+        const page = esFiltered.slice(start, start + ES_PAGE_SIZE);
+        const container = document.getElementById('es-emp-list');
+        if (!container) return;
+
+        if (page.length === 0) {
+            container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--gray-400);">
+                <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin:0 auto 8px;display:block;opacity:0.4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                No employees found
+            </div>`;
+            return;
+        }
+
+        container.innerHTML = page.map(e => {
+            const sel = e.employee_id === esSelectedId;
+            const has = e.total_claims > 0;
+            const pend = e.submitted > 0;
+            return `<div class="es-emp-row${sel?' selected':''}" data-eid="${e.employee_id}" onclick="window.esSelectEmployee(this.dataset.eid)">
+                <div class="es-emp-avatar">${esInitials(e.employee_name)}</div>
+                <div class="es-emp-name-block">
+                    <div class="es-emp-name">${e.employee_name}</div>
+                    <div class="es-emp-meta">${e.circle} · ${e.reporting_manager.name}</div>
+                </div>
+                <div class="es-emp-right">
+                    ${has ? `
+                        <div class="es-emp-amount">${esCurrency(e.total_amount)}</div>
+                        <div class="es-emp-claims-meta">
+                            <span class="es-emp-claim-count"><strong>${e.total_claims}</strong> claim${e.total_claims>1?'s':''}</span>
+                            ${pend ? `<span class="es-emp-pending"><span class="es-pend-dot"></span>${e.submitted}</span>` : ''}
+                        </div>
+                    ` : `<div class="es-emp-no-claims">No claims</div>`}
+                </div>
+                <svg class="es-chevron" width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>`;
+        }).join('');
+
+        const total = esFiltered.length;
+        document.getElementById('es-page-info').textContent = `Showing ${start+1}–${Math.min(start+ES_PAGE_SIZE, total)} of ${total}`;
+        document.getElementById('es-record-badge').textContent = total + ' records';
+        esRenderPagination(total);
+    }
+
+    function esRenderPagination(total) {
+        const totalPages = Math.ceil(total / ES_PAGE_SIZE);
+        const ctrl = document.getElementById('es-pag-controls');
+        if (!ctrl) return;
+        if (totalPages <= 1) { ctrl.innerHTML = ''; return; }
+        let btns = `<button class="es-page-btn" data-p="${esCurrentPage-1}" onclick="window.esGoPage(parseInt(this.dataset.p))" ${esCurrentPage===1?'disabled':''}><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>`;
+        for (let i = 1; i <= totalPages; i++) btns += `<button class="es-page-btn${i===esCurrentPage?' active':''}" data-p="${i}" onclick="window.esGoPage(parseInt(this.dataset.p))">${i}</button>`;
+        btns += `<button class="es-page-btn" data-p="${esCurrentPage+1}" onclick="window.esGoPage(parseInt(this.dataset.p))" ${esCurrentPage===totalPages?'disabled':''}><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>`;
+        ctrl.innerHTML = btns;
+    }
+
+    function esRenderDetail(emp) {
+        document.getElementById('es-detail-empty').style.display = 'none';
+        const content = document.getElementById('es-detail-content');
+        content.style.display = 'block';
+        const avg = emp.total_claims ? emp.total_amount / emp.total_claims : 0;
+
+        content.innerHTML = `
+            <div class="es-detail-header">
+                <div class="es-detail-avatar-lg">${esInitials(emp.employee_name)}</div>
+                <div class="es-detail-hinfo">
+                    <div class="es-detail-hname">${emp.employee_name}</div>
+                    <div class="es-detail-hmeta">${emp.circle} Circle · Manager: ${emp.reporting_manager.name}</div>
+                    <div class="es-detail-hid">#${emp.employee_code}</div>
+                </div>
+                <div class="es-detail-htotal">
+                    <div class="es-detail-tlabel">Total Claimed</div>
+                    <div class="es-detail-tvalue">${esCurrencyFull(emp.total_amount)}</div>
+                </div>
+            </div>
+            <div id="es-detail-body">
+                <div class="es-loading"><div class="es-spinner"></div><div class="es-loading-lbl">Loading claims…</div></div>
+            </div>
+        `;
+
+        esFetchClaims(emp).then(claims => esRenderClaims(claims, emp, avg));
+    }
+
+    function esRenderClaims(claims, emp, avg) {
+        const body = document.getElementById('es-detail-body');
+        if (!body) return;
+        esCurrentClaims = claims;
+
+        if (claims.length === 0) {
+            body.innerHTML = `
+                <div class="es-stats-row">
+                    <div class="es-stat"><div class="es-stat-val blue">0</div><div class="es-stat-lbl">Total Claims</div></div>
+                    <div class="es-stat"><div class="es-stat-val green">₹0</div><div class="es-stat-lbl">Claimed</div></div>
+                    <div class="es-stat"><div class="es-stat-val orange">0</div><div class="es-stat-lbl">Sites</div></div>
+                    <div class="es-stat"><div class="es-stat-val purple">₹0</div><div class="es-stat-lbl">Avg / Claim</div></div>
+                </div>
+                <div class="es-no-claims">
+                    <div class="es-no-icon"><svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                    <div class="es-no-title">No claims yet</div>
+                    <div class="es-no-sub">This employee hasn't submitted any expense claims in the selected period.</div>
+                </div>
+            `;
+            return;
+        }
+
+        const uniqSiteIds = new Set();
+        claims.forEach(c => esDedupeSites(c.sites).forEach(s => uniqSiteIds.add(s.site_id)));
+        const byType = esAggByType(claims);
+        const types = Object.keys(byType);
+        const typeTotal = types.reduce((s,t) => s+byType[t], 0);
+        const statusCounts = claims.reduce((acc,c) => {
+            const s = (c.status || 'Submitted').toLowerCase();
+            acc[s] = (acc[s] || 0) + 1;
+            return acc;
+        }, {});
+
+        body.innerHTML = `
+            <div class="es-stats-row">
+                <div class="es-stat"><div class="es-stat-val blue">${emp.total_claims}</div><div class="es-stat-lbl">Total Claims</div></div>
+                <div class="es-stat"><div class="es-stat-val green">${esCurrency(emp.total_amount)}</div><div class="es-stat-lbl">Claimed</div></div>
+                <div class="es-stat"><div class="es-stat-val orange">${uniqSiteIds.size}</div><div class="es-stat-lbl">Sites Covered</div></div>
+                <div class="es-stat"><div class="es-stat-val purple">${esCurrency(avg)}</div><div class="es-stat-lbl">Avg / Claim</div></div>
+            </div>
+
+            <div class="es-breakdown">
+                <div class="es-bk-header">
+                    <div class="es-bk-title">Expense Breakdown</div>
+                    <div class="es-bk-total">${types.length} expense type${types.length>1?'s':''} · ${esCurrencyFull(typeTotal)}</div>
+                </div>
+                <div class="es-bk-bar">
+                    ${types.map(t => { const pct = (byType[t]/typeTotal)*100; return `<div class="es-bk-seg" style="width:${pct}%;background:${esExpColor(t)}" title="${t}: ${esCurrencyFull(byType[t])}">${pct>=10?Math.round(pct)+'%':''}</div>`; }).join('')}
+                </div>
+                <div class="es-bk-legend">
+                    ${types.map(t => `<div class="es-bk-lg-item"><div class="es-bk-lg-dot" style="background:${esExpColor(t)}"></div><span class="es-bk-lg-label">${t}</span><span class="es-bk-lg-value">${esCurrencyFull(byType[t])}</span></div>`).join('')}
+                </div>
+            </div>
+
+            <div class="es-status-strip">
+                <span class="es-strip-label">Status:</span>
+                ${statusCounts.submitted?`<span class="es-pill submitted"><span class="es-pill-dot"></span>${statusCounts.submitted} Submitted</span>`:''}
+                ${statusCounts.approved?`<span class="es-pill approved"><span class="es-pill-dot"></span>${statusCounts.approved} Approved</span>`:''}
+                ${statusCounts.pending?`<span class="es-pill pending"><span class="es-pill-dot"></span>${statusCounts.pending} Pending</span>`:''}
+                ${statusCounts.rejected?`<span class="es-pill rejected"><span class="es-pill-dot"></span>${statusCounts.rejected} Rejected</span>`:''}
+            </div>
+
+            <div class="es-cs-header">
+                <div class="es-cs-title">All Claims</div>
+                <div class="es-cs-hint">
+                    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Tap a row for details
+                </div>
+            </div>
+            <div class="es-summary-bar">
+                <div class="es-sum-info">Showing <strong>${claims.length}</strong> of <strong>${claims.length}</strong> claims</div>
+                <div class="es-sum-stats">
+                    <div class="es-sum-mini"><div class="es-sum-mini-dot" style="background:var(--success)"></div><span class="es-sum-mini-label">Sites:</span><span class="es-sum-mini-val">${uniqSiteIds.size}</span></div>
+                    <div class="es-sum-mini"><div class="es-sum-mini-dot" style="background:var(--info)"></div><span class="es-sum-mini-label">Avg:</span><span class="es-sum-mini-val">${esCurrency(avg)}</span></div>
+                </div>
+            </div>
+            <div class="es-table-wrap">
+                <table class="es-table">
+                    <thead><tr>
+                        <th>Date</th><th>Type</th><th>Sites / Route</th><th>Expenses</th>
+                        <th style="text-align:right;">Amount</th><th>Status</th><th></th>
+                    </tr></thead>
+                    <tbody id="es-claims-tbody">${claims.map(c => esRenderClaimRow(c)).join('')}</tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    function esRenderClaimRow(c) {
+        const uniq = esDedupeSites(c.sites);
+        const exp = esExpandedClaimId === c.claim_id;
+        const typeCls = esTypeClass(c.claim_type);
+        const stCls = (c.status || 'Submitted').toLowerCase();
+        const travel = c.travelling_from && c.travelling_to;
+
+        const expByT = {};
+        c.expenses.forEach(e => {
+            const t = (e.expense_type || 'other').toLowerCase();
+            expByT[t] = (expByT[t] || 0) + Number(e.claimed_amount);
+        });
+        const chips = Object.keys(expByT).map(t => `<span class="es-exp-chip ${esExpClass(t)}"><span class="es-exp-dot"></span>${t.toUpperCase()} ${esCurrencyFull(expByT[t])}</span>`).join('');
+
+        const sitesCol = travel
+            ? `<div class="es-sites-col">
+                 <span class="es-sites-line"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${uniq.length} site${uniq.length>1?'s':''}</span>
+                 <span class="es-route-line"><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg><span style="text-transform:capitalize;">${c.travelling_from} → ${c.travelling_to}</span></span>
+               </div>`
+            : `<div class="es-sites-col">
+                 <span class="es-sites-line"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${uniq.length} site${uniq.length>1?'s':''}</span>
+                 <span class="es-route-line" style="color:var(--gray-400);">${uniq.slice(0,2).map(s=>s.site_name).join(', ')}${uniq.length>2?', +'+(uniq.length-2):''}</span>
+               </div>`;
+
+        const mainRow = `
+            <tr class="es-claim-main${exp?' expanded':''}" data-cid="${c.claim_id}" onclick="window.esToggleClaim(this.dataset.cid)">
+                <td><div class="es-claim-date">${esFormatDate(c.date)}</div><div class="es-claim-day">${esFormatDay(c.date)}</div></td>
+                <td><span class="es-type-badge ${typeCls}">
+                    ${travel?`<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>`:`<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>`}
+                    ${esTypeLabel(c.claim_type)}
+                </span></td>
+                <td>${sitesCol}</td>
+                <td><div class="es-exp-chips">${chips}</div></td>
+                <td style="text-align:right;"><div class="es-claim-total">${esCurrencyFull(c.total_amount)}</div></td>
+                <td><span class="es-st-badge ${stCls}">${c.status}</span></td>
+                <td><span class="es-caret"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span></td>
+            </tr>
+        `;
+
+        if (!exp) return mainRow;
+
+        return mainRow + `
+            <tr class="es-claim-expanded"><td colspan="7">
+                <div class="es-exp-inner">
+                    <div class="es-subcard">
+                        <div class="es-sub-title">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            Sites Visited · ${uniq.length}
+                        </div>
+                        ${uniq.map(s => `
+                            <div class="es-sub-row">
+                                <div class="es-sub-left">
+                                    <div class="es-sub-icon site"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg></div>
+                                    <div><div class="es-sub-name">${s.site_name}</div><div class="es-sub-sub">Site ID: ${s.site_id}</div></div>
+                                </div>
+                                <div class="es-sub-amt">${esCurrencyFull(s.amount_site)}</div>
+                            </div>
+                        `).join('')}
+                        ${travel?`
+                            <div class="es-travel-banner">
+                                <div class="es-tb-icon"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m0 0l-7-7m7 7l-7 7"/></svg></div>
+                                <div class="es-tb-text">Travelling <span class="es-tb-route">${c.travelling_from}</span> to <span class="es-tb-route">${c.travelling_to}</span></div>
+                            </div>
+                        `:''}
+                    </div>
+                    <div class="es-subcard">
+                        <div class="es-sub-title">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Expense Lines · ${c.expenses.length}
+                        </div>
+                        ${c.expenses.map(ex => { const t = (ex.expense_type||'other').toLowerCase(); return `
+                            <div class="es-sub-row">
+                                <div class="es-sub-left">
+                                    <div class="es-sub-icon ${esExpClass(t)}">${t.slice(0,1).toUpperCase()}</div>
+                                    <div><div class="es-sub-name" style="text-transform:capitalize;">${ex.expense_type}</div><div class="es-sub-sub">${esCurrencyFull(ex.amount_per_site)} per site</div></div>
+                                </div>
+                                <div class="es-sub-amt">${esCurrencyFull(ex.claimed_amount)}</div>
+                            </div>
+                        `; }).join('')}
+                        <div class="es-sub-row" style="padding-top:10px;border-top:1px solid var(--gray-200);border-bottom:none;margin-top:4px;">
+                            <div class="es-sub-left"><div class="es-sub-name" style="color:var(--gray-900);font-weight:700;font-family:'Fraunces',serif;font-size:13px;">Claim Total</div></div>
+                            <div class="es-sub-amt" style="font-family:'Fraunces',serif;font-size:14px;color:var(--primary);">${esCurrencyFull(c.total_amount)}</div>
+                        </div>
+                    </div>
+                </div>
+            </td></tr>
+        `;
+    }
+
+    // ── Public API (on window, called by inline onclick) ──
+    window.esFilterEmployees = function() {
+        const q = document.getElementById('es-emp-search').value.toLowerCase();
+        esFiltered = esAllEmployees.filter(e =>
+            e.employee_name.toLowerCase().includes(q) ||
+            e.circle.toLowerCase().includes(q) ||
+            e.employee_code.toLowerCase().includes(q) ||
+            (e.reporting_manager && e.reporting_manager.name.toLowerCase().includes(q))
+        );
+        esCurrentPage = 1;
+        esRenderList();
+    };
+    window.esGoPage = function(p) {
+        const total = Math.ceil(esFiltered.length / ES_PAGE_SIZE);
+        if (p < 1 || p > total) return;
+        esCurrentPage = p;
+        esRenderList();
+    };
+    window.esSelectEmployee = function(id) {
+        esSelectedId = parseInt(id, 10);
+        esExpandedClaimId = null;
+        esRenderList();
+        const emp = esAllEmployees.find(e => e.employee_id === esSelectedId);
+        if (emp) esRenderDetail(emp);
+    };
+    window.esToggleClaim = function(cid) {
+        const id = Number(cid);
+        esExpandedClaimId = (esExpandedClaimId === id) ? null : id;
+        const tbody = document.getElementById('es-claims-tbody');
+        if (tbody && esCurrentClaims.length) {
+            tbody.innerHTML = esCurrentClaims.map(c => esRenderClaimRow(c)).join('');
+        }
+    };
+
+    // Lazy init — called by showPage hook when user first opens the summary tab
+    window.esInit = function() {
+        if (esInited) return;
+        esInited = true;
+        esComputeStats();
+        esRenderList();
+    };
+})();
+
+// Hook into existing showPage — lazy-init the expense summary on first open
+(function(){
+    const originalShowPage = window.showPage;
+    if (typeof originalShowPage !== 'function') return;
+    window.showPage = function(pageId, pageName) {
+        originalShowPage(pageId, pageName);
+        if (pageId === 'expense-summary' && typeof window.esInit === 'function') {
+            window.esInit();
+        }
+    };
 })();
 </script>
 </body>
