@@ -5697,6 +5697,331 @@
         #page-expense-summary .es-no-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; color: var(--gray-600); }
         #page-expense-summary .es-no-sub { font-size: 12px; color: var(--gray-400); text-align: center; max-width: 280px; line-height: 1.6; }
 
+        /* ═══════════════════════════════════════════════════════════
+           DISBURSEMENT PAGE  —  scoped under #page-disbursement
+        ═══════════════════════════════════════════════════════════ */
+        #page-disbursement .table-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+        #page-disbursement .ds-table-wrap { flex: 1; overflow-x: hidden; overflow-y: auto; min-height: 0; }
+        #page-disbursement .table-footer { flex-shrink: 0; }
+        #page-disbursement .ds-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+        #page-disbursement .ds-table th,
+        #page-disbursement .ds-table td { padding: 6px 11px; vertical-align: middle; }
+        #page-disbursement .ds-table th { position: sticky; top: 0; z-index: 2; background: var(--gray-50); white-space: nowrap; font-size: 10px; letter-spacing: 0.4px; padding-top: 9px; padding-bottom: 9px; }
+        [data-dark="true"] #page-disbursement .ds-table th { background: #252836 !important; }
+
+        /* Compact column widths (9 columns, no horizontal scroll).
+           Remarks capped at 150px so it can't dominate; the chevron/circle/action stay tight. */
+        #page-disbursement .ds-table th:nth-child(1),
+        #page-disbursement .ds-table td:nth-child(1) { width: 28px; text-align: center; padding-left: 4px; padding-right: 4px; }
+        #page-disbursement .ds-table th:nth-child(2),
+        #page-disbursement .ds-table td:nth-child(2) { width: 110px; }
+        #page-disbursement .ds-table th:nth-child(3),
+        #page-disbursement .ds-table td:nth-child(3) { width: 86px; }
+        #page-disbursement .ds-table th:nth-child(4),
+        #page-disbursement .ds-table td:nth-child(4) { width: 170px; }
+        #page-disbursement .ds-table th:nth-child(5),
+        #page-disbursement .ds-table td:nth-child(5) { width: 62px; text-align: center; }
+        #page-disbursement .ds-table th:nth-child(6),
+        #page-disbursement .ds-table td:nth-child(6) { width: 130px; }
+        #page-disbursement .ds-table th:nth-child(7),
+        #page-disbursement .ds-table td:nth-child(7) { width: 116px; }
+        #page-disbursement .ds-table th:nth-child(8),
+        #page-disbursement .ds-table td:nth-child(8) { width: 150px; }
+        #page-disbursement .ds-table th:nth-child(9),
+        #page-disbursement .ds-table td:nth-child(9) { width: 84px; text-align: center; }
+
+        /* Date cell */
+        #page-disbursement .ds-date-cell {
+            font-size: 11.5px; font-weight: 600;
+            color: var(--gray-700);
+            font-variant-numeric: tabular-nums;
+            line-height: 1.3;
+        }
+        #page-disbursement .ds-date-year {
+            font-size: 10px; color: var(--gray-400);
+            font-weight: 500; margin-top: 2px;
+        }
+
+        /* Amounts cell — simplified: just Total and Pending, clearly labeled */
+        #page-disbursement .ds-amounts-simple {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2px 10px;
+            align-items: baseline;
+        }
+        #page-disbursement .ds-amt-lbl {
+            font-size: 9.5px; font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.4px;
+            line-height: 1.3;
+        }
+        #page-disbursement .ds-amt-val {
+            font-size: 12px; font-weight: 700;
+            color: var(--gray-900);
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            line-height: 1.3;
+            white-space: nowrap;
+        }
+        #page-disbursement .ds-amt-val.pending { color: var(--warning); }
+        #page-disbursement .ds-amt-val.fully-paid { color: var(--success); }
+
+        /* Filter tabs */
+        #page-disbursement .ds-filter-tabs { display: flex; gap: 2px; background: var(--gray-100); padding: 3px; border-radius: 9px; flex-shrink: 0; }
+        [data-dark="true"] #page-disbursement .ds-filter-tabs { background: #252836 !important; }
+        #page-disbursement .ds-tab {
+            border: none; background: transparent;
+            padding: 5px 12px; border-radius: 7px;
+            font-size: 12px; font-weight: 600; color: var(--gray-600);
+            cursor: pointer; transition: var(--transition);
+            white-space: nowrap;
+        }
+        #page-disbursement .ds-tab:hover { color: var(--gray-900); }
+        #page-disbursement .ds-tab.active { background: var(--white); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        [data-dark="true"] #page-disbursement .ds-tab.active { background: #1e2130 !important; color: #d1d5db !important; }
+
+        /* Rows */
+        #page-disbursement .ds-row { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
+        #page-disbursement .ds-row:hover { background: var(--gray-50); }
+        [data-dark="true"] #page-disbursement .ds-row:hover { background: #252836 !important; }
+        #page-disbursement .ds-row.expanded { background: var(--primary-light); }
+        [data-dark="true"] #page-disbursement .ds-row.expanded { background: #2d3145 !important; }
+        #page-disbursement .ds-row.flash { animation: ds-flash 1.2s ease-out; }
+        @keyframes ds-flash {
+            0% { background: color-mix(in srgb, var(--success) 30%, transparent); }
+            100% { background: transparent; }
+        }
+
+        /* Expand caret */
+        #page-disbursement .ds-caret {
+            width: 22px; height: 22px; border-radius: 6px;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--gray-400); background: transparent;
+            border: none; cursor: pointer; transition: var(--transition);
+        }
+        #page-disbursement .ds-caret:hover { color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, transparent); }
+        #page-disbursement .ds-caret.disabled { opacity: 0.25; pointer-events: none; }
+        #page-disbursement .ds-row.expanded .ds-caret { color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); transform: rotate(180deg); }
+
+        /* Claim cell */
+        #page-disbursement .ds-claim-id {
+            font-family: 'Courier New', monospace; font-size: 10.5px;
+            font-weight: 700; color: var(--gray-800);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        #page-disbursement .ds-claim-sub {
+            display: flex; align-items: center; gap: 5px;
+            margin-top: 3px; font-size: 10px; color: var(--gray-400);
+        }
+        #page-disbursement .ds-type-chip {
+            display: inline-flex; align-items: center;
+            padding: 1px 5px; border-radius: 4px;
+            font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+        #page-disbursement .ds-type-chip.single { background: var(--gray-100); color: var(--gray-600); }
+        #page-disbursement .ds-type-chip.multiple { background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); }
+
+        /* Employee cell */
+        #page-disbursement .ds-emp { display: flex; align-items: center; gap: 7px; }
+        #page-disbursement .ds-emp-av {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), color-mix(in srgb, var(--primary) 20%, white));
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary); font-weight: 700; font-size: 9.5px;
+            flex-shrink: 0;
+        }
+        #page-disbursement .ds-emp-info { min-width: 0; flex: 1; }
+        #page-disbursement .ds-emp-name { font-size: 11.5px; font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+        #page-disbursement .ds-emp-email { font-size: 10px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0; line-height: 1.3; }
+
+        /* Circle badge — just the code, full name in tooltip */
+        #page-disbursement .ds-circle-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 3px 7px; border-radius: 5px;
+            background: var(--info-light); color: var(--info);
+            font-size: 10.5px; font-weight: 700;
+            font-family: 'Courier New', monospace; letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        /* Amounts cell — compact */
+        #page-disbursement .ds-amounts { display: flex; flex-direction: column; gap: 2px; }
+        #page-disbursement .ds-amt-line { display: flex; justify-content: space-between; align-items: baseline; font-size: 10.5px; gap: 4px; line-height: 1.3; }
+        #page-disbursement .ds-amt-line .lbl { color: var(--gray-400); font-weight: 600; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.35px; }
+        #page-disbursement .ds-amt-line .val { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gray-900); font-size: 11px; }
+        #page-disbursement .ds-amt-line .val.paid { color: var(--success); }
+        #page-disbursement .ds-amt-line .val.pending { color: var(--warning); }
+        #page-disbursement .ds-amt-line .val.fully-paid { color: var(--success); }
+        #page-disbursement .ds-progress {
+            height: 5px; background: var(--gray-100);
+            border-radius: 3px; overflow: hidden;
+            margin: 2px 0;
+        }
+        [data-dark="true"] #page-disbursement .ds-progress { background: #2d3145 !important; }
+        #page-disbursement .ds-progress-fill {
+            height: 100%; border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+        #page-disbursement .ds-progress-fill.zero { background: var(--gray-300); }
+        #page-disbursement .ds-progress-fill.partial { background: linear-gradient(90deg, var(--warning), color-mix(in srgb, var(--warning) 60%, #ffd89a)); }
+        #page-disbursement .ds-progress-fill.full { background: linear-gradient(90deg, var(--success), color-mix(in srgb, var(--success) 60%, #a8e0b8)); }
+
+        /* Disburse input — compact */
+        #page-disbursement .ds-input-wrap {
+            position: relative;
+            display: flex; align-items: center;
+        }
+        #page-disbursement .ds-input-prefix {
+            position: absolute; left: 7px;
+            color: var(--gray-500); font-weight: 700; font-size: 11px;
+            pointer-events: none;
+        }
+        #page-disbursement .ds-amount-input {
+            width: 100%; padding: 5px 7px 5px 18px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px; background: var(--white);
+            font-size: 12px; font-weight: 600;
+            color: var(--gray-900);
+            font-variant-numeric: tabular-nums;
+            outline: none; transition: var(--transition);
+            -moz-appearance: textfield;
+        }
+        #page-disbursement .ds-amount-input::-webkit-outer-spin-button,
+        #page-disbursement .ds-amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        #page-disbursement .ds-amount-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 12%, transparent); }
+        #page-disbursement .ds-amount-input.error { border-color: var(--danger); box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger) 12%, transparent); }
+        #page-disbursement .ds-amount-input:disabled { background: var(--gray-50); color: var(--gray-400); cursor: not-allowed; }
+        [data-dark="true"] #page-disbursement .ds-amount-input { background: #1e2130 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+        [data-dark="true"] #page-disbursement .ds-amount-input:disabled { background: #252836 !important; }
+
+        #page-disbursement .ds-input-error {
+            font-size: 9.5px; color: var(--danger);
+            margin-top: 2px; display: none; line-height: 1.2;
+        }
+        #page-disbursement .ds-input-error.show { display: block; }
+        #page-disbursement .ds-fill-full {
+            margin-top: 3px; padding: 2px 6px;
+            background: transparent; border: 1px dashed var(--gray-300);
+            border-radius: 5px; font-size: 9.5px; font-weight: 600;
+            color: var(--gray-500); cursor: pointer; transition: var(--transition);
+            width: 100%; text-align: center;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.3;
+        }
+        #page-disbursement .ds-fill-full:hover { border-color: var(--primary); color: var(--primary); border-style: solid; }
+
+        /* Remarks input — compact */
+        #page-disbursement .ds-remarks-input {
+            width: 100%; padding: 5px 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px; background: var(--white);
+            font-size: 11.5px; color: var(--gray-800);
+            outline: none; transition: var(--transition);
+        }
+        #page-disbursement .ds-remarks-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 10%, transparent); }
+        #page-disbursement .ds-remarks-input:disabled { background: var(--gray-50); color: var(--gray-400); cursor: not-allowed; }
+        [data-dark="true"] #page-disbursement .ds-remarks-input { background: #1e2130 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+        [data-dark="true"] #page-disbursement .ds-remarks-input:disabled { background: #252836 !important; }
+
+        /* PAY button — compact */
+        #page-disbursement .ds-pay-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 4px; padding: 5px 10px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 6px;
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            cursor: pointer; transition: var(--transition);
+            box-shadow: 0 1px 4px color-mix(in srgb, var(--primary) 30%, transparent);
+            white-space: nowrap;
+        }
+        #page-disbursement .ds-pay-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px color-mix(in srgb, var(--primary) 40%, transparent);
+        }
+        #page-disbursement .ds-pay-btn:active:not(:disabled) { transform: translateY(0); }
+        #page-disbursement .ds-pay-btn:disabled {
+            background: var(--gray-200); color: var(--gray-400);
+            cursor: not-allowed; box-shadow: none;
+        }
+        [data-dark="true"] #page-disbursement .ds-pay-btn:disabled { background: #363b52 !important; color: #6b7280 !important; }
+
+        #page-disbursement .ds-fully-paid {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 8px;
+            background: var(--success-light); color: var(--success);
+            border: 1px solid color-mix(in srgb, var(--success) 25%, transparent);
+            border-radius: 6px;
+            font-size: 9.5px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.35px;
+            white-space: nowrap;
+        }
+        #page-disbursement .ds-fully-paid svg { width: 11px; height: 11px; }
+
+        /* History expansion — connected list, no gaps between items, matches row compactness */
+        #page-disbursement .ds-history-row td {
+            background: var(--gray-50); padding: 8px 14px 10px 42px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        [data-dark="true"] #page-disbursement .ds-history-row td { background: #252836 !important; }
+        #page-disbursement .ds-history-title {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 10px; font-weight: 700; color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        #page-disbursement .ds-history-title svg { width: 11px; height: 11px; color: var(--primary); }
+        #page-disbursement .ds-history-list {
+            display: flex; flex-direction: column; gap: 0;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        [data-dark="true"] #page-disbursement .ds-history-list { background: #1e2130 !important; border-color: #363b52 !important; }
+        #page-disbursement .ds-hist-item {
+            display: grid; grid-template-columns: 22px 110px 1fr auto;
+            gap: 10px; align-items: center;
+            padding: 5px 10px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        [data-dark="true"] #page-disbursement .ds-hist-item { border-color: #2d3145 !important; }
+        #page-disbursement .ds-hist-item:last-child { border-bottom: none; }
+        #page-disbursement .ds-hist-num {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--primary-light); color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9.5px; font-weight: 700;
+        }
+        #page-disbursement .ds-hist-ts { font-size: 10.5px; color: var(--gray-600); font-variant-numeric: tabular-nums; line-height: 1.2; }
+        #page-disbursement .ds-hist-remarks { font-size: 11px; color: var(--gray-700); font-style: italic; line-height: 1.3; }
+        #page-disbursement .ds-hist-remarks.empty { color: var(--gray-400); font-style: normal; }
+        #page-disbursement .ds-hist-amt {
+            font-family: 'Fraunces', serif;
+            font-size: 12.5px; font-weight: 700; color: var(--success);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        /* Empty state */
+        #page-disbursement .ds-empty {
+            padding: 60px 24px; text-align: center;
+            color: var(--gray-400);
+        }
+        #page-disbursement .ds-empty-icon {
+            width: 56px; height: 56px; border-radius: 14px;
+            background: var(--gray-50); color: var(--gray-300);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+        }
+        #page-disbursement .ds-empty-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; color: var(--gray-600); margin-bottom: 4px; }
+        #page-disbursement .ds-empty-sub { font-size: 12px; }
+
     </style>
 </head>
 <body>
@@ -6317,11 +6642,77 @@
                      #page-disbursement — placeholder
                 ═══════════════════════════════════════════════ -->
                 <div id="page-disbursement" class="page-section">
-                    <div class="coming-soon">
-                        <div class="coming-soon-icon"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
-                        <h2>Disbursement</h2><p>Page content will be added here</p>
+
+                    <!-- Stats Banner -->
+                    <div class="stats-banner" style="flex-shrink:0;margin-bottom:12px;">
+                      <div class="stats-banner-item">
+                        <div class="sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                        <div><div class="sb-label">Total Records</div><div class="sb-val" id="ds-stat-count">—</div></div>
+                      </div>
+                      <div class="stats-banner-item">
+                        <div class="sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke-linecap="round" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+                        <div><div class="sb-label">Total Amount</div><div class="sb-val" id="ds-stat-total">—</div></div>
+                      </div>
+                      <div class="stats-banner-item">
+                        <div class="sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <div><div class="sb-label">Disbursed</div><div class="sb-val" id="ds-stat-disbursed">—</div></div>
+                      </div>
+                      <div class="stats-banner-item">
+                        <div class="sb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <div><div class="sb-label">Pending</div><div class="sb-val" id="ds-stat-pending">—</div></div>
+                      </div>
                     </div>
-                </div>
+
+                    <!-- Control Bar -->
+                    <div class="control-bar" style="margin-bottom:10px;">
+                      <div class="cb-title" style="flex-shrink:0;">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--primary);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        <span>Disbursement Queue</span>
+                        <span class="rec-pill" id="ds-rec-pill">— records</span>
+                      </div>
+                      <div class="ds-filter-tabs">
+                        <button class="ds-tab active" data-f="all" onclick="window.dsSetFilter(this.dataset.f, this)">All</button>
+                        <button class="ds-tab" data-f="unpaid" onclick="window.dsSetFilter(this.dataset.f, this)">Unpaid</button>
+                        <button class="ds-tab" data-f="partial" onclick="window.dsSetFilter(this.dataset.f, this)">Partial</button>
+                        <button class="ds-tab" data-f="paid" onclick="window.dsSetFilter(this.dataset.f, this)">Paid</button>
+                      </div>
+                      <div class="search-container">
+                        <span class="search-icon"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
+                        <input type="text" class="search-input" id="ds-search" placeholder="Search by name, email, claim ID..." oninput="window.dsSearch()"/>
+                      </div>
+                      <button class="cb-icon-btn" title="Export" onclick="return false;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                      </button>
+                      <button class="cb-icon-btn" title="Refresh" onclick="window.dsRender()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                      </button>
+                    </div>
+
+                    <!-- Table Card -->
+                    <div class="table-card">
+                      <div class="premium-table-wrapper ds-table-wrap">
+                        <table class="premium-table ds-table">
+                          <thead><tr>
+                            <th style="width:38px"></th>
+                            <th>Claim</th>
+                            <th>Date</th>
+                            <th>Employee</th>
+                            <th>Circle</th>
+                            <th>Amounts</th>
+                            <th>Disburse</th>
+                            <th>Remarks</th>
+                            <th style="text-align:center">Action</th>
+                          </tr></thead>
+                          <tbody id="ds-tbody"></tbody>
+                        </table>
+                      </div>
+                      <div class="table-footer">
+                        <div class="pagination-info">Showing <strong id="ds-from">0</strong>–<strong id="ds-to">0</strong> of <strong id="ds-tot">0</strong> records</div>
+                        <div class="pagination-controls" id="ds-pag"></div>
+                      </div>
+                    </div>
+
+                </div><!-- /#page-disbursement -->
 
                 <div id="page-invoice-tracking" class="page-section">
     <div class="it-content">
@@ -15422,6 +15813,320 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         originalShowPage(pageId, pageName);
         if (pageId === 'expense-summary' && typeof window.esInit === 'function') {
             window.esInit();
+        }
+    };
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     DISBURSEMENT  —  scoped logic (IIFE), IDs prefixed with ds-
+═══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+    // Base records (from the provided Disbursement API response).
+    // Select few are pre-populated with partial/full history to demonstrate all UI states.
+    const DS_RECORDS = [
+        {id:184694898791,claim_unique_id:"CLM-20260415-DFA670B5",claim_type:"single_site",employee:{id:324475492436,employee_email:"jaspal006@yopmail.com",employee_name:"Jaspal Kumar"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:700.0,amount_disbursed:0,remarks:null,payment_history:[]},
+        {id:965035674028,claim_unique_id:"CLM-20260415-E37B17B6",claim_type:"multiple_site",employee:{id:598092769043,employee_email:"tashu@yopmail.com",employee_name:"Tashu  Goyal"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:180.0,amount_disbursed:90,remarks:null,payment_history:[{amount:90,remarks:"Part paid — awaiting receipts",ts:"2026-04-16T10:30:00"}]},
+        {id:707648255637,claim_unique_id:"CLM-20260415-69AE854F",claim_type:"multiple_site",employee:{id:598092769043,employee_email:"tashu@yopmail.com",employee_name:"Tashu  Goyal"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:1856.0,amount_disbursed:0,remarks:null,payment_history:[]},
+        {id:361419184522,claim_unique_id:"CLM-20260415-9F80E31A",claim_type:"multiple_site",employee:{id:598092769043,employee_email:"tashu@yopmail.com",employee_name:"Tashu  Goyal"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:179.0,amount_disbursed:179,remarks:null,payment_history:[{amount:179,remarks:"Full payment",ts:"2026-04-16T11:45:00"}]},
+        {id:346606111614,claim_unique_id:"CLM-20260415-01061586",claim_type:"multiple_site",employee:{id:598092769043,employee_email:"tashu@yopmail.com",employee_name:"Tashu  Goyal"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:90.0,amount_disbursed:0,remarks:null,payment_history:[]},
+        {id:344703420219,claim_unique_id:"CLM-20260415-52F99596",claim_type:"multiple_site",employee:{id:598092769043,employee_email:"tashu@yopmail.com",employee_name:"Tashu  Goyal"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:90.0,amount_disbursed:0,remarks:null,payment_history:[]},
+        {id:192394184989,claim_unique_id:"CLM-20260414-4B817242",claim_type:"multiple_site",employee:{id:387462982412,employee_email:"neeti@yopmail.com",employee_name:"Neeti Sharma"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:12000.0,amount_disbursed:5000,remarks:null,payment_history:[{amount:5000,remarks:"Advance against travel",ts:"2026-04-15T09:15:00"}]},
+        {id:809668252753,claim_unique_id:"CLM-20260403-03897606",claim_type:"multiple_site",employee:{id:324475492436,employee_email:"jaspal006@yopmail.com",employee_name:"Jaspal Kumar"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:900.0,amount_disbursed:0,remarks:null,payment_history:[]},
+        {id:698921590913,claim_unique_id:"CLM-20260403-E36C9BED",claim_type:"single_site",employee:{id:324475492436,employee_email:"jaspal006@yopmail.com",employee_name:"Jaspal Kumar"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:1700.0,amount_disbursed:500,remarks:null,payment_history:[{amount:500,remarks:"Initial instalment",ts:"2026-04-12T14:20:00"}]},
+        {id:503633481597,claim_unique_id:"CLM-20260402-9678DF3F",claim_type:"single_site",employee:{id:324475492436,employee_email:"jaspal006@yopmail.com",employee_name:"Jaspal Kumar"},reporting_manager:{id:755985222811,name:"pm"},circle:{id:602883010892,code:"CHD",name:"Chandigarh"},total_amount:450.0,amount_disbursed:450,remarks:null,payment_history:[{amount:450,remarks:"Settled in full",ts:"2026-04-05T16:00:00"}]}
+    ];
+
+    // ── State ──
+    let dsRecords = DS_RECORDS;
+    let dsFilter = 'all';
+    let dsSearch = '';
+    let dsExpandedId = null;
+    let dsInited = false;
+
+    // ── Helpers ──
+    function dsInitials(name) {
+        return name.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0,2).toUpperCase();
+    }
+    function dsCurrency(n) { return '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits: 0}); }
+    function dsCurrencyCompact(n) {
+        if (n >= 100000) return '₹' + (n/100000).toFixed(2) + 'L';
+        if (n >= 10000) return '₹' + (n/1000).toFixed(1) + 'k';
+        return dsCurrency(n);
+    }
+    function dsParseDate(claimUid) {
+        const m = (claimUid || '').match(/CLM-(\d{4})(\d{2})(\d{2})/);
+        if (!m) return '';
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${m[3]} ${months[parseInt(m[2],10)-1]} ${m[1]}`;
+    }
+    function dsFormatTs(iso) {
+        const d = new Date(iso);
+        const day = d.getDate().toString().padStart(2,'0');
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const h = d.getHours().toString().padStart(2,'0');
+        const m = d.getMinutes().toString().padStart(2,'0');
+        return `${day} ${months[d.getMonth()]}, ${h}:${m}`;
+    }
+    function dsStatusOf(r) {
+        if (r.amount_disbursed >= r.total_amount) return 'paid';
+        if (r.amount_disbursed > 0) return 'partial';
+        return 'unpaid';
+    }
+    function dsProgressClass(r) {
+        const s = dsStatusOf(r);
+        if (s === 'paid') return 'full';
+        if (s === 'partial') return 'partial';
+        return 'zero';
+    }
+    function dsShortId(uid) { return (uid || '').replace(/^CLM-\d{8}-/, 'CLM-'); }
+
+    // ── Filtering ──
+    function dsGetFiltered() {
+        const q = dsSearch.toLowerCase();
+        return dsRecords.filter(r => {
+            if (dsFilter !== 'all' && dsStatusOf(r) !== dsFilter) return false;
+            if (!q) return true;
+            return (
+                r.employee.employee_name.toLowerCase().includes(q) ||
+                r.employee.employee_email.toLowerCase().includes(q) ||
+                r.claim_unique_id.toLowerCase().includes(q) ||
+                r.circle.name.toLowerCase().includes(q) ||
+                r.circle.code.toLowerCase().includes(q)
+            );
+        });
+    }
+
+    // ── Stats ──
+    function dsComputeStats() {
+        const total = dsRecords.reduce((s,r) => s + r.total_amount, 0);
+        const disbursed = dsRecords.reduce((s,r) => s + r.amount_disbursed, 0);
+        const pending = total - disbursed;
+        document.getElementById('ds-stat-count').textContent = dsRecords.length;
+        document.getElementById('ds-stat-total').textContent = dsCurrencyCompact(total);
+        document.getElementById('ds-stat-disbursed').textContent = dsCurrencyCompact(disbursed);
+        document.getElementById('ds-stat-pending').textContent = dsCurrencyCompact(pending);
+    }
+
+    // ── Row render ──
+    function dsRowHtml(r) {
+        const pending = Math.max(0, r.total_amount - r.amount_disbursed);
+        const pct = r.total_amount > 0 ? Math.round((r.amount_disbursed / r.total_amount) * 100) : 0;
+        const fully = pending <= 0.001;
+        const typeLabel = r.claim_type === 'multiple_site' ? 'Multi-Site' : (r.claim_type === 'single_site' ? 'Single' : r.claim_type);
+        const typeCls = r.claim_type === 'multiple_site' ? 'multiple' : 'single';
+        const hasHistory = r.payment_history && r.payment_history.length > 0;
+        const expanded = dsExpandedId === r.id;
+
+        const row = `
+            <tr class="ds-row${expanded?' expanded':''}" data-rid="${r.id}">
+                <td>
+                    <button class="ds-caret${!hasHistory?' disabled':''}" data-rid="${r.id}" onclick="window.dsToggleHistory(this.dataset.rid)" title="${hasHistory?'View payment history':'No payment history yet'}">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                </td>
+                <td>
+                    <div class="ds-claim-id" title="${r.claim_unique_id}">${dsShortId(r.claim_unique_id)}</div>
+                </td>
+                <td>
+                    <div class="ds-date-cell">${dsParseDate(r.claim_unique_id)}</div>
+                </td>
+                <td>
+                    <div class="ds-emp">
+                        <div class="ds-emp-av">${dsInitials(r.employee.employee_name)}</div>
+                        <div class="ds-emp-info">
+                            <div class="ds-emp-name">${r.employee.employee_name.trim()}</div>
+                            <div class="ds-emp-email">${r.employee.employee_email}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="ds-circle-badge" title="${r.circle.name}">${r.circle.code}</span>
+                </td>
+                <td>
+                    <div class="ds-amounts-simple">
+                        <span class="ds-amt-lbl">Total</span>
+                        <span class="ds-amt-val">${dsCurrency(r.total_amount)}</span>
+                        <span class="ds-amt-lbl">Pending</span>
+                        <span class="ds-amt-val ${fully?'fully-paid':'pending'}">${fully?'₹0':dsCurrency(pending)}</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="ds-input-wrap">
+                        <span class="ds-input-prefix">₹</span>
+                        <input type="number" class="ds-amount-input" id="ds-amt-${r.id}" data-rid="${r.id}" placeholder="0" min="1" max="${pending}" oninput="window.dsValidate(this.dataset.rid)" ${fully?'disabled':''}/>
+                    </div>
+                    <div class="ds-input-error" id="ds-err-${r.id}"></div>
+                </td>
+                <td>
+                    <input type="text" class="ds-remarks-input" id="ds-rem-${r.id}" data-rid="${r.id}" placeholder="Optional note..." maxlength="120" ${fully?'disabled':''}/>
+                </td>
+                <td style="text-align:center">
+                    ${fully
+                        ? `<span class="ds-fully-paid"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Paid</span>`
+                        : `<button class="ds-pay-btn" id="ds-pay-${r.id}" data-rid="${r.id}" disabled onclick="window.dsPay(this.dataset.rid)">Pay</button>`
+                    }
+                </td>
+            </tr>
+        `;
+
+        if (!expanded || !hasHistory) return row;
+
+        // Payment history expansion
+        const historyHtml = r.payment_history.map((h,i) => `
+            <div class="ds-hist-item">
+                <div class="ds-hist-num">${i+1}</div>
+                <div class="ds-hist-ts">${dsFormatTs(h.ts)}</div>
+                <div class="ds-hist-remarks ${h.remarks?'':'empty'}">${h.remarks || 'No note added'}</div>
+                <div class="ds-hist-amt">${dsCurrency(h.amount)}</div>
+            </div>
+        `).join('');
+
+        return row + `
+            <tr class="ds-history-row"><td colspan="9">
+                <div class="ds-history-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Payment History · ${r.payment_history.length} payment${r.payment_history.length>1?'s':''}
+                </div>
+                <div class="ds-history-list">${historyHtml}</div>
+            </td></tr>
+        `;
+    }
+
+    // ── Render table ──
+    function dsRender() {
+        const filtered = dsGetFiltered();
+        const tbody = document.getElementById('ds-tbody');
+        if (!tbody) return;
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="9">
+                <div class="ds-empty">
+                    <div class="ds-empty-icon"><svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
+                    <div class="ds-empty-title">No disbursements found</div>
+                    <div class="ds-empty-sub">Try a different filter or search term.</div>
+                </div>
+            </td></tr>`;
+        } else {
+            tbody.innerHTML = filtered.map(r => dsRowHtml(r)).join('');
+        }
+
+        document.getElementById('ds-rec-pill').textContent = filtered.length + ' records';
+        document.getElementById('ds-from').textContent = filtered.length ? 1 : 0;
+        document.getElementById('ds-to').textContent = filtered.length;
+        document.getElementById('ds-tot').textContent = dsRecords.length;
+
+        dsComputeStats();
+    }
+
+    // ── Public handlers ──
+    window.dsSetFilter = function(f, btn) {
+        dsFilter = f;
+        dsExpandedId = null;
+        document.querySelectorAll('#page-disbursement .ds-tab').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        dsRender();
+    };
+    window.dsSearch = function() {
+        const el = document.getElementById('ds-search');
+        dsSearch = (el && el.value) || '';
+        dsExpandedId = null;
+        dsRender();
+    };
+    window.dsRender = dsRender;
+
+    window.dsValidate = function(rid) {
+        const r = dsRecords.find(x => x.id == rid);
+        if (!r) return;
+        const input = document.getElementById('ds-amt-' + rid);
+        const err = document.getElementById('ds-err-' + rid);
+        const payBtn = document.getElementById('ds-pay-' + rid);
+        const pending = r.total_amount - r.amount_disbursed;
+        const v = parseFloat(input.value);
+
+        input.classList.remove('error');
+        err.classList.remove('show');
+        err.textContent = '';
+
+        if (!input.value || isNaN(v) || v <= 0) {
+            if (payBtn) payBtn.disabled = true;
+            return;
+        }
+        if (v > pending) {
+            input.classList.add('error');
+            err.textContent = `Cannot exceed pending ${dsCurrency(pending)}`;
+            err.classList.add('show');
+            if (payBtn) payBtn.disabled = true;
+            return;
+        }
+        if (payBtn) payBtn.disabled = false;
+    };
+
+    window.dsFillFull = function(rid) {
+        const r = dsRecords.find(x => x.id == rid);
+        if (!r) return;
+        const input = document.getElementById('ds-amt-' + rid);
+        if (!input) return;
+        const pending = r.total_amount - r.amount_disbursed;
+        input.value = Math.round(pending * 100) / 100;
+        window.dsValidate(rid);
+        input.focus();
+    };
+
+    window.dsPay = function(rid) {
+        const r = dsRecords.find(x => x.id == rid);
+        if (!r) return;
+        const input = document.getElementById('ds-amt-' + rid);
+        const remarksEl = document.getElementById('ds-rem-' + rid);
+        const v = parseFloat(input.value);
+        const pending = r.total_amount - r.amount_disbursed;
+        if (isNaN(v) || v <= 0 || v > pending) return;
+
+        const remarks = (remarksEl && remarksEl.value.trim()) || null;
+        r.amount_disbursed = Math.round((r.amount_disbursed + v) * 100) / 100;
+        r.payment_history.push({
+            amount: v,
+            remarks: remarks,
+            ts: new Date().toISOString()
+        });
+
+        dsRender();
+
+        // Flash the updated row briefly
+        setTimeout(() => {
+            const row = document.querySelector(`#page-disbursement .ds-row[data-rid="${rid}"]`);
+            if (row) {
+                row.classList.add('flash');
+                setTimeout(() => row.classList.remove('flash'), 1200);
+            }
+        }, 30);
+    };
+
+    window.dsToggleHistory = function(rid) {
+        const r = dsRecords.find(x => x.id == rid);
+        if (!r || !r.payment_history || r.payment_history.length === 0) return;
+        const id = Number(rid);
+        dsExpandedId = (dsExpandedId === id) ? null : id;
+        dsRender();
+    };
+
+    // Lazy init
+    window.dsInit = function() {
+        if (dsInited) return;
+        dsInited = true;
+        dsRender();
+    };
+})();
+
+// Hook into existing showPage — lazy-init the disbursement page on first open
+(function(){
+    const originalShowPage = window.showPage;
+    if (typeof originalShowPage !== 'function') return;
+    window.showPage = function(pageId, pageName) {
+        originalShowPage(pageId, pageName);
+        if (pageId === 'disbursement' && typeof window.dsInit === 'function') {
+            window.dsInit();
         }
     };
 })();
