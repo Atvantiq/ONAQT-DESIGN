@@ -8788,7 +8788,960 @@
         #page-attendance-detail .map-card-btn svg { width: 10px !important; height: 10px !important; }
 
 
-    </style>
+
+        /* ═══════════════════════════════════════════════════════════
+           SETTINGS PAGE  —  scoped under #page-settings
+        ═══════════════════════════════════════════════════════════ */
+        #page-settings .st-scroll-wrap {
+            flex: 1; min-height: 0;
+            overflow-y: auto; overflow-x: hidden;
+            padding: 2px 2px 24px; margin: -2px -2px 0;
+        }
+        #page-settings .st-scroll-wrap::-webkit-scrollbar { width: 6px; }
+        #page-settings .st-scroll-wrap::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+
+        #page-settings .st-layout {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        /* ── Left sidenav ── */
+        #page-settings .st-sidenav {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 14px 10px;
+            position: sticky; top: 0;
+        }
+        [data-dark="true"] #page-settings .st-sidenav { background: #1e2130 !important; }
+        #page-settings .st-sidenav-title {
+            font-family: 'Fraunces', serif;
+            font-size: 15px; font-weight: 700;
+            color: var(--gray-900);
+            padding: 0 8px 10px;
+            border-bottom: 1px solid var(--gray-100);
+            margin-bottom: 8px;
+        }
+        #page-settings .st-sidenav-group { margin-bottom: 10px; }
+        #page-settings .st-sidenav-group:last-child { margin-bottom: 0; }
+        #page-settings .st-sidenav-label {
+            font-size: 9.5px; font-weight: 700;
+            color: var(--gray-400);
+            text-transform: uppercase; letter-spacing: 0.6px;
+            padding: 6px 8px 4px;
+        }
+        #page-settings .st-navlink {
+            display: flex; align-items: center; gap: 9px;
+            padding: 7px 9px;
+            border-radius: 7px;
+            font-size: 12.5px; font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer; transition: var(--transition);
+            text-decoration: none;
+        }
+        #page-settings .st-navlink:hover { background: var(--gray-50); color: var(--gray-800); }
+        [data-dark="true"] #page-settings .st-navlink:hover { background: #252836 !important; color: #d1d5db !important; }
+        #page-settings .st-navlink.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        #page-settings .st-navlink.active svg { color: var(--primary); }
+        [data-dark="true"] #page-settings .st-navlink.active { background: rgba(255,255,255,0.06) !important; color: var(--gray-100) !important; }
+        #page-settings .st-navlink svg { color: var(--gray-400); flex-shrink: 0; }
+        #page-settings .st-nav-badge {
+            margin-left: auto;
+            font-size: 9px; font-weight: 700;
+            padding: 2px 6px; border-radius: 10px;
+            background: var(--gray-100); color: var(--gray-600);
+            letter-spacing: 0.3px;
+        }
+        #page-settings .st-nav-badge-hot {
+            background: linear-gradient(135deg, #E42527, #C81E20);
+            color: #fff;
+        }
+
+        /* ── Right content ── */
+        #page-settings .st-content { min-width: 0; }
+        #page-settings .st-section { display: none; }
+        #page-settings .st-section.active { display: block; }
+        #page-settings .st-section-head { margin-bottom: 14px; }
+        #page-settings .st-section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--gray-900);
+            margin: 0 0 4px;
+        }
+        #page-settings .st-section-sub {
+            font-size: 12.5px; color: var(--gray-500);
+            line-height: 1.5; margin: 0;
+        }
+
+        /* ── Panel (generic card) ── */
+        #page-settings .st-panel {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 16px 18px;
+            margin-bottom: 14px;
+        }
+        [data-dark="true"] #page-settings .st-panel { background: #1e2130 !important; }
+        #page-settings .st-panel-head { margin-bottom: 12px; }
+        #page-settings .st-panel-title {
+            font-family: 'Fraunces', serif;
+            font-size: 13.5px; font-weight: 700;
+            color: var(--gray-800);
+        }
+        #page-settings .st-panel-sub { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; }
+        #page-settings .st-panel-footer {
+            display: flex; gap: 8px; justify-content: flex-end;
+            padding-top: 12px; margin-top: 14px;
+            border-top: 1px solid var(--gray-100);
+        }
+        [data-dark="true"] #page-settings .st-panel-footer { border-top-color: #2d3145 !important; }
+
+        /* ── Buttons ── */
+        #page-settings .st-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 7px 13px;
+            border-radius: 8px;
+            font-size: 12px; font-weight: 600;
+            border: 1px solid transparent;
+            cursor: pointer; transition: var(--transition);
+            line-height: 1;
+        }
+        #page-settings .st-btn-sm { padding: 5px 10px; font-size: 11px; }
+        #page-settings .st-btn-primary {
+            background: var(--primary); color: #fff; border-color: var(--primary);
+        }
+        #page-settings .st-btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+        #page-settings .st-btn-ghost {
+            background: transparent; color: var(--gray-700);
+            border-color: var(--gray-200);
+        }
+        #page-settings .st-btn-ghost:hover { background: var(--gray-50); color: var(--gray-900); border-color: var(--gray-300); }
+        [data-dark="true"] #page-settings .st-btn-ghost { color: #d1d5db !important; border-color: #363b52 !important; }
+        [data-dark="true"] #page-settings .st-btn-ghost:hover { background: #252836 !important; }
+        #page-settings .st-btn-ghost-subtle {
+            background: transparent; color: var(--gray-500); border: none;
+        }
+        #page-settings .st-btn-ghost-subtle:hover { color: var(--danger); }
+        #page-settings .st-btn-danger {
+            background: var(--danger); color: #fff; border-color: var(--danger);
+        }
+        #page-settings .st-btn-danger:hover { background: color-mix(in srgb, var(--danger) 85%, black); }
+        #page-settings .st-btn-danger-ghost {
+            background: transparent; color: var(--danger);
+            border-color: color-mix(in srgb, var(--danger) 30%, transparent);
+        }
+        #page-settings .st-btn-danger-ghost:hover { background: var(--danger-light); }
+
+        /* ── Form grid ── */
+        #page-settings .st-form-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px 16px;
+        }
+        #page-settings .st-field-wide { grid-column: 1 / -1; }
+        #page-settings .st-label {
+            display: block;
+            font-size: 11px; font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            text-transform: uppercase; letter-spacing: 0.4px;
+        }
+        #page-settings .st-input {
+            width: 100%;
+            padding: 8px 11px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 12.5px; color: var(--gray-800);
+            background: var(--white);
+            font-family: inherit;
+            outline: none; transition: var(--transition);
+        }
+        #page-settings .st-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+        }
+        [data-dark="true"] #page-settings .st-input {
+            background: #252836 !important; border-color: #363b52 !important; color: #d1d5db !important;
+        }
+        #page-settings textarea.st-input { resize: vertical; min-height: 54px; line-height: 1.5; }
+
+        /* ── Toggle row ── */
+        #page-settings .st-toggle-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+            gap: 16px;
+        }
+        #page-settings .st-toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+        #page-settings .st-toggle-row:first-child { padding-top: 0; }
+        [data-dark="true"] #page-settings .st-toggle-row { border-bottom-color: #2d3145 !important; }
+        #page-settings .st-toggle-title {
+            font-size: 12.5px; font-weight: 600; color: var(--gray-800);
+        }
+        #page-settings .st-toggle-desc {
+            font-size: 11.5px; color: var(--gray-500); margin-top: 2px; line-height: 1.5;
+        }
+
+        /* Switch */
+        #page-settings .st-switch { position: relative; display: inline-block; width: 38px; height: 22px; flex-shrink: 0; }
+        #page-settings .st-switch input { opacity: 0; width: 0; height: 0; }
+        #page-settings .st-switch span {
+            position: absolute; inset: 0;
+            background: var(--gray-300); border-radius: 22px;
+            transition: var(--transition); cursor: pointer;
+        }
+        #page-settings .st-switch span::before {
+            content: ''; position: absolute;
+            width: 16px; height: 16px; left: 3px; bottom: 3px;
+            background: white; border-radius: 50%;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        #page-settings .st-switch input:checked + span { background: var(--primary); }
+        #page-settings .st-switch input:checked + span::before { transform: translateX(16px); }
+        #page-settings .st-switch-sm { width: 32px; height: 18px; }
+        #page-settings .st-switch-sm span::before { width: 13px; height: 13px; left: 2px; bottom: 2px; }
+        #page-settings .st-switch-sm input:checked + span::before { transform: translateX(13px); }
+
+        /* ── Logo row ── */
+        #page-settings .st-logo-row {
+            display: flex; align-items: center; gap: 14px;
+        }
+        #page-settings .st-logo-preview {
+            width: 56px; height: 56px; border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--cta)));
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-family: 'Fraunces', serif;
+            font-size: 24px; font-weight: 700;
+            flex-shrink: 0;
+        }
+        #page-settings .st-logo-info { flex: 1; min-width: 0; }
+        #page-settings .st-logo-name { font-size: 12.5px; font-weight: 600; color: var(--gray-800); }
+        #page-settings .st-logo-meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+        /* ── Theme grid ── */
+        #page-settings .st-theme-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        #page-settings .st-theme-card {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 12px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        #page-settings .st-theme-card input { position: absolute; opacity: 0; pointer-events: none; }
+        #page-settings .st-theme-card:hover { border-color: var(--gray-300); background: var(--gray-50); }
+        [data-dark="true"] #page-settings .st-theme-card:hover { background: #252836 !important; }
+        #page-settings .st-theme-card.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        #page-settings .st-theme-chip {
+            width: 18px; height: 18px; border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+        }
+        #page-settings .st-theme-name { font-size: 12px; font-weight: 600; color: var(--gray-800); }
+
+        /* ── Approval chain ── */
+        #page-settings .st-chain {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+        #page-settings .st-chain-step {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 7px 12px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 11.5px; font-weight: 600; color: var(--gray-700);
+        }
+        [data-dark="true"] #page-settings .st-chain-step { background: #252836 !important; border-color: #363b52 !important; }
+        #page-settings .st-chain-num {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--primary); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700;
+        }
+        #page-settings .st-chain-x {
+            color: var(--gray-400); cursor: pointer; font-size: 10px;
+            margin-left: 4px;
+        }
+        #page-settings .st-chain-x:hover { color: var(--danger); }
+        #page-settings .st-chain-arrow { color: var(--gray-300); font-size: 14px; }
+        #page-settings .st-chain-add {
+            padding: 7px 12px;
+            background: transparent;
+            border: 1.5px dashed var(--gray-300);
+            border-radius: 8px;
+            font-size: 11.5px; font-weight: 600; color: var(--gray-500);
+            cursor: pointer; transition: var(--transition);
+        }
+        #page-settings .st-chain-add:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ── Notification table ── */
+        #page-settings .st-notif-table { display: flex; flex-direction: column; }
+        #page-settings .st-notif-row {
+            display: grid; grid-template-columns: 1fr 70px 70px 70px;
+            align-items: center; gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        #page-settings .st-notif-row:last-child { border-bottom: none; }
+        [data-dark="true"] #page-settings .st-notif-row { border-bottom-color: #2d3145 !important; }
+        #page-settings .st-notif-head {
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 0 8px;
+            font-size: 10px; font-weight: 700;
+            color: var(--gray-400);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        #page-settings .st-notif-head > div:not(:first-child) { text-align: center; }
+        #page-settings .st-notif-event strong {
+            display: block;
+            font-size: 12.5px; font-weight: 600; color: var(--gray-800);
+        }
+        #page-settings .st-notif-event span {
+            display: block;
+            font-size: 11px; color: var(--gray-500);
+            margin-top: 1px; line-height: 1.4;
+        }
+        #page-settings .st-notif-row .st-switch-sm { justify-self: center; }
+
+        /* ── Integrations grid ── */
+        #page-settings .st-integr-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        #page-settings .st-integr-card {
+            display: flex; align-items: center; gap: 11px;
+            padding: 11px 13px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-100);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        #page-settings .st-integr-card:hover { border-color: var(--gray-300); transform: translateY(-1px); }
+        [data-dark="true"] #page-settings .st-integr-card { background: #252836 !important; border-color: #2d3145 !important; }
+        #page-settings .st-integr-logo {
+            width: 36px; height: 36px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Fraunces', serif; font-weight: 700; font-size: 13px;
+            flex-shrink: 0;
+        }
+        #page-settings .st-integr-body { flex: 1; min-width: 0; }
+        #page-settings .st-integr-name { font-size: 12.5px; font-weight: 600; color: var(--gray-800); }
+        #page-settings .st-integr-desc { font-size: 11px; color: var(--gray-500); margin-top: 1px; line-height: 1.4; }
+
+        /* ═══ ZOHO HERO CARD ═══ */
+        #page-settings .st-zoho-hero {
+            background: linear-gradient(130deg, #FFF5F5 0%, #FFFFFF 40%, #FFF9F9 100%);
+            border: 1px solid color-mix(in srgb, #E42527 15%, transparent);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 14px rgba(228,37,39,0.06);
+            position: relative;
+        }
+        [data-dark="true"] #page-settings .st-zoho-hero {
+            background: linear-gradient(130deg, #2a1a1d 0%, #1e2130 50%, #2a1a1d 100%) !important;
+            border-color: rgba(228,37,39,0.25) !important;
+        }
+        #page-settings .st-zoho-hero::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(228,37,39,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(60px, -60px);
+            pointer-events: none;
+        }
+        #page-settings .st-zoho-inner {
+            display: flex; align-items: stretch; gap: 24px;
+            padding: 20px 24px;
+            position: relative;
+            z-index: 1;
+        }
+        #page-settings .st-zoho-empty { align-items: center; }
+        #page-settings .st-zoho-left { flex: 1; min-width: 0; }
+        #page-settings .st-zoho-right {
+            display: flex; flex-direction: column; align-items: flex-end;
+            gap: 8px; justify-content: center;
+            flex-shrink: 0;
+        }
+        #page-settings .st-zoho-badge {
+            display: inline-block;
+            font-size: 9.5px; font-weight: 700;
+            padding: 3px 8px; border-radius: 4px;
+            background: #E42527; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.6px;
+            margin-bottom: 10px;
+        }
+        #page-settings .st-zoho-title-row {
+            display: flex; align-items: center; gap: 14px;
+        }
+        #page-settings .st-zoho-logo {
+            width: 44px; height: 44px; border-radius: 11px;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(228,37,39,0.25);
+        }
+        #page-settings .st-zoho-heading {
+            font-family: 'Fraunces', serif;
+            font-size: 18px; font-weight: 700;
+            color: var(--gray-900); line-height: 1.2;
+        }
+        #page-settings .st-zoho-sub {
+            font-size: 12.5px; color: var(--gray-600);
+            margin-top: 3px; line-height: 1.45;
+        }
+        #page-settings .st-zoho-bullets {
+            margin-top: 14px;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        #page-settings .st-zoho-bullet {
+            display: flex; align-items: center; gap: 7px;
+            font-size: 12px; color: var(--gray-700);
+        }
+        #page-settings .st-zoho-bullet svg {
+            color: #2E8B57; flex-shrink: 0;
+        }
+        #page-settings .st-zoho-connect-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 11px 20px;
+            background: linear-gradient(135deg, #E42527, #C81E20);
+            color: #fff;
+            border: none; border-radius: 9px;
+            font-size: 13px; font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(228,37,39,0.35);
+            transition: var(--transition);
+        }
+        #page-settings .st-zoho-connect-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 18px rgba(228,37,39,0.45);
+        }
+        #page-settings .st-zoho-safe {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 10.5px; color: var(--gray-500);
+        }
+        #page-settings .st-zoho-safe svg { color: var(--success); }
+
+        /* Connected state */
+        #page-settings .st-zoho-connected { flex-direction: column; gap: 16px; padding: 18px 22px; }
+        #page-settings .st-zoho-connected-head {
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            width: 100%;
+        }
+        #page-settings .st-zoho-status-pill {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 11px; border-radius: 14px;
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        #page-settings .st-zoho-status-pill.connected {
+            background: var(--success-light); color: var(--success);
+        }
+        #page-settings .st-status-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--success);
+            animation: st-pulse 2s ease-in-out infinite;
+        }
+        @keyframes st-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        #page-settings .st-zoho-summary-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid var(--gray-100);
+            border-radius: 10px;
+        }
+        [data-dark="true"] #page-settings .st-zoho-summary-grid { background: rgba(255,255,255,0.04) !important; border-color: #363b52 !important; }
+        #page-settings .st-zoho-stat { text-align: center; }
+        #page-settings .st-zoho-stat-val {
+            font-family: 'Fraunces', serif;
+            font-size: 17px; font-weight: 700; color: var(--gray-900);
+            line-height: 1.1;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        #page-settings .st-zoho-stat-lbl {
+            font-size: 10px; color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.4px;
+            margin-top: 3px;
+        }
+        #page-settings .st-mini-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+        #page-settings .st-mini-dot.ok { background: var(--success); }
+        #page-settings .st-mini-dot.warn { background: var(--warning); }
+        #page-settings .st-mini-dot.err { background: var(--danger); }
+
+        #page-settings .st-zoho-entities {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            width: 100%;
+        }
+        #page-settings .st-zoho-ent {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 11px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid var(--gray-100);
+            border-radius: 8px;
+            font-size: 11.5px;
+        }
+        [data-dark="true"] #page-settings .st-zoho-ent { background: rgba(255,255,255,0.04) !important; border-color: #363b52 !important; }
+        #page-settings .st-zoho-ent-name { font-weight: 600; color: var(--gray-800); flex: 1; }
+        #page-settings .st-zoho-ent-count { font-size: 10.5px; color: var(--gray-500); font-variant-numeric: tabular-nums; }
+        #page-settings .st-zoho-ent-dir {
+            font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 4px;
+            background: var(--gray-100); color: var(--gray-600);
+        }
+
+        #page-settings .st-zoho-actions {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            width: 100%;
+            padding-top: 4px;
+        }
+
+        /* ═══ ZOHO MODAL ═══ */
+        #page-settings .st-zoho-modal {
+            position: fixed; inset: 0;
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+        }
+        #page-settings .st-zoho-backdrop {
+            position: absolute; inset: 0;
+            background: rgba(13, 15, 25, 0.55);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+        #page-settings .st-zoho-dialog {
+            position: relative;
+            width: 100%; max-width: 720px;
+            max-height: calc(100vh - 48px);
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            animation: st-slide-up 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-dark="true"] #page-settings .st-zoho-dialog { background: #1e2130 !important; }
+        @keyframes st-slide-up {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        #page-settings .st-zoho-dialog-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--gray-100);
+            flex-shrink: 0;
+        }
+        [data-dark="true"] #page-settings .st-zoho-dialog-head { border-bottom-color: #2d3145 !important; }
+        #page-settings .st-zoho-dialog-title-row { display: flex; align-items: center; gap: 12px; }
+        #page-settings .st-zoho-dialog-title {
+            font-family: 'Fraunces', serif;
+            font-size: 16px; font-weight: 700; color: var(--gray-900);
+        }
+        #page-settings .st-zoho-dialog-sub {
+            font-size: 11.5px; color: var(--gray-500); margin-top: 2px;
+        }
+        #page-settings .st-zoho-dialog-close {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: var(--gray-50); border: none;
+            color: var(--gray-500); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        #page-settings .st-zoho-dialog-close:hover { background: var(--gray-100); color: var(--gray-800); }
+
+        /* Step indicator */
+        #page-settings .st-zoho-steps {
+            display: flex; align-items: center; gap: 4px;
+            padding: 12px 22px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-100);
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+        [data-dark="true"] #page-settings .st-zoho-steps { background: #252836 !important; border-bottom-color: #2d3145 !important; }
+        #page-settings .st-zoho-step {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 10.5px; font-weight: 600;
+            color: var(--gray-500);
+            padding: 5px 9px;
+            border-radius: 15px;
+            white-space: nowrap;
+        }
+        #page-settings .st-zoho-step span {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 18px; height: 18px;
+            background: var(--gray-200);
+            color: var(--gray-500);
+            border-radius: 50%;
+            font-size: 9.5px; font-weight: 700;
+        }
+        #page-settings .st-zoho-step.active {
+            background: var(--primary); color: #fff;
+        }
+        #page-settings .st-zoho-step.active span { background: rgba(255,255,255,0.25); color: #fff; }
+        #page-settings .st-zoho-step.done {
+            color: var(--success);
+        }
+        #page-settings .st-zoho-step.done span {
+            background: var(--success); color: #fff;
+        }
+        #page-settings .st-zoho-step.done span::before { content: '✓'; }
+        #page-settings .st-zoho-step.done span.has-num { content: attr(data-num); }
+
+        #page-settings .st-zoho-body {
+            flex: 1;
+            padding: 22px;
+            overflow-y: auto;
+        }
+
+        #page-settings .st-zoho-dialog-foot {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 22px;
+            border-top: 1px solid var(--gray-100);
+            flex-shrink: 0;
+        }
+        [data-dark="true"] #page-settings .st-zoho-dialog-foot { border-top-color: #2d3145 !important; }
+        #page-settings .st-zoho-foot-right { display: flex; gap: 8px; }
+
+        /* Step content — shared */
+        #page-settings .st-step-title {
+            font-family: 'Fraunces', serif;
+            font-size: 16px; font-weight: 700;
+            color: var(--gray-900); margin-bottom: 6px;
+        }
+        #page-settings .st-step-desc {
+            font-size: 12.5px; color: var(--gray-500);
+            line-height: 1.5; margin-bottom: 16px;
+        }
+
+        /* Radio cards (regions / orgs) */
+        #page-settings .st-radio-list {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        #page-settings .st-radio-card {
+            display: flex; align-items: center; gap: 11px;
+            padding: 12px 14px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-100);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        [data-dark="true"] #page-settings .st-radio-card { background: #252836 !important; border-color: #363b52 !important; }
+        #page-settings .st-radio-card:hover { border-color: var(--gray-300); }
+        #page-settings .st-radio-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        #page-settings .st-radio-card input { opacity: 0; position: absolute; pointer-events: none; }
+        #page-settings .st-radio-check {
+            width: 18px; height: 18px; border-radius: 50%;
+            border: 2px solid var(--gray-300);
+            flex-shrink: 0; position: relative;
+            transition: var(--transition);
+        }
+        #page-settings .st-radio-card.selected .st-radio-check {
+            border-color: var(--primary);
+        }
+        #page-settings .st-radio-card.selected .st-radio-check::after {
+            content: ''; position: absolute; inset: 3px;
+            background: var(--primary); border-radius: 50%;
+        }
+        #page-settings .st-radio-body { flex: 1; min-width: 0; }
+        #page-settings .st-radio-title { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+        #page-settings .st-radio-desc { font-size: 11.5px; color: var(--gray-500); margin-top: 1px; }
+        #page-settings .st-radio-flag { font-size: 20px; line-height: 1; margin-right: 3px; }
+
+        /* Authorize step */
+        #page-settings .st-auth-panel {
+            text-align: center;
+            padding: 24px 16px;
+            background: var(--gray-50);
+            border-radius: 12px;
+            border: 1px dashed var(--gray-200);
+        }
+        [data-dark="true"] #page-settings .st-auth-panel { background: #252836 !important; border-color: #363b52 !important; }
+        #page-settings .st-auth-icon {
+            width: 54px; height: 54px; border-radius: 14px;
+            background: #fff; margin: 0 auto 12px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 12px rgba(228,37,39,0.2);
+        }
+        #page-settings .st-auth-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 5px; }
+        #page-settings .st-auth-text { font-size: 12px; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; max-width: 440px; margin-left: auto; margin-right: auto; }
+        #page-settings .st-auth-scopes {
+            text-align: left;
+            max-width: 440px; margin: 0 auto 16px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 9px;
+            padding: 12px 14px;
+        }
+        [data-dark="true"] #page-settings .st-auth-scopes { background: #1e2130 !important; border-color: #363b52 !important; }
+        #page-settings .st-auth-scopes-title {
+            font-size: 10px; font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        #page-settings .st-auth-scope {
+            display: flex; align-items: center; gap: 7px;
+            font-size: 11.5px; color: var(--gray-700);
+            padding: 3px 0;
+        }
+        #page-settings .st-auth-scope svg { color: var(--success); flex-shrink: 0; }
+        #page-settings .st-auth-authorize-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 10px 18px;
+            background: #E42527; color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 12.5px; font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(228,37,39,0.3);
+            transition: var(--transition);
+        }
+        #page-settings .st-auth-authorize-btn:hover { background: #C81E20; }
+        #page-settings .st-auth-success {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 14px;
+            background: var(--success-light); color: var(--success);
+            border-radius: 8px;
+            font-size: 12px; font-weight: 600;
+            margin-top: 6px;
+        }
+        #page-settings .st-spinner {
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: st-spin 0.7s linear infinite;
+            display: inline-block;
+        }
+        @keyframes st-spin { to { transform: rotate(360deg); } }
+
+        /* Entity checklist */
+        #page-settings .st-ent-list { display: flex; flex-direction: column; gap: 8px; }
+        #page-settings .st-ent-row {
+            display: grid; grid-template-columns: auto 1fr auto;
+            align-items: center; gap: 11px;
+            padding: 11px 14px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-100);
+            border-radius: 10px;
+        }
+        [data-dark="true"] #page-settings .st-ent-row { background: #252836 !important; border-color: #363b52 !important; }
+        #page-settings .st-ent-cb { width: 15px; height: 15px; accent-color: var(--primary); cursor: pointer; }
+        #page-settings .st-ent-info { min-width: 0; }
+        #page-settings .st-ent-title { font-size: 12.5px; font-weight: 600; color: var(--gray-800); }
+        #page-settings .st-ent-desc { font-size: 11px; color: var(--gray-500); margin-top: 1px; line-height: 1.4; }
+        #page-settings .st-ent-dir-select {
+            font-size: 11px; padding: 4px 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            background: var(--white);
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        [data-dark="true"] #page-settings .st-ent-dir-select { background: #1e2130 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+
+        /* Mapping table */
+        #page-settings .st-map-table { display: flex; flex-direction: column; gap: 0; }
+        #page-settings .st-map-row {
+            display: grid; grid-template-columns: 1fr 20px 1fr;
+            align-items: center; gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--gray-100);
+        }
+        [data-dark="true"] #page-settings .st-map-row { border-bottom-color: #2d3145 !important; }
+        #page-settings .st-map-row.st-map-head {
+            padding: 0 0 8px;
+            font-size: 9.5px; font-weight: 700;
+            color: var(--gray-400);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 4px;
+        }
+        #page-settings .st-map-row:last-child { border-bottom: none; }
+        #page-settings .st-map-field {
+            font-size: 12px; color: var(--gray-700); font-weight: 500;
+            padding: 6px 10px;
+            background: var(--gray-50);
+            border-radius: 6px;
+        }
+        [data-dark="true"] #page-settings .st-map-field { background: #252836 !important; }
+        #page-settings .st-map-arrow { text-align: center; color: var(--gray-400); font-size: 13px; }
+        #page-settings .st-map-select {
+            width: 100%;
+            font-size: 12px; padding: 6px 9px;
+            border: 1px solid var(--gray-200); border-radius: 7px;
+            background: var(--white); color: var(--gray-700);
+            cursor: pointer;
+        }
+        [data-dark="true"] #page-settings .st-map-select { background: #1e2130 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+
+        /* Schedule options */
+        #page-settings .st-sched-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 10px; margin-bottom: 14px;
+        }
+        #page-settings .st-sched-card {
+            padding: 14px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-100);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        [data-dark="true"] #page-settings .st-sched-card { background: #252836 !important; border-color: #363b52 !important; }
+        #page-settings .st-sched-card:hover { border-color: var(--gray-300); }
+        #page-settings .st-sched-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        #page-settings .st-sched-title { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+        #page-settings .st-sched-desc { font-size: 11.5px; color: var(--gray-500); margin-top: 4px; line-height: 1.5; }
+        #page-settings .st-sched-recommended {
+            display: inline-block;
+            font-size: 9.5px; font-weight: 700;
+            padding: 2px 6px; border-radius: 4px;
+            background: var(--success-light); color: var(--success);
+            text-transform: uppercase; letter-spacing: 0.4px;
+            margin-left: 6px;
+        }
+
+        /* Success step */
+        #page-settings .st-success-wrap {
+            text-align: center; padding: 20px 12px;
+        }
+        #page-settings .st-success-icon {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: var(--success-light);
+            color: var(--success);
+            margin: 0 auto 14px;
+            display: flex; align-items: center; justify-content: center;
+            animation: st-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes st-pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        #page-settings .st-success-title {
+            font-family: 'Fraunces', serif;
+            font-size: 18px; font-weight: 700; color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+        #page-settings .st-success-text {
+            font-size: 12.5px; color: var(--gray-600);
+            line-height: 1.6;
+            max-width: 400px; margin: 0 auto 16px;
+        }
+        #page-settings .st-success-summary {
+            max-width: 400px; margin: 0 auto 16px;
+            padding: 14px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            text-align: left;
+        }
+        [data-dark="true"] #page-settings .st-success-summary { background: #252836 !important; }
+        #page-settings .st-success-row {
+            display: flex; justify-content: space-between;
+            padding: 4px 0;
+            font-size: 12px;
+        }
+        #page-settings .st-success-row-key { color: var(--gray-500); }
+        #page-settings .st-success-row-val { color: var(--gray-800); font-weight: 600; }
+
+        /* Plan card */
+        #page-settings .st-plan-card {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 16px;
+            background: linear-gradient(120deg, var(--primary-light), transparent);
+            border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent);
+            border-radius: 10px;
+            margin-bottom: 14px;
+            gap: 12px; flex-wrap: wrap;
+        }
+        #page-settings .st-plan-name {
+            font-family: 'Fraunces', serif;
+            font-size: 15px; font-weight: 700; color: var(--gray-900);
+        }
+        #page-settings .st-plan-meta { font-size: 11.5px; color: var(--gray-600); margin-top: 2px; }
+        #page-settings .st-plan-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        #page-settings .st-usage-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        #page-settings .st-usage-item { }
+        #page-settings .st-usage-lbl { font-size: 11px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+        #page-settings .st-usage-val { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 700; color: var(--gray-900); margin: 4px 0 6px; }
+        #page-settings .st-usage-bar {
+            height: 6px; background: var(--gray-100); border-radius: 6px; overflow: hidden;
+        }
+        [data-dark="true"] #page-settings .st-usage-bar { background: #2d3145 !important; }
+        #page-settings .st-usage-bar span {
+            display: block; height: 100%;
+            background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--cta)));
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        #page-settings .st-pay-row {
+            display: flex; align-items: center; gap: 14px;
+        }
+        #page-settings .st-pay-card {
+            flex: 1;
+            padding: 12px 14px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-100);
+            border-radius: 9px;
+        }
+        [data-dark="true"] #page-settings .st-pay-card { background: #252836 !important; }
+        #page-settings .st-pay-brand {
+            font-family: 'Fraunces', serif;
+            font-size: 13px; font-weight: 700; color: var(--gray-900);
+        }
+        #page-settings .st-pay-num {
+            font-family: 'Courier New', monospace; font-size: 13px;
+            color: var(--gray-800); margin-top: 3px;
+        }
+        #page-settings .st-pay-exp { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+        #page-settings .st-panel-danger { border: 1px solid color-mix(in srgb, var(--danger) 20%, transparent); }
+        #page-settings .st-danger-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+            gap: 16px;
+        }
+        #page-settings .st-danger-row:last-child { border-bottom: none; padding-bottom: 0; }
+        #page-settings .st-danger-row:first-child { padding-top: 0; }
+        [data-dark="true"] #page-settings .st-danger-row { border-bottom-color: #2d3145 !important; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            #page-settings .st-layout { grid-template-columns: 1fr; }
+            #page-settings .st-sidenav { position: static; }
+            #page-settings .st-form-grid { grid-template-columns: 1fr; }
+            #page-settings .st-notif-row { grid-template-columns: 1fr 45px 45px 45px; gap: 6px; }
+            #page-settings .st-zoho-inner { flex-direction: column; align-items: flex-start; }
+            #page-settings .st-zoho-summary-grid { grid-template-columns: repeat(2, 1fr); }
+            #page-settings .st-sched-grid { grid-template-columns: 1fr; }
+        }
+
+        </style>
 </head>
 <body>
     <div class="admin-layout">
@@ -11182,12 +12135,467 @@
 
                 </div><!-- /#page-site -->
 
+                <!-- ═══════════════════════════════════════════════
+                     #page-settings — Settings with Zoho Books integration
+                ═══════════════════════════════════════════════ -->
                 <div id="page-settings" class="page-section">
-                    <div class="coming-soon">
-                        <div class="coming-soon-icon"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
-                        <h2>Settings</h2><p>Page content will be added here</p>
+                    <div class="st-scroll-wrap">
+                        <div class="st-layout">
+
+                            <!-- ═══ Left: category navigator ═══ -->
+                            <aside class="st-sidenav">
+                                <div class="st-sidenav-title">Settings</div>
+                                <div class="st-sidenav-group">
+                                    <div class="st-sidenav-label">Integrations</div>
+                                    <a class="st-navlink active" data-section="integrations" onclick="window.stSwitch('integrations')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        Connected Apps
+                                        <span class="st-nav-badge st-nav-badge-hot">Zoho</span>
+                                    </a>
+                                </div>
+                                <div class="st-sidenav-group">
+                                    <div class="st-sidenav-label">Workspace</div>
+                                    <a class="st-navlink" data-section="general" onclick="window.stSwitch('general')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                        Organization
+                                    </a>
+                                    <a class="st-navlink" data-section="appearance" onclick="window.stSwitch('appearance')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                                        Appearance
+                                    </a>
+                                </div>
+                                <div class="st-sidenav-group">
+                                    <div class="st-sidenav-label">Operations</div>
+                                    <a class="st-navlink" data-section="notifications" onclick="window.stSwitch('notifications')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                                        Notifications
+                                    </a>
+                                    <a class="st-navlink" data-section="financial" onclick="window.stSwitch('financial')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        Financial Rules
+                                    </a>
+                                </div>
+                                <div class="st-sidenav-group">
+                                    <div class="st-sidenav-label">Account</div>
+                                    <a class="st-navlink" data-section="security" onclick="window.stSwitch('security')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                        Security
+                                    </a>
+                                    <a class="st-navlink" data-section="data" onclick="window.stSwitch('data')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                                        Data & Privacy
+                                    </a>
+                                    <a class="st-navlink" data-section="billing" onclick="window.stSwitch('billing')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                        Billing & Plan
+                                    </a>
+                                </div>
+                            </aside>
+
+                            <!-- ═══ Right: content ═══ -->
+                            <div class="st-content">
+
+                                <!-- ───── INTEGRATIONS ───── -->
+                                <section class="st-section active" data-section="integrations">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Connected Apps</h2>
+                                        <p class="st-section-sub">Connect Onaqt with accounting, storage and communication tools so your data stays in sync across platforms.</p>
+                                    </div>
+
+                                    <!-- ═══ ZOHO BOOKS HERO CARD ═══ -->
+                                    <div class="st-zoho-hero" id="st-zoho-card">
+                                        <!-- Not-connected state -->
+                                        <div class="st-zoho-inner st-zoho-empty" id="st-zoho-empty">
+                                            <div class="st-zoho-left">
+                                                <div class="st-zoho-badge">Featured</div>
+                                                <div class="st-zoho-title-row">
+                                                    <div class="st-zoho-logo">
+                                                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                                                            <rect width="100" height="100" rx="18" fill="#E42527"/>
+                                                            <text x="50" y="64" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle">Z</text>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div class="st-zoho-heading">Sync with Zoho Books</div>
+                                                        <div class="st-zoho-sub">Two-way sync for vendors, invoices, expenses, items and purchase orders</div>
+                                                    </div>
+                                                </div>
+                                                <div class="st-zoho-bullets">
+                                                    <div class="st-zoho-bullet"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Push Onaqt POs, WCCs and expenses straight into Zoho</div>
+                                                    <div class="st-zoho-bullet"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Pull vendors, items and accounts from Zoho Books</div>
+                                                    <div class="st-zoho-bullet"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Auto-reconcile payments and keep ledgers identical</div>
+                                                </div>
+                                            </div>
+                                            <div class="st-zoho-right">
+                                                <button class="st-zoho-connect-btn" onclick="window.stZohoOpen()">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                    Connect Zoho Books
+                                                </button>
+                                                <div class="st-zoho-safe">
+                                                    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                                    OAuth 2.0 · Read-only access until you enable writes
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Connected state (hidden until user connects) -->
+                                        <div class="st-zoho-inner st-zoho-connected" id="st-zoho-connected" style="display:none;">
+                                            <div class="st-zoho-connected-head">
+                                                <div class="st-zoho-title-row">
+                                                    <div class="st-zoho-logo">
+                                                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                                                            <rect width="100" height="100" rx="18" fill="#E42527"/>
+                                                            <text x="50" y="64" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle">Z</text>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div class="st-zoho-heading">Zoho Books</div>
+                                                        <div class="st-zoho-sub">Connected as <strong id="st-zoho-org">—</strong> · Region <strong id="st-zoho-region-lbl">—</strong></div>
+                                                    </div>
+                                                </div>
+                                                <div class="st-zoho-status-pill connected">
+                                                    <span class="st-status-dot"></span>Connected
+                                                </div>
+                                            </div>
+                                            <div class="st-zoho-summary-grid">
+                                                <div class="st-zoho-stat">
+                                                    <div class="st-zoho-stat-val" id="st-zoho-synced-count">0</div>
+                                                    <div class="st-zoho-stat-lbl">Records synced</div>
+                                                </div>
+                                                <div class="st-zoho-stat">
+                                                    <div class="st-zoho-stat-val" id="st-zoho-last-sync">—</div>
+                                                    <div class="st-zoho-stat-lbl">Last sync</div>
+                                                </div>
+                                                <div class="st-zoho-stat">
+                                                    <div class="st-zoho-stat-val" id="st-zoho-freq">Hourly</div>
+                                                    <div class="st-zoho-stat-lbl">Frequency</div>
+                                                </div>
+                                                <div class="st-zoho-stat">
+                                                    <div class="st-zoho-stat-val">
+                                                        <span class="st-mini-dot ok"></span>Healthy
+                                                    </div>
+                                                    <div class="st-zoho-stat-lbl">Status</div>
+                                                </div>
+                                            </div>
+                                            <div class="st-zoho-entities" id="st-zoho-entities-list"></div>
+                                            <div class="st-zoho-actions">
+                                                <button class="st-btn st-btn-primary" onclick="window.stZohoSyncNow()">
+                                                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                                    Sync Now
+                                                </button>
+                                                <button class="st-btn st-btn-ghost" onclick="window.stZohoOpen()">
+                                                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                                    Manage Mapping
+                                                </button>
+                                                <button class="st-btn st-btn-ghost" onclick="window.stZohoPause()">
+                                                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    <span id="st-zoho-pause-lbl">Pause Sync</span>
+                                                </button>
+                                                <button class="st-btn st-btn-danger-ghost" onclick="window.stZohoDisconnect()">
+                                                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                                                    Disconnect
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </section>
+
+                                <!-- ───── ORGANIZATION ───── -->
+                                <section class="st-section" data-section="general">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Organization</h2>
+                                        <p class="st-section-sub">Basic info about your company that appears on reports, POs and invoices.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-form-grid">
+                                            <div class="st-field st-field-wide"><label class="st-label">Organization name</label><input class="st-input" value="Atvantiq Pvt Ltd"></div>
+                                            <div class="st-field"><label class="st-label">Legal name</label><input class="st-input" value="Atvantiq Private Limited"></div>
+                                            <div class="st-field"><label class="st-label">Industry</label>
+                                                <select class="st-input"><option>Telecom Infrastructure</option><option>Construction</option><option>Facility Management</option><option>Energy / Utilities</option><option>Other</option></select>
+                                            </div>
+                                            <div class="st-field"><label class="st-label">GSTIN / Tax ID</label><input class="st-input" value="03AABCT1234R1ZP"></div>
+                                            <div class="st-field"><label class="st-label">CIN</label><input class="st-input" value="U74999PN2021PTC000000"></div>
+                                            <div class="st-field st-field-wide"><label class="st-label">Registered address</label><textarea class="st-input" rows="2">Plot 42, Industrial Area Phase 8B, Mohali, Punjab 160071, India</textarea></div>
+                                            <div class="st-field"><label class="st-label">Contact email</label><input class="st-input" value="ops@atvantiq.com"></div>
+                                            <div class="st-field"><label class="st-label">Contact phone</label><input class="st-input" value="+91 95956 06060"></div>
+                                        </div>
+                                        <div class="st-panel-footer">
+                                            <button class="st-btn st-btn-primary">Save Changes</button>
+                                            <button class="st-btn st-btn-ghost">Cancel</button>
+                                        </div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-panel-head"><div class="st-panel-title">Logo & branding</div><div class="st-panel-sub">Shown on PDFs, email signatures and the login screen</div></div>
+                                        <div class="st-logo-row">
+                                            <div class="st-logo-preview">O</div>
+                                            <div class="st-logo-info">
+                                                <div class="st-logo-name">onaqt-logo.svg</div>
+                                                <div class="st-logo-meta">Recommended 512×512px, SVG or PNG · Max 2 MB</div>
+                                            </div>
+                                            <button class="st-btn st-btn-ghost">Upload New</button>
+                                            <button class="st-btn st-btn-ghost-subtle">Remove</button>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── APPEARANCE ───── -->
+                                <section class="st-section" data-section="appearance">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Appearance</h2>
+                                        <p class="st-section-sub">How Onaqt looks to you and your team.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-panel-head"><div class="st-panel-title">Color theme</div><div class="st-panel-sub">Pick the accent palette used across the app</div></div>
+                                        <div class="st-theme-grid">
+                                            <label class="st-theme-card active"><input type="radio" name="st-theme" checked><span class="st-theme-chip" style="background:#2D4A35;"></span><span class="st-theme-name">Forest</span></label>
+                                            <label class="st-theme-card"><input type="radio" name="st-theme"><span class="st-theme-chip" style="background:#1B4B6B;"></span><span class="st-theme-name">Ocean</span></label>
+                                            <label class="st-theme-card"><input type="radio" name="st-theme"><span class="st-theme-chip" style="background:#8B3A52;"></span><span class="st-theme-name">Rose</span></label>
+                                            <label class="st-theme-card"><input type="radio" name="st-theme"><span class="st-theme-chip" style="background:#3B3B7A;"></span><span class="st-theme-name">Indigo</span></label>
+                                            <label class="st-theme-card"><input type="radio" name="st-theme"><span class="st-theme-chip" style="background:#A66A1C;"></span><span class="st-theme-name">Amber</span></label>
+                                            <label class="st-theme-card"><input type="radio" name="st-theme"><span class="st-theme-chip" style="background:#4A5568;"></span><span class="st-theme-name">Slate</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-toggle-row">
+                                            <div>
+                                                <div class="st-toggle-title">Dark mode</div>
+                                                <div class="st-toggle-desc">Use a dark UI with reduced contrast. Respects the theme palette.</div>
+                                            </div>
+                                            <label class="st-switch"><input type="checkbox"><span></span></label>
+                                        </div>
+                                        <div class="st-toggle-row">
+                                            <div>
+                                                <div class="st-toggle-title">Compact density</div>
+                                                <div class="st-toggle-desc">Tighten row padding and font sizes throughout the app.</div>
+                                            </div>
+                                            <label class="st-switch"><input type="checkbox" checked><span></span></label>
+                                        </div>
+                                        <div class="st-toggle-row">
+                                            <div>
+                                                <div class="st-toggle-title">Collapse sidebar by default</div>
+                                                <div class="st-toggle-desc">Start each session with the nav collapsed to icons only.</div>
+                                            </div>
+                                            <label class="st-switch"><input type="checkbox"><span></span></label>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── NOTIFICATIONS ───── -->
+                                <section class="st-section" data-section="notifications">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Notifications</h2>
+                                        <p class="st-section-sub">Choose what Onaqt alerts you about and where those alerts go.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-notif-table">
+                                            <div class="st-notif-row st-notif-head">
+                                                <div>Event</div><div>Email</div><div>In-app</div><div>Slack</div>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>New PO submitted</strong><span>When a team member creates a new purchase order</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>WCC awaiting approval</strong><span>Work completion certificates needing your sign-off</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>Expense claim submitted</strong><span>Employee reimbursement claims awaiting review</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>Attendance anomaly</strong><span>Missed punches, location mismatches, or outlier work hours</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>Zoho sync failure</strong><span>When the Zoho Books sync encounters an error</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                            </div>
+                                            <div class="st-notif-row">
+                                                <div class="st-notif-event"><strong>Daily digest</strong><span>Morning summary of open items, pending approvals and KPIs</span></div>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox" checked><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                                <label class="st-switch st-switch-sm"><input type="checkbox"><span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── FINANCIAL RULES ───── -->
+                                <section class="st-section" data-section="financial">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Financial Rules</h2>
+                                        <p class="st-section-sub">Tax defaults, PO numbering and reconciliation preferences.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-form-grid">
+                                            <div class="st-field"><label class="st-label">Default tax rate</label><select class="st-input"><option>GST 18%</option><option>GST 12%</option><option>GST 5%</option><option>GST 0%</option><option>VAT 5%</option></select></div>
+                                            <div class="st-field"><label class="st-label">Default payment terms</label><select class="st-input"><option>Net 30</option><option>Net 15</option><option>Net 45</option><option>Due on receipt</option></select></div>
+                                            <div class="st-field"><label class="st-label">PO number prefix</label><input class="st-input" value="ONQ-PO-"></div>
+                                            <div class="st-field"><label class="st-label">Next PO number</label><input class="st-input" value="00247"></div>
+                                            <div class="st-field"><label class="st-label">WCC number prefix</label><input class="st-input" value="ONQ-WCC-"></div>
+                                            <div class="st-field"><label class="st-label">Next WCC number</label><input class="st-input" value="00083"></div>
+                                        </div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">Auto-reconcile Zoho invoices</div><div class="st-toggle-desc">Match paid invoices in Zoho Books against Onaqt POs automatically.</div></div><label class="st-switch"><input type="checkbox" checked><span></span></label></div>
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">Block duplicate invoices</div><div class="st-toggle-desc">Reject invoice numbers that already exist for the same vendor.</div></div><label class="st-switch"><input type="checkbox" checked><span></span></label></div>
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">Round amounts to nearest ₹1</div><div class="st-toggle-desc">Strip paise on all displayed and synced totals.</div></div><label class="st-switch"><input type="checkbox"><span></span></label></div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── SECURITY ───── -->
+                                <section class="st-section" data-section="security">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Security</h2>
+                                        <p class="st-section-sub">Protect your workspace and enforce password hygiene.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">Enforce two-factor authentication</div><div class="st-toggle-desc">All users must set up 2FA before logging in.</div></div><label class="st-switch"><input type="checkbox" checked><span></span></label></div>
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">Single Sign-On (SSO)</div><div class="st-toggle-desc">Authenticate via Google Workspace or Microsoft Entra ID.</div></div><label class="st-switch"><input type="checkbox"><span></span></label></div>
+                                        <div class="st-toggle-row"><div><div class="st-toggle-title">IP allowlist</div><div class="st-toggle-desc">Restrict logins to a specific list of IP addresses.</div></div><label class="st-switch"><input type="checkbox"><span></span></label></div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-panel-head"><div class="st-panel-title">Password policy</div></div>
+                                        <div class="st-form-grid">
+                                            <div class="st-field"><label class="st-label">Minimum length</label><select class="st-input"><option>8 characters</option><option>10 characters</option><option>12 characters</option><option>14 characters</option></select></div>
+                                            <div class="st-field"><label class="st-label">Rotation</label><select class="st-input"><option>Never</option><option>Every 90 days</option><option>Every 180 days</option><option>Every year</option></select></div>
+                                            <div class="st-field"><label class="st-label">Session timeout</label><select class="st-input"><option>30 minutes idle</option><option>1 hour idle</option><option>4 hours idle</option><option>8 hours idle</option><option>Never</option></select></div>
+                                            <div class="st-field"><label class="st-label">Failed attempts before lockout</label><select class="st-input"><option>3 attempts</option><option>5 attempts</option><option>10 attempts</option></select></div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── DATA & PRIVACY ───── -->
+                                <section class="st-section" data-section="data">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Data & Privacy</h2>
+                                        <p class="st-section-sub">How long Onaqt keeps your records, and how to export or delete them.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-form-grid">
+                                            <div class="st-field"><label class="st-label">Attendance record retention</label><select class="st-input"><option>3 years</option><option>5 years</option><option>7 years</option><option>Forever</option></select></div>
+                                            <div class="st-field"><label class="st-label">Activity log retention</label><select class="st-input"><option>6 months</option><option>1 year</option><option>2 years</option></select></div>
+                                            <div class="st-field"><label class="st-label">Deleted records purge</label><select class="st-input"><option>After 30 days</option><option>After 90 days</option><option>After 180 days</option><option>Never</option></select></div>
+                                            <div class="st-field"><label class="st-label">Data residency</label><select class="st-input"><option>India (ap-south-1)</option><option>Europe (eu-west-1)</option><option>United States (us-east-1)</option></select></div>
+                                        </div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-panel-head"><div class="st-panel-title">Export workspace data</div><div class="st-panel-sub">Receive a ZIP archive with everything — CSV, PDFs and attachments.</div></div>
+                                        <div class="st-panel-footer"><button class="st-btn st-btn-ghost">Request Export</button></div>
+                                    </div>
+                                    <div class="st-panel st-panel-danger">
+                                        <div class="st-panel-head"><div class="st-panel-title" style="color:var(--danger);">Danger zone</div></div>
+                                        <div class="st-danger-row"><div><div class="st-toggle-title">Transfer ownership</div><div class="st-toggle-desc">Move workspace ownership to another admin.</div></div><button class="st-btn st-btn-ghost">Transfer</button></div>
+                                        <div class="st-danger-row"><div><div class="st-toggle-title">Delete workspace</div><div class="st-toggle-desc">Permanently erase all records. This cannot be undone.</div></div><button class="st-btn st-btn-danger">Delete Workspace</button></div>
+                                    </div>
+                                </section>
+
+                                <!-- ───── BILLING ───── -->
+                                <section class="st-section" data-section="billing">
+                                    <div class="st-section-head">
+                                        <h2 class="st-section-title">Billing & Plan</h2>
+                                        <p class="st-section-sub">Current plan, usage, and invoice history.</p>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-plan-card">
+                                            <div>
+                                                <div class="st-plan-name">Business plan</div>
+                                                <div class="st-plan-meta">₹12,500 / month · Up to 50 users · Unlimited projects</div>
+                                            </div>
+                                            <div class="st-plan-actions">
+                                                <button class="st-btn st-btn-primary">Upgrade to Enterprise</button>
+                                                <button class="st-btn st-btn-ghost">Change plan</button>
+                                            </div>
+                                        </div>
+                                        <div class="st-usage-grid">
+                                            <div class="st-usage-item"><div class="st-usage-lbl">Users</div><div class="st-usage-val">23 / 50</div><div class="st-usage-bar"><span style="width:46%"></span></div></div>
+                                            <div class="st-usage-item"><div class="st-usage-lbl">Storage</div><div class="st-usage-val">41 GB / 500 GB</div><div class="st-usage-bar"><span style="width:8%"></span></div></div>
+                                            <div class="st-usage-item"><div class="st-usage-lbl">API calls (this month)</div><div class="st-usage-val">128k / 1M</div><div class="st-usage-bar"><span style="width:13%"></span></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="st-panel">
+                                        <div class="st-panel-head"><div class="st-panel-title">Payment method</div></div>
+                                        <div class="st-pay-row">
+                                            <div class="st-pay-card">
+                                                <div class="st-pay-brand">Visa</div>
+                                                <div class="st-pay-num">•••• 6411</div>
+                                                <div class="st-pay-exp">Expires 07/28</div>
+                                            </div>
+                                            <button class="st-btn st-btn-ghost">Update</button>
+                                        </div>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                    <!-- ═══ ZOHO CONNECT WIZARD (modal overlay) ═══ -->
+                    <div class="st-zoho-modal" id="st-zoho-modal" style="display:none;">
+                        <div class="st-zoho-backdrop" onclick="window.stZohoClose()"></div>
+                        <div class="st-zoho-dialog">
+                            <div class="st-zoho-dialog-head">
+                                <div class="st-zoho-dialog-title-row">
+                                    <div class="st-zoho-logo">
+                                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                                            <rect width="100" height="100" rx="18" fill="#E42527"/>
+                                            <text x="50" y="64" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle">Z</text>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="st-zoho-dialog-title">Connect Zoho Books</div>
+                                        <div class="st-zoho-dialog-sub">Set up a two-way sync in 6 steps</div>
+                                    </div>
+                                </div>
+                                <button class="st-zoho-dialog-close" onclick="window.stZohoClose()">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
+                            </div>
+
+                            <!-- Step indicator -->
+                            <div class="st-zoho-steps" id="st-zoho-steps">
+                                <div class="st-zoho-step" data-step="1"><span>1</span>Region</div>
+                                <div class="st-zoho-step" data-step="2"><span>2</span>Authorize</div>
+                                <div class="st-zoho-step" data-step="3"><span>3</span>Organization</div>
+                                <div class="st-zoho-step" data-step="4"><span>4</span>Entities</div>
+                                <div class="st-zoho-step" data-step="5"><span>5</span>Mapping</div>
+                                <div class="st-zoho-step" data-step="6"><span>6</span>Schedule</div>
+                            </div>
+
+                            <div class="st-zoho-body" id="st-zoho-body">
+                                <!-- Populated dynamically by stZohoRenderStep() -->
+                            </div>
+
+                            <div class="st-zoho-dialog-foot">
+                                <button class="st-btn st-btn-ghost" id="st-zoho-back-btn" onclick="window.stZohoPrev()" style="visibility:hidden;">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                    Back
+                                </button>
+                                <div class="st-zoho-foot-right">
+                                    <button class="st-btn st-btn-ghost" onclick="window.stZohoClose()">Cancel</button>
+                                    <button class="st-btn st-btn-primary" id="st-zoho-next-btn" onclick="window.stZohoNext()">
+                                        Continue
+                                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /#page-settings -->
+
 
             </main>
         </div>
@@ -20357,6 +21765,506 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         if (typeof window.showPage === 'function') {
             window.showPage('attendance', 'Attendance Records');
         }
+    };
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SETTINGS PAGE — scoped logic
+═══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+    // ── Section switching ──
+    window.stSwitch = function(sectionId) {
+        const root = document.getElementById('page-settings');
+        if (!root) return;
+        root.querySelectorAll('.st-navlink').forEach(l => l.classList.toggle('active', l.dataset.section === sectionId));
+        root.querySelectorAll('.st-section').forEach(s => s.classList.toggle('active', s.dataset.section === sectionId));
+        const scroll = root.querySelector('.st-scroll-wrap');
+        if (scroll) scroll.scrollTop = 0;
+    };
+
+    // ── Zoho connection state ──
+    let zohoState = {
+        connected: false,
+        paused: false,
+        region: null,           // 'in' | 'us' | 'eu' | 'au' | 'jp' | 'sa'
+        authorized: false,
+        org: null,              // selected org id
+        entities: {             // which to sync, with direction
+            vendors:   { on: true,  dir: 'bi',   count: 0, label: 'Vendors' },
+            items:     { on: true,  dir: 'pull', count: 0, label: 'Items (Materials)' },
+            accounts:  { on: true,  dir: 'pull', count: 0, label: 'Chart of Accounts' },
+            pos:       { on: true,  dir: 'push', count: 0, label: 'Purchase Orders' },
+            bills:     { on: true,  dir: 'push', count: 0, label: 'Bills / WCCs' },
+            expenses:  { on: true,  dir: 'push', count: 0, label: 'Expenses / Reimbursements' },
+            customers: { on: false, dir: 'bi',   count: 0, label: 'Customers (Clients)' },
+            invoices:  { on: false, dir: 'push', count: 0, label: 'Customer Invoices' }
+        },
+        frequency: 'hourly',
+        initialSync: 'all',     // 'all' | 'from-date' | 'none'
+        lastSync: null,
+        syncedCount: 0
+    };
+
+    let currentStep = 1;
+    const TOTAL_STEPS = 7; // 1=Region, 2=Auth, 3=Org, 4=Entities, 5=Mapping, 6=Schedule, 7=Success
+
+    const REGIONS = [
+        { id: 'in', name: 'India',        domain: 'zoho.in', flag: '🇮🇳', desc: 'books.zoho.in · For Indian businesses' },
+        { id: 'us', name: 'United States', domain: 'zoho.com', flag: '🇺🇸', desc: 'books.zoho.com · For US businesses' },
+        { id: 'eu', name: 'Europe',       domain: 'zoho.eu', flag: '🇪🇺', desc: 'books.zoho.eu · For European businesses' },
+        { id: 'au', name: 'Australia',    domain: 'zoho.com.au', flag: '🇦🇺', desc: 'books.zoho.com.au · For Australian businesses' },
+        { id: 'jp', name: 'Japan',        domain: 'zoho.jp', flag: '🇯🇵', desc: 'books.zoho.jp · For Japanese businesses' },
+        { id: 'sa', name: 'Saudi Arabia', domain: 'zoho.sa', flag: '🇸🇦', desc: 'books.zoho.sa · For Saudi businesses' }
+    ];
+
+    const ORGS = [
+        { id: 'org-1', name: 'Atvantiq Pvt Ltd',       gst: '03AABCT1234R1ZP', currency: 'INR', role: 'Admin' },
+        { id: 'org-2', name: 'Atvantiq Telecom LLP',    gst: '03ACFAT5678K1ZN', currency: 'INR', role: 'Finance' },
+        { id: 'org-3', name: 'Onaqt Demo Workspace',    gst: '—',               currency: 'INR', role: 'Admin' }
+    ];
+
+    const SCOPES = [
+        'Read vendor, customer and item master data',
+        'Create and update purchase orders',
+        'Create and update bills and expenses',
+        'Read chart of accounts and tax rates',
+        'Read invoice payment status for reconciliation'
+    ];
+
+    const MAPPINGS = [
+        { onaqt: 'Vendor · Name',           zoho: 'Contact Name' },
+        { onaqt: 'Vendor · GSTIN',          zoho: 'GST Treatment · GST No.' },
+        { onaqt: 'Vendor · Email',          zoho: 'Contact Email' },
+        { onaqt: 'Vendor · Phone',          zoho: 'Mobile' },
+        { onaqt: 'PO · Number',             zoho: 'Purchase Order Number' },
+        { onaqt: 'PO · Delivery Date',      zoho: 'Delivery Date' },
+        { onaqt: 'PO · Total',               zoho: 'Amount' },
+        { onaqt: 'Item · SKU',               zoho: 'SKU' },
+        { onaqt: 'Item · Tax Rate',          zoho: 'Default Tax' }
+    ];
+
+    // ── Open / close modal ──
+    window.stZohoOpen = function() {
+        const modal = document.getElementById('st-zoho-modal');
+        if (!modal) return;
+        // If already connected, resume at mapping step so user can modify
+        currentStep = zohoState.connected ? 5 : 1;
+        modal.style.display = 'flex';
+        stRenderStep();
+        stRenderStepIndicator();
+    };
+
+    window.stZohoClose = function() {
+        const modal = document.getElementById('st-zoho-modal');
+        if (!modal) return;
+        modal.style.display = 'none';
+    };
+
+    // ── Step indicator ──
+    function stRenderStepIndicator() {
+        const root = document.getElementById('st-zoho-steps');
+        if (!root) return;
+        root.querySelectorAll('.st-zoho-step').forEach((el, idx) => {
+            const stepNum = idx + 1;
+            el.classList.toggle('active', stepNum === currentStep);
+            el.classList.toggle('done', stepNum < currentStep && currentStep <= 6);
+        });
+        // Step 7 (Success) is not in the indicator
+    }
+
+    // ── Render current step into the body ──
+    function stRenderStep() {
+        const body = document.getElementById('st-zoho-body');
+        const backBtn = document.getElementById('st-zoho-back-btn');
+        const nextBtn = document.getElementById('st-zoho-next-btn');
+        if (!body || !nextBtn) return;
+
+        // Default visibility / labels
+        backBtn.style.visibility = currentStep > 1 && currentStep < 7 ? 'visible' : 'hidden';
+        nextBtn.innerHTML = 'Continue<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>';
+        nextBtn.disabled = false;
+
+        if (currentStep === 1) {
+            // Region
+            body.innerHTML = `
+                <div class="st-step-title">Choose your Zoho Books region</div>
+                <div class="st-step-desc">Select the Zoho data centre where your organization is registered. This controls which API endpoint Onaqt calls.</div>
+                <div class="st-radio-list">
+                    ${REGIONS.map(r => `
+                        <label class="st-radio-card ${zohoState.region === r.id ? 'selected' : ''}" data-rid="${r.id}" onclick="window.stZohoPickRegion(this.dataset.rid)">
+                            <input type="radio" name="st-region" ${zohoState.region === r.id ? 'checked' : ''}>
+                            <div class="st-radio-check"></div>
+                            <span class="st-radio-flag">${r.flag}</span>
+                            <div class="st-radio-body">
+                                <div class="st-radio-title">${r.name}</div>
+                                <div class="st-radio-desc">${r.desc}</div>
+                            </div>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            nextBtn.disabled = !zohoState.region;
+        }
+        else if (currentStep === 2) {
+            // Authorize (OAuth)
+            const region = REGIONS.find(r => r.id === zohoState.region) || REGIONS[0];
+            body.innerHTML = `
+                <div class="st-step-title">Authorize Onaqt to access Zoho Books</div>
+                <div class="st-step-desc">We'll redirect you to <strong>${region.domain}</strong> to approve the connection. You'll be asked to sign in (or confirm your session) and grant the permissions listed below.</div>
+                <div class="st-auth-panel">
+                    <div class="st-auth-icon">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+                            <rect width="100" height="100" rx="18" fill="#E42527"/>
+                            <text x="50" y="64" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="white" text-anchor="middle">Z</text>
+                        </svg>
+                    </div>
+                    <div class="st-auth-title">Sign in at ${region.domain}</div>
+                    <div class="st-auth-text">Onaqt uses OAuth 2.0 — we never see your Zoho password. You can revoke access any time from your Zoho account settings.</div>
+                    <div class="st-auth-scopes">
+                        <div class="st-auth-scopes-title">Permissions Onaqt will request</div>
+                        ${SCOPES.map(s => `
+                            <div class="st-auth-scope">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                ${s}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div id="st-auth-action">
+                        ${zohoState.authorized ? `
+                            <div class="st-auth-success">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                Authorized successfully
+                            </div>
+                        ` : `
+                            <button class="st-auth-authorize-btn" onclick="window.stZohoAuthorize()">
+                                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                Authorize with Zoho
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+            nextBtn.disabled = !zohoState.authorized;
+        }
+        else if (currentStep === 3) {
+            // Organization selection
+            body.innerHTML = `
+                <div class="st-step-title">Pick an organization</div>
+                <div class="st-step-desc">Zoho Books returned the organizations you have access to. Select the one you want Onaqt to sync with.</div>
+                <div class="st-radio-list">
+                    ${ORGS.map(o => `
+                        <label class="st-radio-card ${zohoState.org === o.id ? 'selected' : ''}" data-oid="${o.id}" onclick="window.stZohoPickOrg(this.dataset.oid)">
+                            <input type="radio" name="st-org" ${zohoState.org === o.id ? 'checked' : ''}>
+                            <div class="st-radio-check"></div>
+                            <div class="st-radio-body">
+                                <div class="st-radio-title">${o.name}</div>
+                                <div class="st-radio-desc">GSTIN ${o.gst} · ${o.currency} · Your role: ${o.role}</div>
+                            </div>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            nextBtn.disabled = !zohoState.org;
+        }
+        else if (currentStep === 4) {
+            // Entity selection
+            body.innerHTML = `
+                <div class="st-step-title">Choose what to sync</div>
+                <div class="st-step-desc">For each entity type, pick whether Onaqt should push data to Zoho, pull from Zoho, or keep both sides in sync.</div>
+                <div class="st-ent-list">
+                    ${Object.keys(zohoState.entities).map(key => {
+                        const e = zohoState.entities[key];
+                        return `
+                            <div class="st-ent-row">
+                                <input type="checkbox" class="st-ent-cb" data-ekey="${key}" ${e.on ? 'checked' : ''} onchange="window.stZohoToggleEnt(this.dataset.ekey, this.checked)">
+                                <div class="st-ent-info">
+                                    <div class="st-ent-title">${e.label}</div>
+                                    <div class="st-ent-desc">${entDesc(key)}</div>
+                                </div>
+                                <select class="st-ent-dir-select" data-ekey="${key}" onchange="window.stZohoSetDir(this.dataset.ekey, this.value)" ${e.on ? '' : 'disabled'}>
+                                    <option value="bi"   ${e.dir === 'bi'   ? 'selected' : ''}>⇄ Two-way</option>
+                                    <option value="push" ${e.dir === 'push' ? 'selected' : ''}>→ Onaqt to Zoho</option>
+                                    <option value="pull" ${e.dir === 'pull' ? 'selected' : ''}>← Zoho to Onaqt</option>
+                                </select>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+        else if (currentStep === 5) {
+            // Field mapping
+            body.innerHTML = `
+                <div class="st-step-title">Field mapping</div>
+                <div class="st-step-desc">Onaqt fields automatically map to standard Zoho Books fields. Review and override if your Zoho instance uses custom fields.</div>
+                <div class="st-map-table">
+                    <div class="st-map-row st-map-head">
+                        <div>Onaqt field</div>
+                        <div></div>
+                        <div>Zoho Books field</div>
+                    </div>
+                    ${MAPPINGS.map(m => `
+                        <div class="st-map-row">
+                            <div class="st-map-field">${m.onaqt}</div>
+                            <div class="st-map-arrow">⇄</div>
+                            <select class="st-map-select">
+                                <option selected>${m.zoho}</option>
+                                <option>— Don't map —</option>
+                                <option>Custom field…</option>
+                            </select>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        else if (currentStep === 6) {
+            // Schedule
+            const scheds = [
+                { id: 'realtime', title: 'Real-time', desc: 'Sync via webhook within seconds of any change. Uses more API quota.', recommended: false },
+                { id: 'hourly',   title: 'Hourly',    desc: 'Run the sync once every hour. Ideal for most teams.', recommended: true },
+                { id: 'daily',    title: 'Daily',     desc: 'Sync once a night at 2:00 AM local time.', recommended: false },
+                { id: 'manual',   title: 'Manual',    desc: 'Never auto-sync. Trigger runs from the Sync Now button.', recommended: false }
+            ];
+            body.innerHTML = `
+                <div class="st-step-title">Sync schedule & initial run</div>
+                <div class="st-step-desc">How often should Onaqt push/pull updates to Zoho Books?</div>
+                <div class="st-sched-grid">
+                    ${scheds.map(s => `
+                        <div class="st-sched-card ${zohoState.frequency === s.id ? 'selected' : ''}" data-sid="${s.id}" onclick="window.stZohoPickFreq(this.dataset.sid)">
+                            <div class="st-sched-title">${s.title}${s.recommended ? '<span class="st-sched-recommended">Recommended</span>' : ''}</div>
+                            <div class="st-sched-desc">${s.desc}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="st-panel-head" style="margin-top:8px; margin-bottom:10px;">
+                    <div class="st-panel-title" style="font-size:12.5px;">Initial sync</div>
+                    <div class="st-panel-sub">What to do with historical data</div>
+                </div>
+                <div class="st-radio-list">
+                    <label class="st-radio-card ${zohoState.initialSync === 'all' ? 'selected' : ''}" data-val="all" onclick="window.stZohoPickInitial(this.dataset.val)">
+                        <input type="radio" name="st-init" ${zohoState.initialSync === 'all' ? 'checked' : ''}>
+                        <div class="st-radio-check"></div>
+                        <div class="st-radio-body"><div class="st-radio-title">Sync all historical data</div><div class="st-radio-desc">Recommended for first-time setup — catches everything</div></div>
+                    </label>
+                    <label class="st-radio-card ${zohoState.initialSync === 'from-date' ? 'selected' : ''}" data-val="from-date" onclick="window.stZohoPickInitial(this.dataset.val)">
+                        <input type="radio" name="st-init" ${zohoState.initialSync === 'from-date' ? 'checked' : ''}>
+                        <div class="st-radio-check"></div>
+                        <div class="st-radio-body"><div class="st-radio-title">Sync from a specific date</div><div class="st-radio-desc">Useful when your Zoho instance has clean data only from a certain point</div></div>
+                    </label>
+                    <label class="st-radio-card ${zohoState.initialSync === 'none' ? 'selected' : ''}" data-val="none" onclick="window.stZohoPickInitial(this.dataset.val)">
+                        <input type="radio" name="st-init" ${zohoState.initialSync === 'none' ? 'checked' : ''}>
+                        <div class="st-radio-check"></div>
+                        <div class="st-radio-body"><div class="st-radio-title">Skip historical data</div><div class="st-radio-desc">Only sync new records created from now on</div></div>
+                    </label>
+                </div>
+            `;
+            nextBtn.innerHTML = 'Finish Setup<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+        }
+        else if (currentStep === 7) {
+            // Success
+            const region = REGIONS.find(r => r.id === zohoState.region);
+            const org = ORGS.find(o => o.id === zohoState.org);
+            const activeEntities = Object.values(zohoState.entities).filter(e => e.on);
+            body.innerHTML = `
+                <div class="st-success-wrap">
+                    <div class="st-success-icon">
+                        <svg width="36" height="36" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <div class="st-success-title">Zoho Books connected!</div>
+                    <div class="st-success-text">Onaqt will begin the initial sync in the background. You can safely close this dialog — we'll email you when it completes.</div>
+                    <div class="st-success-summary">
+                        <div class="st-success-row"><span class="st-success-row-key">Organization</span><span class="st-success-row-val">${org ? org.name : '—'}</span></div>
+                        <div class="st-success-row"><span class="st-success-row-key">Region</span><span class="st-success-row-val">${region ? region.name : '—'}</span></div>
+                        <div class="st-success-row"><span class="st-success-row-key">Entities syncing</span><span class="st-success-row-val">${activeEntities.length} of ${Object.keys(zohoState.entities).length}</span></div>
+                        <div class="st-success-row"><span class="st-success-row-key">Frequency</span><span class="st-success-row-val">${zohoState.frequency.charAt(0).toUpperCase() + zohoState.frequency.slice(1)}</span></div>
+                    </div>
+                </div>
+            `;
+            backBtn.style.visibility = 'hidden';
+            nextBtn.innerHTML = 'Done';
+        }
+    }
+
+    function entDesc(key) {
+        const descs = {
+            vendors:   'Two-way sync for supplier master data. Changes flow both ways.',
+            items:     'Pull materials and services from Zoho to populate Onaqt catalog.',
+            accounts:  'Pull chart of accounts for expense categorization.',
+            pos:       'Push Onaqt purchase orders as Zoho Books purchase orders.',
+            bills:     'Push approved WCCs and bills to Zoho Books.',
+            expenses:  'Push approved employee reimbursements as expense records.',
+            customers: 'Sync client master data between Onaqt projects and Zoho contacts.',
+            invoices:  'Push customer invoices from Onaqt to Zoho Books.'
+        };
+        return descs[key] || '';
+    }
+
+    // ── Step action handlers ──
+    window.stZohoPickRegion = function(rid) {
+        zohoState.region = rid;
+        document.querySelectorAll('#st-zoho-body .st-radio-card').forEach(c => c.classList.toggle('selected', c.dataset.rid === rid));
+        document.getElementById('st-zoho-next-btn').disabled = false;
+    };
+    window.stZohoAuthorize = function() {
+        const action = document.getElementById('st-auth-action');
+        if (!action) return;
+        action.innerHTML = `<button class="st-auth-authorize-btn" disabled style="opacity:0.85;cursor:wait;"><span class="st-spinner"></span>Opening Zoho…</button>`;
+        // Simulate OAuth redirect + callback
+        setTimeout(() => {
+            zohoState.authorized = true;
+            stRenderStep();
+        }, 1400);
+    };
+    window.stZohoPickOrg = function(oid) {
+        zohoState.org = oid;
+        document.querySelectorAll('#st-zoho-body .st-radio-card').forEach(c => c.classList.toggle('selected', c.dataset.oid === oid));
+        document.getElementById('st-zoho-next-btn').disabled = false;
+    };
+    window.stZohoToggleEnt = function(key, on) {
+        zohoState.entities[key].on = on;
+        // Update the select enabled state
+        const sel = document.querySelector(`#st-zoho-body select[data-ekey="${key}"]`);
+        if (sel) sel.disabled = !on;
+    };
+    window.stZohoSetDir = function(key, dir) {
+        zohoState.entities[key].dir = dir;
+    };
+    window.stZohoPickFreq = function(fid) {
+        zohoState.frequency = fid;
+        document.querySelectorAll('#st-zoho-body .st-sched-card').forEach(c => c.classList.toggle('selected', c.dataset.sid === fid));
+    };
+    window.stZohoPickInitial = function(val) {
+        zohoState.initialSync = val;
+        document.querySelectorAll('#st-zoho-body .st-radio-card').forEach(c => c.classList.toggle('selected', c.dataset.val === val));
+    };
+
+    // ── Navigation ──
+    window.stZohoNext = function() {
+        if (currentStep === 6) {
+            // Finish setup — commit connection
+            zohoState.connected = true;
+            zohoState.paused = false;
+            zohoState.lastSync = new Date();
+            // Seed fake record counts based on chosen entities
+            Object.keys(zohoState.entities).forEach(k => {
+                const e = zohoState.entities[k];
+                if (e.on) {
+                    // Make up a plausible count
+                    const seeds = { vendors: 87, items: 342, accounts: 54, pos: 128, bills: 63, expenses: 219, customers: 41, invoices: 32 };
+                    e.count = seeds[k] || 0;
+                }
+            });
+            zohoState.syncedCount = Object.values(zohoState.entities).filter(e => e.on).reduce((s,e) => s + e.count, 0);
+            currentStep = 7;
+            stRenderStep();
+            stRenderStepIndicator();
+            // Reflect on the hero card
+            stUpdateHeroCard();
+            return;
+        }
+        if (currentStep === 7) {
+            // Done button
+            stZohoClose();
+            return;
+        }
+        if (currentStep < 6) {
+            currentStep++;
+            stRenderStep();
+            stRenderStepIndicator();
+        }
+    };
+    window.stZohoPrev = function() {
+        if (currentStep > 1 && currentStep < 7) {
+            currentStep--;
+            stRenderStep();
+            stRenderStepIndicator();
+        }
+    };
+
+    // ── Hero card update ──
+    function stUpdateHeroCard() {
+        const emptyEl = document.getElementById('st-zoho-empty');
+        const connEl  = document.getElementById('st-zoho-connected');
+        if (!emptyEl || !connEl) return;
+        if (zohoState.connected) {
+            emptyEl.style.display = 'none';
+            connEl.style.display = 'flex';
+            const org = ORGS.find(o => o.id === zohoState.org);
+            const region = REGIONS.find(r => r.id === zohoState.region);
+            const orgEl = document.getElementById('st-zoho-org');
+            const regionEl = document.getElementById('st-zoho-region-lbl');
+            const syncedEl = document.getElementById('st-zoho-synced-count');
+            const lastEl   = document.getElementById('st-zoho-last-sync');
+            const freqEl   = document.getElementById('st-zoho-freq');
+            const entsEl   = document.getElementById('st-zoho-entities-list');
+            const pauseLbl = document.getElementById('st-zoho-pause-lbl');
+            if (orgEl)    orgEl.textContent    = org ? org.name : '—';
+            if (regionEl) regionEl.textContent = region ? region.name : '—';
+            if (syncedEl) syncedEl.textContent = zohoState.syncedCount.toLocaleString();
+            if (lastEl)   lastEl.textContent   = stFormatAgo(zohoState.lastSync);
+            if (freqEl)   freqEl.textContent   = zohoState.frequency.charAt(0).toUpperCase() + zohoState.frequency.slice(1);
+            if (pauseLbl) pauseLbl.textContent = zohoState.paused ? 'Resume Sync' : 'Pause Sync';
+            if (entsEl) {
+                entsEl.innerHTML = Object.keys(zohoState.entities).filter(k => zohoState.entities[k].on).map(k => {
+                    const e = zohoState.entities[k];
+                    const dirLabel = e.dir === 'bi' ? '⇄' : e.dir === 'push' ? '→' : '←';
+                    return `
+                        <div class="st-zoho-ent">
+                            <span class="st-zoho-ent-name">${e.label}</span>
+                            <span class="st-zoho-ent-count">${e.count.toLocaleString()}</span>
+                            <span class="st-zoho-ent-dir">${dirLabel}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        } else {
+            emptyEl.style.display = 'flex';
+            connEl.style.display = 'none';
+        }
+    }
+
+    function stFormatAgo(date) {
+        if (!date) return '—';
+        const sec = Math.round((Date.now() - date.getTime()) / 1000);
+        if (sec < 60) return 'just now';
+        const min = Math.round(sec / 60);
+        if (min < 60) return min + ' min ago';
+        const hr = Math.round(min / 60);
+        if (hr < 24) return hr + ' hr ago';
+        return Math.round(hr / 24) + ' days ago';
+    }
+
+    // ── Connected-state action handlers ──
+    window.stZohoSyncNow = function() {
+        if (!zohoState.connected) return;
+        const syncedEl = document.getElementById('st-zoho-synced-count');
+        const lastEl   = document.getElementById('st-zoho-last-sync');
+        if (lastEl) lastEl.textContent = 'syncing…';
+        setTimeout(() => {
+            zohoState.lastSync = new Date();
+            // Small bump
+            const addn = Math.floor(Math.random() * 8) + 1;
+            Object.values(zohoState.entities).filter(e => e.on).forEach(e => e.count += Math.floor(Math.random() * 3));
+            zohoState.syncedCount = Object.values(zohoState.entities).filter(e => e.on).reduce((s,e) => s + e.count, 0);
+            stUpdateHeroCard();
+        }, 900);
+    };
+    window.stZohoPause = function() {
+        zohoState.paused = !zohoState.paused;
+        stUpdateHeroCard();
+    };
+    window.stZohoDisconnect = function() {
+        if (!confirm('Disconnect from Zoho Books? Syncing will stop immediately. Already-synced records will remain in both systems.')) return;
+        zohoState = Object.assign(zohoState, {
+            connected: false, paused: false, region: null, authorized: false, org: null,
+            lastSync: null, syncedCount: 0
+        });
+        // Reset entity counts
+        Object.keys(zohoState.entities).forEach(k => { zohoState.entities[k].count = 0; });
+        stUpdateHeroCard();
     };
 })();
 </script>
