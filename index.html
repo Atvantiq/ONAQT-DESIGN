@@ -1046,6 +1046,50 @@
         [data-dark="true"] .ae-input, [data-dark="true"] .ae-select { background:#252836 !important; border-color:#363b52 !important; color:#d1d5db !important; }
         [data-dark="true"] .ae-input:focus, [data-dark="true"] .ae-select:focus { background:#1e2130 !important; }
         [data-dark="true"] .ae-section-hd { border-color:#2d3145 !important; }
+
+        /* ── OUT ON DUTY (Outstation attendance) MODAL ── */
+        .ood-modal-overlay { position:fixed; inset:0; background:rgba(15,17,25,0.55); z-index:2000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:16px; }
+        .ood-modal-overlay.active { display:flex; }
+        .ood-modal-box { background:var(--white); border-radius:18px; box-shadow:var(--shadow-xl); width:min(620px,96vw); max-height:92vh; display:flex; flex-direction:column; overflow:hidden; animation:oodSlideUp 0.22s ease; }
+        @keyframes oodSlideUp { from{opacity:0;transform:translateY(16px) scale(0.97)} to{opacity:1;transform:none} }
+        .ood-head { display:flex; align-items:flex-start; justify-content:space-between; padding:20px 24px 14px; border-bottom:1px solid var(--gray-100); flex-shrink:0; gap:12px; }
+        .ood-head-left { display:flex; gap:12px; align-items:flex-start; min-width:0; }
+        .ood-head-icon { width:38px; height:38px; border-radius:10px; background:color-mix(in srgb, var(--cta) 14%, transparent); color:var(--cta); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .ood-head-icon svg { width:20px; height:20px; }
+        .ood-title { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--gray-900); }
+        .ood-sub { font-size:11.5px; color:var(--gray-500); margin-top:2px; }
+        .ood-close { width:30px; height:30px; border-radius:9px; background:var(--gray-100); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--gray-500); transition:var(--transition); flex-shrink:0; }
+        .ood-close:hover { background:var(--danger-light); color:var(--danger); }
+        .ood-body { flex:1; overflow-y:auto; padding:18px 24px 22px; min-height:0; }
+        .ood-info { display:flex; align-items:center; gap:9px; padding:9px 12px; background:var(--primary-light); border:1px solid color-mix(in srgb, var(--primary) 18%, transparent); border-radius:9px; font-size:11.5px; color:var(--gray-700); line-height:1.45; margin-bottom:16px; }
+        .ood-info svg { width:15px; height:15px; color:var(--primary); flex-shrink:0; }
+        /* Applying as — read-only current-user chip */
+        .ood-applying-as { display:flex; align-items:center; gap:11px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:11px; margin-bottom:12px; }
+        .ood-applying-avatar { width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; font-weight:700; font-size:13px; font-family:'Fraunces',serif; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .ood-applying-text { flex:1; min-width:0; }
+        .ood-applying-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray-500); }
+        .ood-applying-name { font-size:13px; font-weight:600; color:var(--gray-900); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .ood-applying-badge { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary); background:color-mix(in srgb, var(--primary) 14%, transparent); border:1px solid color-mix(in srgb, var(--primary) 22%, transparent); padding:3px 8px; border-radius:6px; flex-shrink:0; }
+        .ood-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 14px; }
+        .ood-grid .ood-span-2 { grid-column:1 / -1; }
+        .ood-foot { padding:14px 20px; border-top:1px solid var(--gray-100); display:flex; justify-content:flex-end; gap:10px; flex-shrink:0; background:var(--gray-50); }
+        .ood-btn-cancel { padding:9px 18px; background:var(--white); border:1.5px solid var(--gray-200); border-radius:8px; font-size:13px; font-weight:600; color:var(--gray-700); cursor:pointer; transition:var(--transition); }
+        .ood-btn-cancel:hover { border-color:var(--gray-300); background:var(--gray-100); }
+        .ood-btn-submit { padding:9px 20px; background:var(--cta); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:var(--transition); box-shadow:0 4px 14px var(--cta-shadow); }
+        .ood-btn-submit:hover { transform:translateY(-1px); filter:brightness(1.08); box-shadow:0 6px 20px var(--cta-shadow); }
+        .ood-btn-submit svg { width:14px; height:14px; }
+        /* Dark mode */
+        [data-dark="true"] .ood-modal-box { background:#1e2130 !important; }
+        [data-dark="true"] .ood-head { border-bottom-color:#2d3145 !important; }
+        [data-dark="true"] .ood-sub { color:#9ca3af !important; }
+        [data-dark="true"] .ood-close { background:#363b52 !important; color:#9ca3af !important; }
+        [data-dark="true"] .ood-foot { background:#1a1d27 !important; border-top-color:#2d3145 !important; }
+        [data-dark="true"] .ood-btn-cancel { background:#252836 !important; border-color:#363b52 !important; color:#d1d5db !important; }
+        [data-dark="true"] .ood-info { background:color-mix(in srgb, var(--primary) 15%, #252836) !important; border-color:color-mix(in srgb, var(--primary) 28%, transparent) !important; color:#d1d5db !important; }
+        [data-dark="true"] .ood-applying-as { background:#252836 !important; border-color:#363b52 !important; }
+        [data-dark="true"] .ood-applying-name { color:#f3f4f6 !important; }
+        [data-dark="true"] .ood-applying-label { color:#9ca3af !important; }
+
         /* ── EMP FILTER DRAWER (Myntra two-column) ── */
         .emp-filter-panel { position:fixed; right:0; top:0; width:420px; height:100vh; background:var(--white); box-shadow:-4px 0 32px rgba(0,0,0,0.12); z-index:2001; transform:translateX(100%); transition:var(--transition); display:flex; flex-direction:column; }
         .emp-filter-panel.active { transform:translateX(0); }
@@ -3354,6 +3398,13 @@
             color: var(--gray-600);
             border-color: rgba(160,152,144,0.25);
         }
+
+        .approval-badge.ood {
+            background: color-mix(in srgb, var(--cta) 14%, transparent);
+            color: var(--cta);
+            border-color: color-mix(in srgb, var(--cta) 35%, transparent);
+        }
+        [data-dark="true"] .approval-badge.ood { background: color-mix(in srgb, var(--cta) 20%, #252836) !important; color: #ffc39c !important; border-color: color-mix(in srgb, var(--cta) 40%, transparent) !important; }
 
         /* Time Display */
         .time-display {
@@ -9770,7 +9821,7 @@
                             </div>
                             <div class="stats-banner-content">
                                 <div class="stats-banner-label">Total Records</div>
-                                <div class="stats-banner-value">462</div>
+                                <div class="stats-banner-value">464</div>
                             </div>
                         </div>
                         <div class="stats-banner-item">
@@ -9835,7 +9886,7 @@
                                 border:1px solid color-mix(in srgb,var(--primary) 22%,transparent);
                                 border-radius:5px;padding:2px 7px;
                                 white-space:nowrap;
-                            ">462 records</span>
+                            ">464 records</span>
                         </div>
 
                         <div class="search-container">
@@ -9855,6 +9906,10 @@
                         <button class="cb-icon-btn" onclick="openExportModal()" title="Export"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
                         <button class="cb-icon-btn" title="Settings"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
                         <!-- settings close -->
+                        <button class="btn-add-employee" onclick="oodOpenModal()" title="Mark Out on Duty / Outstation attendance">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19V6l-2 1m6 12V3l-2 1m6 15v-7l-2 1m-9 6h14M3 19h18"/></svg>
+                            Out on Duty
+                        </button>
                         
                     </div>
                 </div>
@@ -9870,6 +9925,65 @@
                     <div id="attendanceAgGrid" class="ag-theme-quartz"></div>
                 </div>
                 </div><!-- /#page-attendance -->
+
+                <!-- ══ OUT ON DUTY REQUEST MODAL ══ -->
+                <div class="ood-modal-overlay" id="oodRequestModal" onclick="if(event.target===this)oodCloseModal()">
+                    <div class="ood-modal-box">
+                        <div class="ood-head">
+                            <div class="ood-head-left">
+                                <div class="ood-head-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="ood-title">Out on Duty Request</div>
+                                    <div class="ood-sub">Create an outstation attendance entry for field work or off-site visits</div>
+                                </div>
+                            </div>
+                            <button class="ood-close" onclick="oodCloseModal()" aria-label="Close">
+                                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="ood-body">
+                            <div class="ood-applying-as">
+                                <div class="ood-applying-avatar" id="oodApplyingAvatar">O</div>
+                                <div class="ood-applying-text">
+                                    <div class="ood-applying-label">Applying as</div>
+                                    <div class="ood-applying-name" id="oodApplyingName">ops · Administrator</div>
+                                </div>
+                                <div class="ood-applying-badge">Self request</div>
+                            </div>
+                            <div class="ood-info">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>OOD entries bypass the standard Sign In / Sign Out flow. They require approval from your reporting manager before the dates are marked as present.</span>
+                            </div>
+                            <div class="ood-grid">
+                                <div class="ae-field">
+                                    <label class="ae-label">From Date <span class="req">*</span></label>
+                                    <input type="date" class="ae-input" id="ood-from">
+                                </div>
+                                <div class="ae-field">
+                                    <label class="ae-label">To Date <span class="req">*</span></label>
+                                    <input type="date" class="ae-input" id="ood-to">
+                                </div>
+                                <div class="ae-field ood-span-2">
+                                    <label class="ae-label">Outstation Location <span class="req">*</span></label>
+                                    <input type="text" class="ae-input" id="ood-location" placeholder="e.g. Shimla, Manali, or full site address">
+                                </div>
+                                <div class="ae-field ood-span-2">
+                                    <label class="ae-label">Remarks</label>
+                                    <textarea class="ae-input" id="ood-remarks" rows="3" placeholder="Additional context for your manager (optional)" style="resize:vertical;min-height:70px;font-family:'DM Sans',sans-serif;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ood-foot">
+                            <button class="ood-btn-cancel" onclick="oodCloseModal()">Cancel</button>
+                            <button class="ood-btn-submit" onclick="oodSubmit()">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
+                                Submit Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- ═══════════════════════════════════════════════
                      #page-attendance-detail — full detail view (ported from attendance-detail.html)
@@ -11166,62 +11280,124 @@
 </div>
 
 <!-- ── IMPORT MODAL ── -->
+<!-- ══ PO: IMPORT MODAL (3-step wizard) ══ -->
 <div class="modal-overlay" id="poImportModal" onclick="poHandleModalBg(event,'poImportModal')">
-    <div class="modal-box import-modal-box">
-        <div class="modal-header">
-            <div>
-                <div class="modal-title">Import Purchase Orders</div>
-                <div class="modal-subtitle">Upload CSV or Excel to bulk create POs</div>
-            </div>
-            <button class="modal-close" onclick="poCloseModal('poImportModal')">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    <div class="site-modal-box sw-box">
+        <!-- Header -->
+        <div class="sw-head">
+            <button class="sw-close" onclick="poCloseModal('poImportModal')" aria-label="Close">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-        </div>
-        <div class="modal-body">
-            <div class="import-note">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <div class="import-note-text">Required columns: <strong>po_number, po_date, client, project, quantity, valid_from, valid_to, location, circle</strong>. Download the template to get started.</div>
-            </div>
-            <button class="btn-download-template" onclick="poDownloadTemplate()">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                Download Template (.csv)
-            </button>
-            <div class="import-zone" id="poImportZone" ondragover="poHandleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="poHandleDrop(event)">
-                <input type="file" accept=".csv,.xlsx,.xls" id="poFileInput" onchange="poHandleFileSelect(this.files[0])">
-                <div class="import-zone-icon">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <div class="sw-title">Purchase Order Upload</div>
+            <!-- Step indicator -->
+            <div class="sw-steps">
+                <div class="sw-step active" id="pw-step-1">
+                    <div class="sw-step-num" id="pw-num-1">1</div>
+                    <div class="sw-step-lbl">Configure</div>
                 </div>
-                <div class="import-zone-title">Drop your file here</div>
-                <div class="import-zone-sub">or <span onclick="document.getElementById('poFileInput').click()">browse to upload</span> · CSV or Excel</div>
-            </div>
-            <div class="import-file-selected" id="poFileSelected">
-                <div class="import-file-icon">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <div class="sw-step-conn" id="pw-conn-1"></div>
+                <div class="sw-step" id="pw-step-2">
+                    <div class="sw-step-num" id="pw-num-2">2</div>
+                    <div class="sw-step-lbl">Map Views</div>
                 </div>
-                <div class="import-file-info">
-                    <div class="import-file-name" id="poSelectedFileName">file.csv</div>
-                    <div class="import-file-size" id="poSelectedFileSize">0 KB</div>
-                </div>
-                <button style="border:none;background:transparent;cursor:pointer;color:var(--gray-400);padding:4px;" onclick="poClearFile()">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="import-preview-box" id="poPreviewBox">
-                <div class="import-preview-header">
-                    <span class="import-preview-title">Preview (first 5 rows)</span>
-                    <span class="import-preview-count" id="poPreviewCount">0 rows</span>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table class="import-preview-table" id="poPreviewTable"></table>
+                <div class="sw-step-conn" id="pw-conn-2"></div>
+                <div class="sw-step" id="pw-step-3">
+                    <div class="sw-step-num" id="pw-num-3">3</div>
+                    <div class="sw-step-lbl">Preview</div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-cancel" onclick="poCloseModal('poImportModal')">Cancel</button>
-            <button class="btn-import-submit" id="poBtnImportSubmit" onclick="poSubmitImport()" disabled>
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                Import POs
-            </button>
+        <div class="sw-divider"></div>
+
+        <!-- Body -->
+        <div class="sw-body">
+            <!-- ─ Step 1: Configure ─ -->
+            <div class="sw-panel active" id="pw-panel-1">
+                <div class="sw-dropzone" id="pwDropzone" ondragover="pwHandleDragOver(event)" ondragleave="pwHandleDragLeave(event)" ondrop="pwHandleDrop(event)" onclick="document.getElementById('pwFileInput').click()">
+                    <input type="file" accept=".csv,.tsv,.xlsx,.xls" id="pwFileInput" onchange="pwHandleFileSelect(this.files[0])">
+                    <div class="sw-dz-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    </div>
+                    <div class="sw-dz-title">Drag &amp; Drop file to Import</div>
+                    <button class="sw-choose-btn" type="button" onclick="event.stopPropagation();document.getElementById('pwFileInput').click()">
+                        Choose File
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+                    </button>
+                    <div class="sw-dz-meta">
+                        Maximum file size: 5 MB<br>
+                        Supported Format: CSV, TSV, or XLS
+                    </div>
+                </div>
+                <div class="sw-samples">
+                    <div class="sw-samples-text">
+                        Download a <a onclick="pwDownloadSample('csv')">sample CSV file</a> or <a onclick="pwDownloadSample('xls')">sample XLS file</a> and compare it to your import file to<br>ensure the structure is correct for import.
+                    </div>
+                    <button class="sw-ref-btn" onclick="pwDownloadReference()">
+                        Download PO Import Reference File with Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─ Step 2: Map Views ─ -->
+            <div class="sw-panel" id="pw-panel-2">
+                <div class="sw-file-title">Your Selected File: <strong id="pwSelectedFileName">—</strong></div>
+                <div class="sw-info">
+                    <div class="sw-info-dot">!</div>
+                    <div class="sw-info-text">The best match to each field has been auto-selected.</div>
+                </div>
+                <div class="sw-map-section-title">PO Details</div>
+                <div class="sw-map-header">
+                    <div>ONAQT Field</div>
+                    <div>IMPORTED File Headers</div>
+                </div>
+                <div class="sw-map-rows" id="pwMapRows">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- ─ Step 3: Preview ─ -->
+            <div class="sw-panel" id="pw-panel-3">
+                <div class="sw-prev-info">
+                    <div class="sw-info-dot">!</div>
+                    <div class="sw-prev-info-text"><strong id="pwReadyCount">0</strong> of <strong id="pwTotalCount">0</strong> POs in your file are ready to be imported.</div>
+                </div>
+                <div class="sw-prev-card" id="pwSkippedCard">
+                    <div class="sw-prev-row" onclick="pwToggleDetail('pwSkippedCard')">
+                        <div class="sw-prev-row-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+                            <span>No. of Records skipped - <span id="pwSkippedCount">0</span></span>
+                        </div>
+                        <div class="sw-prev-view">View Details
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                    </div>
+                    <div class="sw-prev-details" id="pwSkippedDetails">No records were skipped.</div>
+                </div>
+                <div class="sw-prev-card" id="pwUnmappedCard">
+                    <div class="sw-prev-row" onclick="pwToggleDetail('pwUnmappedCard')">
+                        <div class="sw-prev-row-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+                            <span>Unmapped Fields - <span id="pwUnmappedCount">0</span></span>
+                        </div>
+                        <div class="sw-prev-view">View Details
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                    </div>
+                    <div class="sw-prev-details" id="pwUnmappedDetails">All fields are mapped.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="sw-foot">
+            <div class="sw-foot-left">
+                <button class="sw-btn-prev" id="pwBtnPrev" onclick="pwPrev()" style="display:none;">Previous</button>
+                <button class="sw-btn-next" id="pwBtnNext" onclick="pwNext()" disabled>Next</button>
+                <button class="sw-btn-import" id="pwBtnImport" onclick="pwSubmitImport()" style="display:none;" disabled>Import</button>
+            </div>
+            <div class="sw-foot-right">
+                <button class="sw-btn-cancel" onclick="poCloseModal('poImportModal')">Cancel</button>
+            </div>
         </div>
     </div>
 </div>
@@ -13281,10 +13457,12 @@
             "data": {
                 "page": 1,
                 "page_size": 20,
-                "total_count": 462,
-                "total_records": 20,
+                "total_count": 464,
+                "total_records": 22,
                 "total_pages": 10,
                 "records": [
+                    {"id":100000000001,"employee":{"id":294511379152,"name":"ops","code":"ADMIN009"},"checkin":{"time":"","latitude":0.0,"logitude":0.0},"checkout":{"time":"","latitude":0.0,"logitude":0.0},"status":{"code":8,"label":"OOD"},"work_hours":"","created_at":"2026-04-21T00:00:00","employee_remarks":"Client visit at new deployment site","can_hr_mark_attendance":false,"action":"Submitted by employee","approval_status":0,"logs":{},"ood":{"from_date":"2026-04-21","to_date":"2026-04-23","location":"Shimla, Himachal Pradesh","days":3}},
+                    {"id":100000000002,"employee":{"id":324475492436,"name":"Jaspal Kumar","code":"jaspal006"},"checkin":{"time":"","latitude":0.0,"logitude":0.0},"checkout":{"time":"","latitude":0.0,"logitude":0.0},"status":{"code":8,"label":"OOD"},"work_hours":"","created_at":"2026-04-18T00:00:00","employee_remarks":"Site inspection and survey","can_hr_mark_attendance":false,"action":"Approved by ADMIN","approval_status":3,"logs":{"ADMIN":{"is_approved":true,"status":3,"remarks":"Approved for outstation work"}},"ood":{"from_date":"2026-04-18","to_date":"2026-04-19","location":"Manali, Himachal Pradesh","days":2}},
                     {"id":869692252428,"employee":{"id":294511379152,"name":"Adminnew","code":"ADMIN009"},"checkin":{"time":"2026-02-12T11:42:40.677585","latitude":30.7333,"logitude":76.7794},"checkout":{"time":"2026-02-12T11:42:49.598904","latitude":30.7333,"logitude":76.7794},"status":{"code":3,"label":"L"},"work_hours":"00:00","created_at":"2026-02-12T11:42:40.677585","employee_remarks":null,"can_hr_mark_attendance":false,"action":"Approved by ADMIN","approval_status":3,"logs":{"ADMIN":{"is_approved":true,"status":3,"remarks":null}}},
                     {"id":267840668466,"employee":{"id":294511379152,"name":"Adminnew","code":"ADMIN009"},"checkin":{"time":"2026-02-11T11:14:52.649650","latitude":30.7333,"logitude":76.7794},"checkout":{"time":"2026-02-11T11:15:11.166779","latitude":30.7333,"logitude":76.7794},"status":{"code":0,"label":"SUBMITTED"},"work_hours":"00:00","created_at":"2026-02-11T11:14:52.649650","employee_remarks":null,"can_hr_mark_attendance":false,"action":"Submitted by employee","approval_status":0,"logs":{}},
                     {"id":266615422142,"employee":{"id":598092769043,"name":"Tashu  Goyal","code":"ATQ/PB/0001"},"checkin":{"time":"","latitude":0.0,"logitude":0.0},"checkout":{"time":"","latitude":0.0,"logitude":0.0},"status":{"code":1,"label":"P"},"work_hours":"","created_at":"2026-02-10T00:00:00","employee_remarks":null,"can_hr_mark_attendance":false,"action":"Approved by ADMIN","approval_status":1,"logs":{"ADMIN":{"is_approved":true,"status":1,"remarks":null}}},
@@ -13335,7 +13513,9 @@
         }
 
         function getApprovalBadge(statusLabel) {
-            if (statusLabel === 'P') {
+            if (statusLabel === 'OOD') {
+                return '<span class="approval-badge ood">On Duty</span>';
+            } else if (statusLabel === 'P') {
                 return '<span class="approval-badge present">Present</span>';
             } else if (statusLabel === 'L') {
                 return '<span class="approval-badge leave">Leave</span>';
@@ -13399,6 +13579,7 @@
 
             const approvalRenderer = (p) => {
                 const label = (p.data.status && p.data.status.label) || '';
+                if (label === 'OOD')        return '<span class="approval-badge ood">On Duty</span>';
                 if (label === 'P')          return '<span class="approval-badge present">Present</span>';
                 if (label === 'L')          return '<span class="approval-badge leave">Leave</span>';
                 if (label === 'ABSENT_NA')  return '<span class="approval-badge absent">Absent</span>';
@@ -13933,8 +14114,61 @@
                 if (exportModal && exportModal.classList.contains('active')) {
                     closeExportModal();
                 }
+                const oodModal = document.getElementById('oodRequestModal');
+                if (oodModal && oodModal.classList.contains('active')) {
+                    oodCloseModal();
+                }
             }
         });
+
+        /* ══ OUT ON DUTY (Outstation attendance) ══ */
+        function oodOpenModal() {
+            // Reset form fields on every open so it starts clean
+            ['ood-from','ood-to','ood-location','ood-remarks'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
+            // Default From Date to today for convenience
+            const today = new Date().toISOString().slice(0, 10);
+            const fromEl = document.getElementById('ood-from');
+            if (fromEl) fromEl.value = today;
+            // Populate "Applying as" chip from the signed-in user shown in the top bar
+            const nameSrc = document.querySelector('.user-menu .user-name');
+            const roleSrc = document.querySelector('.user-menu .user-role');
+            const avSrc   = document.querySelector('.user-menu .user-avatar');
+            const nm = (nameSrc && nameSrc.textContent.trim()) || 'You';
+            const rl = (roleSrc && roleSrc.textContent.trim()) || '';
+            const av = (avSrc && avSrc.textContent.trim()) || nm.slice(0,1).toUpperCase();
+            const nameEl = document.getElementById('oodApplyingName');
+            const avEl   = document.getElementById('oodApplyingAvatar');
+            if (nameEl) nameEl.textContent = rl ? `${nm} · ${rl}` : nm;
+            if (avEl)   avEl.textContent   = av;
+            document.getElementById('oodRequestModal').classList.add('active');
+        }
+
+        function oodCloseModal() {
+            document.getElementById('oodRequestModal').classList.remove('active');
+        }
+
+        function oodSubmit() {
+            const from     = (document.getElementById('ood-from')    || {}).value || '';
+            const to       = (document.getElementById('ood-to')      || {}).value || '';
+            const location = (document.getElementById('ood-location')|| {}).value || '';
+
+            if (!from)            { alert('Please choose a From Date.');            return; }
+            if (!to)              { alert('Please choose a To Date.');              return; }
+            if (new Date(to) < new Date(from)) { alert('To Date cannot be earlier than From Date.'); return; }
+            if (!location.trim()) { alert('Please enter the outstation location.'); return; }
+
+            // Compute duration in days (inclusive)
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const days = Math.round((new Date(to) - new Date(from)) / msPerDay) + 1;
+            // Pull current user for the confirmation message
+            const nm = (document.querySelector('.user-menu .user-name') || {}).textContent || 'you';
+
+            oodCloseModal();
+            // Lightweight feedback — replace with real API call when wiring up backend
+            alert(`✓ OOD request submitted for ${nm.trim()}\n${from} → ${to} (${days} day${days !== 1 ? 's' : ''})\nLocation: ${location}\n\nYour reporting manager will be notified for approval.`);
+        }
 
         function selectExportFormat(element, format) {
             // Remove selected class from all formats
@@ -15930,56 +16164,252 @@ function poExportCSV() {
     a.click();
 }
 
-// ── IMPORT ────────────────────────────────────────────
-let importedData = null;
+// ── IMPORT (3-step wizard) ────────────────────────────
+const PW_FIELDS = [
+    { key: 'po_number',  label: 'PO Number',   required: true,  aliases: ['po_number','ponumber','po number','po','po_no','pono','po id','poid'] },
+    { key: 'po_date',    label: 'PO Date',     required: true,  aliases: ['po_date','podate','po date','date','issue_date','issuedate','order_date','orderdate'] },
+    { key: 'client',     label: 'Client',      required: true,  aliases: ['client','client_name','clientname','customer','customer_name','company','account'] },
+    { key: 'project',    label: 'Project',     required: true,  aliases: ['project','project_name','projectname','proj'] },
+    { key: 'quantity',   label: 'Quantity',    required: true,  aliases: ['quantity','qty','amount','count','units'] },
+    { key: 'valid_from', label: 'Valid From',  required: true,  aliases: ['valid_from','validfrom','valid from','start_date','startdate','from_date','fromdate','from'] },
+    { key: 'valid_to',   label: 'Valid To',    required: true,  aliases: ['valid_to','validto','valid to','end_date','enddate','to_date','todate','to','expiry','expires'] },
+    { key: 'location',   label: 'Location',    required: false, aliases: ['location','loc','city','address','place'] },
+    { key: 'circle',     label: 'Circle',      required: false, aliases: ['circle','circle_code','circlecode','region','zone'] }
+];
+let pwState = { step: 1, file: null, headers: [], rows: [], mapping: {} };
 
-function poDownloadTemplate() {
-    const csv = 'po_number,po_date,client,project,quantity,valid_from,valid_to,location,circle\nPO-100,2026-01-01,Jio,jio4g,50,2026-01-01,2026-12-31,Chandigarh,CHD\n';
-    const blob = new Blob([csv], {type:'text/csv'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = 'po-import-template.csv'; a.click();
+function poOpenImportModal() { pwResetWizard(); document.getElementById('poImportModal').classList.add('active'); }
+
+function pwResetWizard() {
+    pwState = { step: 1, file: null, headers: [], rows: [], mapping: {} };
+    const fi = document.getElementById('pwFileInput'); if (fi) fi.value = '';
+    pwUpdateStepUI();
+    document.getElementById('pwBtnNext').disabled = true;
+    document.getElementById('pwBtnImport').disabled = true;
+    document.querySelectorAll('#poImportModal .sw-prev-card.open').forEach(c => c.classList.remove('open'));
 }
 
-function poHandleDragOver(e) { e.preventDefault(); document.getElementById('poImportZone').classList.add('drag-over'); }
-function poHandleDragLeave() { document.getElementById('poImportZone').classList.remove('drag-over'); }
-function poHandleDrop(e) {
+function pwUpdateStepUI() {
+    for (let i = 1; i <= 3; i++) {
+        const step  = document.getElementById('pw-step-' + i);
+        const num   = document.getElementById('pw-num-' + i);
+        const panel = document.getElementById('pw-panel-' + i);
+        step.classList.remove('active','done');
+        panel.classList.remove('active');
+        if (i < pwState.step) {
+            step.classList.add('done');
+            num.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+        } else if (i === pwState.step) {
+            step.classList.add('active');
+            num.textContent = i;
+            panel.classList.add('active');
+        } else {
+            num.textContent = i;
+        }
+    }
+    document.getElementById('pw-conn-1').classList.toggle('done', pwState.step > 1);
+    document.getElementById('pw-conn-2').classList.toggle('done', pwState.step > 2);
+    const btnPrev   = document.getElementById('pwBtnPrev');
+    const btnNext   = document.getElementById('pwBtnNext');
+    const btnImport = document.getElementById('pwBtnImport');
+    btnPrev.style.display   = pwState.step === 1 ? 'none' : 'inline-flex';
+    btnNext.style.display   = pwState.step === 3 ? 'none' : 'inline-flex';
+    btnImport.style.display = pwState.step === 3 ? 'inline-flex' : 'none';
+    if (pwState.step === 1) btnNext.disabled   = !pwState.file;
+    if (pwState.step === 2) btnNext.disabled   = !pwValidateRequiredMappings();
+    if (pwState.step === 3) btnImport.disabled = pwComputeReadyCount() === 0;
+}
+
+function pwHandleDragOver(e)  { e.preventDefault(); document.getElementById('pwDropzone').classList.add('drag-over'); }
+function pwHandleDragLeave(e) { e.preventDefault(); document.getElementById('pwDropzone').classList.remove('drag-over'); }
+function pwHandleDrop(e) {
     e.preventDefault();
-    document.getElementById('poImportZone').classList.remove('drag-over');
-    if (e.dataTransfer.files[0]) poHandleFileSelect(e.dataTransfer.files[0]);
+    document.getElementById('pwDropzone').classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f) pwHandleFileSelect(f);
 }
-function poHandleFileSelect(file) {
+
+function pwHandleFileSelect(file) {
     if (!file) return;
-    document.getElementById('poSelectedFileName').textContent = file.name;
-    document.getElementById('poSelectedFileSize').textContent = poFormatFileSize(file.size);
-    document.getElementById('poFileSelected').classList.add('show');
+    if (file.size > 5 * 1024 * 1024) { alert('File is larger than 5 MB.'); return; }
+    pwState.file = file;
     const reader = new FileReader();
     reader.onload = (e) => {
-        const lines = e.target.result.trim().split('\n').filter(l=>l.trim());
-        if (lines.length < 2) return;
-        const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').trim());
-        const rows = lines.slice(1,6).map(l=>l.split(',').map(v=>v.replace(/"/g,'').trim()));
-        importedData = {headers, rows, total: lines.length-1};
-        let html = '<thead><tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>';
-        html += rows.map(r=>'<tr>'+r.map(v=>`<td>${v||'—'}</td>`).join('')+'</tr>').join('')+'</tbody>';
-        document.getElementById('poPreviewTable').innerHTML = html;
-        document.getElementById('poPreviewCount').textContent = `${importedData.total} row${importedData.total!==1?'s':''}`;
-        document.getElementById('poPreviewBox').classList.add('show');
-        document.getElementById('poBtnImportSubmit').disabled = false;
+        const content = e.target.result;
+        const isTSV = /\.tsv$/i.test(file.name);
+        const delim = isTSV ? '\t' : ',';
+        const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+        if (lines.length === 0) { alert('The file appears to be empty.'); return; }
+        const headers = lines[0].split(delim).map(h => h.replace(/^"|"$/g,'').trim());
+        const rows = lines.slice(1).map(l => l.split(delim).map(v => v.replace(/^"|"$/g,'').trim()));
+        pwState.headers = headers;
+        pwState.rows = rows;
+        document.getElementById('pwBtnNext').disabled = false;
     };
+    reader.onerror = () => { alert('Could not read the file.'); };
     reader.readAsText(file);
 }
-function poFormatFileSize(b) { return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'; }
-function poClearFile() {
-    importedData = null;
-    document.getElementById('poFileInput').value = '';
-    document.getElementById('poFileSelected').classList.remove('show');
-    document.getElementById('poPreviewBox').classList.remove('show');
-    document.getElementById('poBtnImportSubmit').disabled = true;
+
+function pwNext() {
+    if (pwState.step === 1) {
+        if (!pwState.file) return;
+        document.getElementById('pwSelectedFileName').textContent = pwState.file.name;
+        pwAutoMap();
+        pwRenderMapRows();
+        pwState.step = 2;
+        pwUpdateStepUI();
+    } else if (pwState.step === 2) {
+        if (!pwValidateRequiredMappings()) return;
+        pwComputePreview();
+        pwState.step = 3;
+        pwUpdateStepUI();
+    }
 }
-function poSubmitImport() {
-    if (!importedData) return;
-    alert(`✓ ${importedData.total} POs ready to import.`);
-    poCloseModal('poImportModal'); poClearFile();
+
+function pwPrev() {
+    if (pwState.step > 1) { pwState.step--; pwUpdateStepUI(); }
+}
+
+function pwAutoMap() {
+    pwState.mapping = {};
+    const norm = s => (s || '').toString().toLowerCase().replace(/[\s_\-]+/g, '').trim();
+    PW_FIELDS.forEach(f => {
+        for (const alias of f.aliases) {
+            const a = norm(alias);
+            const match = pwState.headers.find(h => norm(h) === a);
+            if (match) { pwState.mapping[f.key] = match; break; }
+        }
+    });
+}
+
+function pwRenderMapRows() {
+    const container = document.getElementById('pwMapRows');
+    let html = '';
+    PW_FIELDS.forEach(f => {
+        const selected = pwState.mapping[f.key] || '';
+        const hasValue = selected !== '';
+        html += `
+            <div class="sw-map-row${hasValue ? ' has-value' : ''}" id="pw-row-${f.key}">
+                <div class="sw-map-lbl">${f.label}${f.required ? ' <span class="sw-map-req">*</span>' : ''}</div>
+                <div class="sw-map-ctrl">
+                    <select class="sw-map-select${hasValue ? ' has-value' : ''}" onchange="pwOnMapChange('${f.key}', this.value)">
+                        <option value="">— Select column —</option>
+                        ${pwState.headers.map(h => `<option value="${pwEsc(h)}"${h === selected ? ' selected' : ''}>${pwEsc(h)}</option>`).join('')}
+                    </select>
+                    <button class="sw-map-clear" onclick="pwClearMap('${f.key}')" type="button" aria-label="Clear">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+    document.getElementById('pwBtnNext').disabled = !pwValidateRequiredMappings();
+}
+
+function pwEsc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function pwOnMapChange(fieldKey, value) {
+    if (value) pwState.mapping[fieldKey] = value;
+    else delete pwState.mapping[fieldKey];
+    const row = document.getElementById('pw-row-' + fieldKey);
+    if (row) {
+        row.classList.toggle('has-value', !!value);
+        const sel = row.querySelector('.sw-map-select');
+        if (sel) sel.classList.toggle('has-value', !!value);
+    }
+    document.getElementById('pwBtnNext').disabled = !pwValidateRequiredMappings();
+}
+
+function pwClearMap(fieldKey) {
+    pwOnMapChange(fieldKey, '');
+    const row = document.getElementById('pw-row-' + fieldKey);
+    if (row) { const sel = row.querySelector('.sw-map-select'); if (sel) sel.value = ''; }
+}
+
+function pwValidateRequiredMappings() {
+    return PW_FIELDS.filter(f => f.required).every(f => !!pwState.mapping[f.key]);
+}
+
+function pwComputePreview() {
+    const total = pwState.rows.length;
+    const ready = pwComputeReadyCount();
+    const skipped = total - ready;
+    const unmapped = pwState.headers.filter(h => !Object.values(pwState.mapping).includes(h));
+    document.getElementById('pwReadyCount').textContent = ready;
+    document.getElementById('pwTotalCount').textContent = total;
+    document.getElementById('pwSkippedCount').textContent = skipped;
+    document.getElementById('pwUnmappedCount').textContent = unmapped.length;
+    const skippedDetails = document.getElementById('pwSkippedDetails');
+    if (skipped === 0) {
+        skippedDetails.textContent = 'No records were skipped.';
+    } else {
+        const reqKeys = PW_FIELDS.filter(f => f.required).map(f => f.key);
+        const reqIdx = reqKeys.map(k => pwState.headers.indexOf(pwState.mapping[k]));
+        const reasons = [];
+        pwState.rows.forEach((row, i) => {
+            const missing = reqKeys.filter((k, j) => {
+                const idx = reqIdx[j];
+                return idx < 0 || !row[idx] || !row[idx].trim();
+            });
+            if (missing.length) reasons.push(`Row ${i + 2}: missing ${missing.map(k => PW_FIELDS.find(f => f.key === k).label).join(', ')}`);
+        });
+        skippedDetails.innerHTML = '<ul>' + reasons.slice(0, 20).map(r => `<li>${pwEsc(r)}</li>`).join('') + (reasons.length > 20 ? `<li>…and ${reasons.length - 20} more</li>` : '') + '</ul>';
+    }
+    const unmappedDetails = document.getElementById('pwUnmappedDetails');
+    if (unmapped.length === 0) {
+        unmappedDetails.textContent = 'All columns in your file are mapped to ONAQT fields.';
+    } else {
+        unmappedDetails.innerHTML = 'The following columns from your file are not being imported:<ul>' + unmapped.map(h => `<li>${pwEsc(h)}</li>`).join('') + '</ul>';
+    }
+}
+
+function pwComputeReadyCount() {
+    if (!pwState.rows.length) return 0;
+    const reqKeys = PW_FIELDS.filter(f => f.required).map(f => f.key);
+    const reqIdx = reqKeys.map(k => pwState.headers.indexOf(pwState.mapping[k]));
+    if (reqIdx.some(i => i < 0)) return 0;
+    let ready = 0;
+    pwState.rows.forEach(row => {
+        if (reqIdx.every(i => row[i] && row[i].trim())) ready++;
+    });
+    return ready;
+}
+
+function pwToggleDetail(cardId) {
+    const card = document.getElementById(cardId);
+    if (card) card.classList.toggle('open');
+}
+
+function pwSubmitImport() {
+    const ready = pwComputeReadyCount();
+    if (ready === 0) return;
+    alert(`✓ ${ready} PO${ready !== 1 ? 's' : ''} ready to import. Connect to your API to process.`);
+    poCloseModal('poImportModal');
+}
+
+/* Kept as a no-arg helper in case other code still calls it (e.g. templates bound to the old UI). */
+function poDownloadTemplate() { pwDownloadSample('csv'); }
+
+function pwDownloadSample(fmt) {
+    const headers = 'po_number,po_date,client,project,quantity,valid_from,valid_to,location,circle';
+    const blob = new Blob([headers + '\n'], { type: fmt === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `po-sample.${fmt}`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+function pwDownloadReference() {
+    const csv = 'po_number,po_date,client,project,quantity,valid_from,valid_to,location,circle\n'
+              + 'PO-1001,2026-01-15,Jio,jio4g,50,2026-01-15,2026-12-31,Chandigarh,CHD\n'
+              + 'PO-1002,2026-02-10,Voult Inc,Voult,25,2026-02-10,2026-11-30,Mohali,PB\n'
+              + 'PO-1003,2026-03-05,TestNS,TestP,100,2026-03-05,2026-09-30,Shimla,HP\n';
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'po-reference-with-data.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
 }
 
 // ── DROPDOWN ──────────────────────────────────────────
