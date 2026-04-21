@@ -9903,6 +9903,7 @@
                         <button class="cb-icon-btn" onclick="openFilterPanel()" title="Filter"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg></button>
                         <button class="cb-icon-btn" onclick="openColumnCustomizer()" title="Customize Columns"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg></button>
                         <button class="cb-icon-btn" title="Refresh"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+                        <button class="cb-icon-btn" onclick="attOpenImportModal()" title="Import Attendance (backfill missed entries)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></button>
                         <button class="cb-icon-btn" onclick="openExportModal()" title="Export"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
                         <button class="cb-icon-btn" title="Settings"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
                         <!-- settings close -->
@@ -9981,6 +9982,132 @@
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
                                 Submit Request
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ ATTENDANCE: IMPORT MODAL (3-step wizard) — backfill missed entries ══ -->
+                <div class="site-modal-overlay" id="attImportModal" onclick="if(event.target===this)attCloseImportModal()">
+                    <div class="site-modal-box sw-box">
+                        <!-- Header -->
+                        <div class="sw-head">
+                            <button class="sw-close" onclick="attCloseImportModal()" aria-label="Close">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                            <div class="sw-title">Attendance Upload</div>
+                            <!-- Step indicator -->
+                            <div class="sw-steps">
+                                <div class="sw-step active" id="aw-step-1">
+                                    <div class="sw-step-num" id="aw-num-1">1</div>
+                                    <div class="sw-step-lbl">Configure</div>
+                                </div>
+                                <div class="sw-step-conn" id="aw-conn-1"></div>
+                                <div class="sw-step" id="aw-step-2">
+                                    <div class="sw-step-num" id="aw-num-2">2</div>
+                                    <div class="sw-step-lbl">Map Views</div>
+                                </div>
+                                <div class="sw-step-conn" id="aw-conn-2"></div>
+                                <div class="sw-step" id="aw-step-3">
+                                    <div class="sw-step-num" id="aw-num-3">3</div>
+                                    <div class="sw-step-lbl">Preview</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sw-divider"></div>
+
+                        <!-- Body -->
+                        <div class="sw-body">
+                            <!-- ─ Step 1: Configure ─ -->
+                            <div class="sw-panel active" id="aw-panel-1">
+                                <div class="sw-info" style="margin-bottom:16px;">
+                                    <div class="sw-info-dot">!</div>
+                                    <div class="sw-info-text">Use this to backfill attendance entries for employees who missed marking attendance on one or more days. Each row in your file will create one attendance record.</div>
+                                </div>
+                                <div class="sw-dropzone" id="awDropzone" ondragover="awHandleDragOver(event)" ondragleave="awHandleDragLeave(event)" ondrop="awHandleDrop(event)" onclick="document.getElementById('awFileInput').click()">
+                                    <input type="file" accept=".csv,.tsv,.xlsx,.xls" id="awFileInput" onchange="awHandleFileSelect(this.files[0])">
+                                    <div class="sw-dz-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                    </div>
+                                    <div class="sw-dz-title">Drag &amp; Drop file to Import</div>
+                                    <button class="sw-choose-btn" type="button" onclick="event.stopPropagation();document.getElementById('awFileInput').click()">
+                                        Choose File
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+                                    </button>
+                                    <div class="sw-dz-meta">
+                                        Maximum file size: 5 MB<br>
+                                        Supported Format: CSV, TSV, or XLS
+                                    </div>
+                                </div>
+                                <div class="sw-samples">
+                                    <div class="sw-samples-text">
+                                        Download a <a onclick="awDownloadSample('csv')">sample CSV file</a> or <a onclick="awDownloadSample('xls')">sample XLS file</a> and compare it to your import file to<br>ensure the structure is correct for import.
+                                    </div>
+                                    <button class="sw-ref-btn" onclick="awDownloadReference()">
+                                        Download Attendance Import Reference File with Data
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- ─ Step 2: Map Views ─ -->
+                            <div class="sw-panel" id="aw-panel-2">
+                                <div class="sw-file-title">Your Selected File: <strong id="awSelectedFileName">—</strong></div>
+                                <div class="sw-info">
+                                    <div class="sw-info-dot">!</div>
+                                    <div class="sw-info-text">The best match to each field has been auto-selected.</div>
+                                </div>
+                                <div class="sw-map-section-title">Attendance Details</div>
+                                <div class="sw-map-header">
+                                    <div>ONAQT Field</div>
+                                    <div>IMPORTED File Headers</div>
+                                </div>
+                                <div class="sw-map-rows" id="awMapRows">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+
+                            <!-- ─ Step 3: Preview ─ -->
+                            <div class="sw-panel" id="aw-panel-3">
+                                <div class="sw-prev-info">
+                                    <div class="sw-info-dot">!</div>
+                                    <div class="sw-prev-info-text"><strong id="awReadyCount">0</strong> of <strong id="awTotalCount">0</strong> Attendance entries in your file are ready to be imported.</div>
+                                </div>
+                                <div class="sw-prev-card" id="awSkippedCard">
+                                    <div class="sw-prev-row" onclick="awToggleDetail('awSkippedCard')">
+                                        <div class="sw-prev-row-left">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+                                            <span>No. of Records skipped - <span id="awSkippedCount">0</span></span>
+                                        </div>
+                                        <div class="sw-prev-view">View Details
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="sw-prev-details" id="awSkippedDetails">No records were skipped.</div>
+                                </div>
+                                <div class="sw-prev-card" id="awUnmappedCard">
+                                    <div class="sw-prev-row" onclick="awToggleDetail('awUnmappedCard')">
+                                        <div class="sw-prev-row-left">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+                                            <span>Unmapped Fields - <span id="awUnmappedCount">0</span></span>
+                                        </div>
+                                        <div class="sw-prev-view">View Details
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="sw-prev-details" id="awUnmappedDetails">All fields are mapped.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="sw-foot">
+                            <div class="sw-foot-left">
+                                <button class="sw-btn-prev" id="awBtnPrev" onclick="awPrev()" style="display:none;">Previous</button>
+                                <button class="sw-btn-next" id="awBtnNext" onclick="awNext()" disabled>Next</button>
+                                <button class="sw-btn-import" id="awBtnImport" onclick="awSubmitImport()" style="display:none;" disabled>Import</button>
+                            </div>
+                            <div class="sw-foot-right">
+                                <button class="sw-btn-cancel" onclick="attCloseImportModal()">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -14168,6 +14295,250 @@
             oodCloseModal();
             // Lightweight feedback — replace with real API call when wiring up backend
             alert(`✓ OOD request submitted for ${nm.trim()}\n${from} → ${to} (${days} day${days !== 1 ? 's' : ''})\nLocation: ${location}\n\nYour reporting manager will be notified for approval.`);
+        }
+
+        /* ══ ATTENDANCE IMPORT WIZARD (backfill missed entries) ══ */
+        const AW_FIELDS = [
+            { key: 'emp_code',  label: 'Employee Code',   required: true,  aliases: ['emp_code','empcode','employee_code','employeecode','code','emp id','empid','employee id','user id','userid','user_id','staff id','staffid'] },
+            { key: 'emp_name',  label: 'Employee Name',   required: false, aliases: ['emp_name','empname','employee_name','employeename','name','full name','fullname','staff name'] },
+            { key: 'date',      label: 'Date',            required: true,  aliases: ['date','attendance_date','attendancedate','att_date','attdate','day','work date','workdate'] },
+            { key: 'check_in',  label: 'Check In Time',   required: true,  aliases: ['check_in','checkin','check in','clock_in','clockin','clock in','sign_in','signin','sign in','in_time','intime','in time','start time','starttime'] },
+            { key: 'check_out', label: 'Check Out Time',  required: true,  aliases: ['check_out','checkout','check out','clock_out','clockout','clock out','sign_out','signout','sign out','out_time','outtime','out time','end time','endtime'] },
+            { key: 'status',    label: 'Status',          required: false, aliases: ['status','attendance_status','attendancestatus','att_status','presence','mark','state'] },
+            { key: 'remarks',   label: 'Remarks / Reason',required: false, aliases: ['remarks','reason','notes','note','comments','comment','description','memo'] }
+        ];
+        let awState = { step: 1, file: null, headers: [], rows: [], mapping: {} };
+
+        function attOpenImportModal() { awResetWizard(); document.getElementById('attImportModal').classList.add('active'); }
+        function attCloseImportModal() { document.getElementById('attImportModal').classList.remove('active'); }
+
+        function awResetWizard() {
+            awState = { step: 1, file: null, headers: [], rows: [], mapping: {} };
+            const fi = document.getElementById('awFileInput'); if (fi) fi.value = '';
+            awUpdateStepUI();
+            document.getElementById('awBtnNext').disabled = true;
+            document.getElementById('awBtnImport').disabled = true;
+            document.querySelectorAll('#attImportModal .sw-prev-card.open').forEach(c => c.classList.remove('open'));
+        }
+
+        function awUpdateStepUI() {
+            for (let i = 1; i <= 3; i++) {
+                const step  = document.getElementById('aw-step-' + i);
+                const num   = document.getElementById('aw-num-' + i);
+                const panel = document.getElementById('aw-panel-' + i);
+                step.classList.remove('active','done');
+                panel.classList.remove('active');
+                if (i < awState.step) {
+                    step.classList.add('done');
+                    num.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+                } else if (i === awState.step) {
+                    step.classList.add('active');
+                    num.textContent = i;
+                    panel.classList.add('active');
+                } else {
+                    num.textContent = i;
+                }
+            }
+            document.getElementById('aw-conn-1').classList.toggle('done', awState.step > 1);
+            document.getElementById('aw-conn-2').classList.toggle('done', awState.step > 2);
+            const btnPrev   = document.getElementById('awBtnPrev');
+            const btnNext   = document.getElementById('awBtnNext');
+            const btnImport = document.getElementById('awBtnImport');
+            btnPrev.style.display   = awState.step === 1 ? 'none' : 'inline-flex';
+            btnNext.style.display   = awState.step === 3 ? 'none' : 'inline-flex';
+            btnImport.style.display = awState.step === 3 ? 'inline-flex' : 'none';
+            if (awState.step === 1) btnNext.disabled   = !awState.file;
+            if (awState.step === 2) btnNext.disabled   = !awValidateRequiredMappings();
+            if (awState.step === 3) btnImport.disabled = awComputeReadyCount() === 0;
+        }
+
+        function awHandleDragOver(e)  { e.preventDefault(); document.getElementById('awDropzone').classList.add('drag-over'); }
+        function awHandleDragLeave(e) { e.preventDefault(); document.getElementById('awDropzone').classList.remove('drag-over'); }
+        function awHandleDrop(e) {
+            e.preventDefault();
+            document.getElementById('awDropzone').classList.remove('drag-over');
+            const f = e.dataTransfer.files[0];
+            if (f) awHandleFileSelect(f);
+        }
+
+        function awHandleFileSelect(file) {
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { alert('File is larger than 5 MB.'); return; }
+            awState.file = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                const isTSV = /\.tsv$/i.test(file.name);
+                const delim = isTSV ? '\t' : ',';
+                const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+                if (lines.length === 0) { alert('The file appears to be empty.'); return; }
+                const headers = lines[0].split(delim).map(h => h.replace(/^"|"$/g,'').trim());
+                const rows = lines.slice(1).map(l => l.split(delim).map(v => v.replace(/^"|"$/g,'').trim()));
+                awState.headers = headers;
+                awState.rows = rows;
+                document.getElementById('awBtnNext').disabled = false;
+            };
+            reader.onerror = () => { alert('Could not read the file.'); };
+            reader.readAsText(file);
+        }
+
+        function awNext() {
+            if (awState.step === 1) {
+                if (!awState.file) return;
+                document.getElementById('awSelectedFileName').textContent = awState.file.name;
+                awAutoMap();
+                awRenderMapRows();
+                awState.step = 2;
+                awUpdateStepUI();
+            } else if (awState.step === 2) {
+                if (!awValidateRequiredMappings()) return;
+                awComputePreview();
+                awState.step = 3;
+                awUpdateStepUI();
+            }
+        }
+
+        function awPrev() {
+            if (awState.step > 1) { awState.step--; awUpdateStepUI(); }
+        }
+
+        function awAutoMap() {
+            awState.mapping = {};
+            const norm = s => (s || '').toString().toLowerCase().replace(/[\s_\-]+/g, '').trim();
+            AW_FIELDS.forEach(f => {
+                for (const alias of f.aliases) {
+                    const a = norm(alias);
+                    const match = awState.headers.find(h => norm(h) === a);
+                    if (match) { awState.mapping[f.key] = match; break; }
+                }
+            });
+        }
+
+        function awRenderMapRows() {
+            const container = document.getElementById('awMapRows');
+            let html = '';
+            AW_FIELDS.forEach(f => {
+                const selected = awState.mapping[f.key] || '';
+                const hasValue = selected !== '';
+                html += `
+                    <div class="sw-map-row${hasValue ? ' has-value' : ''}" id="aw-row-${f.key}">
+                        <div class="sw-map-lbl">${f.label}${f.required ? ' <span class="sw-map-req">*</span>' : ''}</div>
+                        <div class="sw-map-ctrl">
+                            <select class="sw-map-select${hasValue ? ' has-value' : ''}" onchange="awOnMapChange('${f.key}', this.value)">
+                                <option value="">— Select column —</option>
+                                ${awState.headers.map(h => `<option value="${awEsc(h)}"${h === selected ? ' selected' : ''}>${awEsc(h)}</option>`).join('')}
+                            </select>
+                            <button class="sw-map-clear" onclick="awClearMap('${f.key}')" type="button" aria-label="Clear">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+            document.getElementById('awBtnNext').disabled = !awValidateRequiredMappings();
+        }
+
+        function awEsc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        function awOnMapChange(fieldKey, value) {
+            if (value) awState.mapping[fieldKey] = value;
+            else delete awState.mapping[fieldKey];
+            const row = document.getElementById('aw-row-' + fieldKey);
+            if (row) {
+                row.classList.toggle('has-value', !!value);
+                const sel = row.querySelector('.sw-map-select');
+                if (sel) sel.classList.toggle('has-value', !!value);
+            }
+            document.getElementById('awBtnNext').disabled = !awValidateRequiredMappings();
+        }
+
+        function awClearMap(fieldKey) {
+            awOnMapChange(fieldKey, '');
+            const row = document.getElementById('aw-row-' + fieldKey);
+            if (row) { const sel = row.querySelector('.sw-map-select'); if (sel) sel.value = ''; }
+        }
+
+        function awValidateRequiredMappings() {
+            return AW_FIELDS.filter(f => f.required).every(f => !!awState.mapping[f.key]);
+        }
+
+        function awComputePreview() {
+            const total = awState.rows.length;
+            const ready = awComputeReadyCount();
+            const skipped = total - ready;
+            const unmapped = awState.headers.filter(h => !Object.values(awState.mapping).includes(h));
+            document.getElementById('awReadyCount').textContent = ready;
+            document.getElementById('awTotalCount').textContent = total;
+            document.getElementById('awSkippedCount').textContent = skipped;
+            document.getElementById('awUnmappedCount').textContent = unmapped.length;
+            const skippedDetails = document.getElementById('awSkippedDetails');
+            if (skipped === 0) {
+                skippedDetails.textContent = 'No records were skipped.';
+            } else {
+                const reqKeys = AW_FIELDS.filter(f => f.required).map(f => f.key);
+                const reqIdx = reqKeys.map(k => awState.headers.indexOf(awState.mapping[k]));
+                const reasons = [];
+                awState.rows.forEach((row, i) => {
+                    const missing = reqKeys.filter((k, j) => {
+                        const idx = reqIdx[j];
+                        return idx < 0 || !row[idx] || !row[idx].trim();
+                    });
+                    if (missing.length) reasons.push(`Row ${i + 2}: missing ${missing.map(k => AW_FIELDS.find(f => f.key === k).label).join(', ')}`);
+                });
+                skippedDetails.innerHTML = '<ul>' + reasons.slice(0, 20).map(r => `<li>${awEsc(r)}</li>`).join('') + (reasons.length > 20 ? `<li>…and ${reasons.length - 20} more</li>` : '') + '</ul>';
+            }
+            const unmappedDetails = document.getElementById('awUnmappedDetails');
+            if (unmapped.length === 0) {
+                unmappedDetails.textContent = 'All columns in your file are mapped to ONAQT fields.';
+            } else {
+                unmappedDetails.innerHTML = 'The following columns from your file are not being imported:<ul>' + unmapped.map(h => `<li>${awEsc(h)}</li>`).join('') + '</ul>';
+            }
+        }
+
+        function awComputeReadyCount() {
+            if (!awState.rows.length) return 0;
+            const reqKeys = AW_FIELDS.filter(f => f.required).map(f => f.key);
+            const reqIdx = reqKeys.map(k => awState.headers.indexOf(awState.mapping[k]));
+            if (reqIdx.some(i => i < 0)) return 0;
+            let ready = 0;
+            awState.rows.forEach(row => {
+                if (reqIdx.every(i => row[i] && row[i].trim())) ready++;
+            });
+            return ready;
+        }
+
+        function awToggleDetail(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) card.classList.toggle('open');
+        }
+
+        function awSubmitImport() {
+            const ready = awComputeReadyCount();
+            if (ready === 0) return;
+            alert(`✓ ${ready} attendance entr${ready !== 1 ? 'ies' : 'y'} ready to import.\nThe employees on these rows will have their missed days backfilled.\n\nConnect to your API to process.`);
+            attCloseImportModal();
+        }
+
+        function awDownloadSample(fmt) {
+            const headers = 'emp_code,emp_name,date,check_in,check_out,status,remarks';
+            const blob = new Blob([headers + '\n'], { type: fmt === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `attendance-sample.${fmt}`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+        function awDownloadReference() {
+            const csv = 'emp_code,emp_name,date,check_in,check_out,status,remarks\n'
+                      + 'ADMIN009,ops,2026-04-15,09:30,18:15,Present,Forgot to mark attendance\n'
+                      + 'jaspal006,Jaspal Kumar,2026-04-16,10:00,19:00,Present,System outage\n'
+                      + 'ATQ/PB/0001,Tashu Goyal,2026-04-17,09:45,17:30,Present,Biometric device offline\n';
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'attendance-reference-with-data.csv';
+            a.click();
+            URL.revokeObjectURL(a.href);
         }
 
         function selectExportFormat(element, format) {
