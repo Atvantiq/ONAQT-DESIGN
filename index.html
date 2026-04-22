@@ -4586,45 +4586,34 @@
         .rp-dept-chip { font-size: 10px; color: var(--rp-muted); font-weight: 400; margin-left: 8px; }
 
         /* ══ INVOICE TRACKER PAGE CSS ══ */
-        #page-invoice-tracking
         #page-invoice-tracking .content { flex: 1; padding: 8px 0 0; overflow-y: auto; overflow-x: hidden; }
         #page-invoice-tracking .content::-webkit-scrollbar { width: 5px; }
         #page-invoice-tracking .content::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
-        /* Stat cards */
-        #page-invoice-tracking .quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:7px}
-        #page-invoice-tracking .stat-card{padding:8px 11px;border-radius:10px;transition:var(--transition);display:flex;flex-direction:row;align-items:center;gap:8px;position:relative;overflow:hidden}
-        #page-invoice-tracking .stat-card:nth-child(1){background:var(--card1-bg);border:1px solid var(--card1-border);box-shadow:0 2px 12px var(--card1-shadow)}
-        #page-invoice-tracking .stat-card:nth-child(2){background:var(--card2-bg);border:1px solid var(--card2-border);box-shadow:0 2px 12px var(--card2-shadow)}
-        #page-invoice-tracking .stat-card:nth-child(3){background:var(--card3-bg);border:1px solid var(--card3-border);box-shadow:0 2px 12px var(--card3-shadow)}
-        #page-invoice-tracking .stat-card:nth-child(4){background:var(--card4-bg);border:1px solid var(--card4-border);box-shadow:0 2px 12px var(--card4-shadow)}
-        #page-invoice-tracking .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-        #page-invoice-tracking .stat-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        #page-invoice-tracking .stat-ico svg{width:16px;height:16px}
-        #page-invoice-tracking .stat-card:nth-child(1) .stat-ico{background:var(--card1-icon);color:var(--card1-color)}
-        #page-invoice-tracking .stat-card:nth-child(2) .stat-ico{background:var(--card2-icon);color:var(--card2-color)}
-        #page-invoice-tracking .stat-card:nth-child(3) .stat-ico{background:var(--card3-icon);color:var(--card3-color)}
-        #page-invoice-tracking .stat-card:nth-child(4) .stat-ico{background:var(--card4-icon);color:var(--card4-color)}
-        #page-invoice-tracking .stat-content{display:flex;flex-direction:column;gap:1px;flex:1}
-        #page-invoice-tracking .stat-label{font-size:10px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px}
-        #page-invoice-tracking .stat-value{font-size:17px;font-weight:700;color:var(--gray-900);line-height:1;font-family:'Fraunces',serif}
-        #page-invoice-tracking .stat-sub{font-size:10px;color:var(--gray-400)}
-        /* View tabs */
-        #page-invoice-tracking .view-tabs{display:flex;align-items:center;gap:4px;margin-bottom:8px;width:fit-content}
-        #page-invoice-tracking .view-tab{display:flex;align-items:center;gap:6px;padding:6px 16px;border-radius:8px;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;border:1.5px solid var(--gray-200);background:var(--white);font-family:'DM Sans',sans-serif;transition:var(--transition);white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-        #page-invoice-tracking .view-tab svg{width:13px;height:13px;flex-shrink:0}
-        #page-invoice-tracking .view-tab:hover{color:var(--gray-800);border-color:var(--gray-300);background:var(--gray-50)}
-        #page-invoice-tracking .view-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 3px 10px color-mix(in srgb,var(--primary) 35%,transparent)}
-        [data-dark="true"] #page-invoice-tracking .view-tab{background:#1e2130;border-color:#363b52;color:#9ca3af}
-        [data-dark="true"] #page-invoice-tracking .view-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
-        /* Grid */
-        #page-invoice-tracking .main-grid{display:grid;grid-template-columns:1fr 355px;gap:8px;align-items:stretch}
-        #page-invoice-tracking .main-grid .table-card,#page-invoice-tracking .main-grid .detail-panel{display:flex;flex-direction:column}
+        /* Page header */
+        #page-invoice-tracking .page-hdr { padding: 0; margin-bottom: 10px; }
+        /* View tabs — match admin-panel control-bar button aesthetic */
+        #page-invoice-tracking .view-tabs{display:flex;align-items:center;gap:6px;margin-bottom:10px;width:fit-content;background:var(--gray-100);padding:4px;border-radius:10px}
+        [data-dark="true"] #page-invoice-tracking .view-tabs{background:#252836!important}
+        #page-invoice-tracking .view-tab{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:var(--transition);white-space:nowrap}
+        #page-invoice-tracking .view-tab svg{width:13px;height:13px;flex-shrink:0;opacity:.7}
+        #page-invoice-tracking .view-tab:hover{color:var(--gray-900);background:var(--white)}
+        #page-invoice-tracking .view-tab.active{background:var(--white);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04)}
+        #page-invoice-tracking .view-tab.active svg{opacity:1}
+        [data-dark="true"] #page-invoice-tracking .view-tab{color:#9ca3af}
+        [data-dark="true"] #page-invoice-tracking .view-tab:hover{background:#1e2130;color:#d1d5db}
+        [data-dark="true"] #page-invoice-tracking .view-tab.active{background:#1e2130;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+        /* Grid — full-width by default, splits into 1fr + 355px side panel when detail-open */
+        #page-invoice-tracking .main-grid{display:grid;grid-template-columns:1fr;gap:8px;align-items:stretch}
+        #page-invoice-tracking .main-grid.detail-open{grid-template-columns:1fr 355px}
+        #page-invoice-tracking .main-grid .detail-panel{display:none}
+        #page-invoice-tracking .main-grid.detail-open .detail-panel{display:flex}
+        #page-invoice-tracking .main-grid .table-card{display:flex;flex-direction:column}
         /* Table card */
-        #page-invoice-tracking .table-card{background:var(--white);border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);overflow:hidden}
+        #page-invoice-tracking .table-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow-card);overflow:hidden}
         [data-dark="true"] #page-invoice-tracking .table-card{background:#1e2130!important;border-color:rgba(255,255,255,.07)!important}
-        #page-invoice-tracking .table-card-header{padding:8px 12px;border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;background:var(--white)}
-        [data-dark="true"] #page-invoice-tracking .table-card-header{background:#1e2130!important;border-color:rgba(255,255,255,.07)!important}
-        #page-invoice-tracking .table-card-title{font-size:13px;font-weight:600;color:var(--gray-900);font-family:'Fraunces',serif}
+        #page-invoice-tracking .table-card-header{padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;background:var(--white)}
+        [data-dark="true"] #page-invoice-tracking .table-card-header{background:#1e2130!important;border-color:#2d3145!important}
+        #page-invoice-tracking .table-card-title{font-size:13px;font-weight:700;color:var(--gray-900);font-family:'Fraunces',serif}
         #page-invoice-tracking .tca{display:flex;gap:5px}
         /* Control bar */
         #page-invoice-tracking .ctrl-bar{padding:6px 10px;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
@@ -4634,11 +4623,12 @@
         [data-dark="true"] #page-invoice-tracking .it-search{background:#252836!important;border-color:#363b52!important;color:#d1d5db!important}
         #page-invoice-tracking .srch-ico{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none}
         #page-invoice-tracking .srch-ico svg{width:12px;height:12px}
-        #page-invoice-tracking .sf-tabs{display:flex;gap:3px}
-        #page-invoice-tracking .sf-tab{padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;background:var(--gray-50);border:1.5px solid var(--gray-200);color:var(--gray-600);cursor:pointer;font-family:'DM Sans',sans-serif;transition:var(--transition)}
+        #page-invoice-tracking .sf-tabs{display:flex;gap:4px}
+        #page-invoice-tracking .sf-tab{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:600;background:var(--white);border:1.5px solid var(--gray-200);color:var(--gray-600);cursor:pointer;font-family:'DM Sans',sans-serif;transition:var(--transition)}
         #page-invoice-tracking .sf-tab:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
-        #page-invoice-tracking .sf-tab.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+        #page-invoice-tracking .sf-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
         [data-dark="true"] #page-invoice-tracking .sf-tab{background:#252836!important;border-color:#363b52!important;color:#9ca3af!important}
+        [data-dark="true"] #page-invoice-tracking .sf-tab.active{background:var(--primary)!important;color:#fff!important}
         /* Table */
         #page-invoice-tracking .tbl-wrap{overflow-x:auto;flex:1;overflow-y:auto;position:relative;min-height:0}
         #page-invoice-tracking .inv-table{width:100%;border-collapse:separate;border-spacing:0}
@@ -4654,15 +4644,8 @@
         /* Table footer */
         #page-invoice-tracking .table-footer{padding:11px 16px;border-top:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;background:var(--white);border-radius:0 0 18px 18px}
         [data-dark="true"] #page-invoice-tracking .table-footer{background:#1e2130!important;border-color:#2d3145!important}
-        #page-invoice-tracking
-        #page-invoice-tracking
-        #page-invoice-tracking
-        #page-invoice-tracking
-        #page-invoice-tracking
-        #page-invoice-tracking
-        [data-dark="true"] #page-invoice-tracking
         /* Detail panel */
-        #page-invoice-tracking .detail-panel{background:var(--white);border-radius:18px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 20px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.04);overflow:hidden;display:flex;flex-direction:column;animation:itSlideIn .2s ease}
+        #page-invoice-tracking .detail-panel{background:var(--white);border-radius:14px;box-shadow:var(--shadow-card);overflow:hidden;display:flex;flex-direction:column;animation:itSlideIn .2s ease}
         @keyframes itSlideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
         [data-dark="true"] #page-invoice-tracking .detail-panel{background:#1e2130!important;border-color:rgba(255,255,255,.07)!important}
         #page-invoice-tracking .det-hdr{padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.05);background:var(--white);flex-shrink:0}
@@ -4764,7 +4747,7 @@
         #page-invoice-tracking .sw-flat-row.selected td{background:var(--primary-light)}
         #page-invoice-tracking .sw-flat-row.selected td:first-child{border-left:3px solid var(--primary);padding-left:9px}
         /* Summary table */
-        #page-invoice-tracking .sum-table-card{background:var(--white);border-radius:14px;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.05);overflow:hidden}
+        #page-invoice-tracking .sum-table-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow-card);overflow:hidden}
         [data-dark="true"] #page-invoice-tracking .sum-table-card{background:#1e2130!important;border-color:rgba(255,255,255,.07)!important}
         #page-invoice-tracking .sum-table{width:100%;border-collapse:collapse}
         #page-invoice-tracking .sum-table thead{position:sticky;top:0;z-index:10}
@@ -4800,6 +4783,313 @@
         #page-invoice-tracking .sum-num{font-family:'Courier New',monospace;font-size:11px;font-weight:700;color:var(--gray-800)}
         #page-invoice-tracking .sum-num.zero{color:var(--gray-400);font-weight:400}
         #page-invoice-tracking .sum-amt{font-family:'Fraunces',serif;font-size:12px;font-weight:700;color:var(--gray-900)}
+
+        /* ══ APPROVALS PAGE CSS ══ */
+        #page-po-approvals.page-section { display: none; }
+        #page-po-approvals.page-section.active { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        #page-po-approvals .control-bar { flex-shrink: 0; }
+        #page-po-approvals .appr-tabs { display: flex; align-items: center; gap: 0; background: var(--white); border-radius: 12px 12px 0 0; padding: 0 12px; border: 1px solid var(--gray-100); border-bottom: none; flex-shrink: 0; box-shadow: 0 -1px 6px rgba(0,0,0,.02); }
+        [data-dark="true"] #page-po-approvals .appr-tabs { background: #1e2130 !important; border-color: #2d3145 !important; }
+        #page-po-approvals .appr-tab { position: relative; padding: 11px 16px; font-size: 13px; font-weight: 500; color: var(--gray-500); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+        #page-po-approvals .appr-tab:hover { color: var(--gray-800); }
+        #page-po-approvals .appr-tab.active { color: var(--primary); font-weight: 600; }
+        #page-po-approvals .appr-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 14px; right: 14px; height: 2.5px; background: var(--primary); border-radius: 2px 2px 0 0; }
+        #page-po-approvals .appr-tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; background: var(--gray-100); color: var(--gray-600); border-radius: 9px; font-size: 11px; font-weight: 600; }
+        #page-po-approvals .appr-tab.active .appr-tab-badge { background: var(--primary-light); color: var(--primary); }
+        #page-po-approvals .appr-tab[data-tab="pending"].active .appr-tab-badge { background: var(--cta); color: #fff; }
+
+        #page-po-approvals .appr-list-card { background: var(--white); border-radius: 0 0 14px 14px; box-shadow: var(--shadow-card); flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; border: 1px solid var(--gray-100); border-top: none; }
+        [data-dark="true"] #page-po-approvals .appr-list-card { background: #1e2130 !important; border-color: #2d3145 !important; }
+        #page-po-approvals .appr-list-wrap { flex: 1; overflow: auto; min-height: 0; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        #page-po-approvals .appr-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 48px 20px; color: var(--gray-400); flex: 1; }
+        #page-po-approvals .appr-empty-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--gray-50); display: flex; align-items: center; justify-content: center; color: var(--gray-300); margin-bottom: 14px; }
+        [data-dark="true"] #page-po-approvals .appr-empty-icon { background: #252836 !important; }
+        #page-po-approvals .appr-empty-title { font-size: 15px; font-weight: 600; color: var(--gray-700); font-family: 'Fraunces', serif; margin-bottom: 4px; }
+        #page-po-approvals .appr-empty-sub { font-size: 12px; color: var(--gray-500); }
+
+        /* Approval Card — professional row layout */
+        #page-po-approvals .appr-card {
+            background: var(--white);
+            border: 1px solid var(--gray-150, var(--gray-100));
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            flex-shrink: 0;
+        }
+        [data-dark="true"] #page-po-approvals .appr-card { background: #252836 !important; border-color: #363b52 !important; }
+        #page-po-approvals .appr-card:hover { border-color: color-mix(in srgb, var(--primary) 35%, transparent); box-shadow: 0 2px 10px rgba(45,74,53,0.05); }
+        #page-po-approvals .appr-card.is-accepted { border-left: 3px solid var(--success); }
+        #page-po-approvals .appr-card.is-rejected { border-left: 3px solid var(--danger); }
+        #page-po-approvals .appr-card.is-pending { border-left: 3px solid var(--cta); }
+
+        /* Main content row: submitter | details | amount */
+        #page-po-approvals .appr-card-main {
+            display: grid;
+            grid-template-columns: minmax(210px, 250px) 1fr minmax(140px, 175px);
+            gap: 24px;
+            padding: 14px 18px;
+            align-items: center;
+        }
+
+        /* Col 1 — Submitter */
+        #page-po-approvals .appr-submitter { display: flex; align-items: center; gap: 11px; min-width: 0; }
+        #page-po-approvals .appr-avatar {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--cta));
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px; font-family: 'Fraunces', serif;
+            flex-shrink: 0; letter-spacing: -0.3px;
+        }
+        #page-po-approvals .appr-submitter-info { min-width: 0; flex: 1; }
+        #page-po-approvals .appr-submitter-name {
+            font-size: 13px; font-weight: 600; color: var(--gray-900);
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        #page-po-approvals .appr-role-chip {
+            display: inline-flex; align-items: center; padding: 1px 6px;
+            border-radius: 4px; font-size: 9.5px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+        }
+        #page-po-approvals .appr-role-chip.pm { background: #e7ecff; color: #3751b8; }
+        #page-po-approvals .appr-role-chip.employee { background: #fdf0e4; color: #b8723a; }
+        [data-dark="true"] #page-po-approvals .appr-role-chip.pm { background: rgba(90,120,220,0.18) !important; color: #aac1ff !important; }
+        [data-dark="true"] #page-po-approvals .appr-role-chip.employee { background: rgba(210,145,85,0.18) !important; color: #f0c08f !important; }
+        #page-po-approvals .appr-submitter-sub {
+            font-size: 11px; color: var(--gray-500); margin-top: 2px; font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        /* Col 2 — PO details */
+        #page-po-approvals .appr-details { min-width: 0; }
+        #page-po-approvals .appr-details-top {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 3px;
+        }
+        #page-po-approvals .appr-po-num {
+            font-size: 12px; font-weight: 700; color: var(--primary);
+            font-family: 'Courier New', monospace; letter-spacing: 0.2px;
+        }
+        #page-po-approvals .appr-sep { color: var(--gray-300); font-weight: 400; font-size: 11px; }
+        #page-po-approvals .appr-po-date { font-size: 11px; color: var(--gray-500); font-weight: 500; }
+        #page-po-approvals .appr-client {
+            font-size: 14px; font-weight: 700; color: var(--gray-900);
+            font-family: 'Fraunces', serif; line-height: 1.25;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            letter-spacing: -0.1px;
+        }
+        #page-po-approvals .appr-project {
+            font-size: 11.5px; color: var(--gray-600); margin-top: 1px; font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        #page-po-approvals .appr-meta-line {
+            display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+            margin-top: 5px; font-size: 11px; color: var(--gray-500);
+        }
+        #page-po-approvals .appr-meta-line strong { color: var(--gray-800); font-weight: 600; }
+        #page-po-approvals .appr-meta-line .appr-meta-k {
+            font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--gray-400); margin-right: 3px;
+        }
+
+        /* Col 3 — Amount + status */
+        #page-po-approvals .appr-amount-block { text-align: right; }
+        #page-po-approvals .appr-amount-label {
+            font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.6px; color: var(--gray-400); margin-bottom: 2px;
+        }
+        #page-po-approvals .appr-amount-value {
+            font-size: 17px; font-weight: 700; color: var(--primary);
+            font-family: 'Fraunces', serif; line-height: 1.1; margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        #page-po-approvals .appr-status-badge {
+            display: inline-flex; align-items: center; padding: 2px 9px;
+            border-radius: 5px; font-size: 9.5px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        #page-po-approvals .appr-status-badge.pending { background: color-mix(in srgb, var(--cta) 14%, transparent); color: var(--cta); }
+        #page-po-approvals .appr-status-badge.accepted { background: var(--success-light); color: var(--success); }
+        #page-po-approvals .appr-status-badge.rejected { background: var(--danger-light); color: var(--danger); }
+
+        /* Foot strip — linked hint + types chips + actions (always visible) */
+        #page-po-approvals .appr-card-foot {
+            padding: 9px 18px;
+            background: color-mix(in srgb, var(--gray-50) 55%, transparent);
+            border-top: 1px solid var(--gray-100);
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px;
+        }
+        [data-dark="true"] #page-po-approvals .appr-card-foot { background: rgba(255,255,255,0.02) !important; border-color: #363b52 !important; }
+
+        #page-po-approvals .appr-foot-left {
+            display: flex; align-items: center; gap: 12px;
+            flex-wrap: wrap; min-width: 0; flex: 1;
+        }
+        #page-po-approvals .appr-linked {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; font-weight: 500;
+        }
+        #page-po-approvals .appr-linked.has-linked { color: var(--warning); }
+        #page-po-approvals .appr-linked.clean { color: var(--gray-500); }
+        #page-po-approvals .appr-linked svg { flex-shrink: 0; }
+
+        #page-po-approvals .appr-types {
+            display: flex; gap: 5px; flex-wrap: wrap;
+            margin-top: 7px;
+        }
+        #page-po-approvals .appr-type-chip {
+            display: inline-flex; padding: 2px 8px;
+            background: var(--primary-light); color: var(--primary);
+            font-size: 10.5px; font-weight: 600; border-radius: 4px; letter-spacing: 0.2px;
+        }
+
+        #page-po-approvals .appr-actions {
+            display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+        }
+        #page-po-approvals .appr-btn {
+            padding: 6px 12px; border-radius: 6px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s ease;
+            display: inline-flex; align-items: center; gap: 5px;
+            border: 1px solid transparent; white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+        }
+        #page-po-approvals .appr-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+        #page-po-approvals .appr-btn-view { background: var(--white); border-color: var(--gray-200); color: var(--gray-700); }
+        #page-po-approvals .appr-btn-view:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        [data-dark="true"] #page-po-approvals .appr-btn-view { background: #1e2130 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+        #page-po-approvals .appr-btn-reject {
+            background: var(--white);
+            border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+            color: var(--danger);
+        }
+        #page-po-approvals .appr-btn-reject:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+        [data-dark="true"] #page-po-approvals .appr-btn-reject { background: #1e2130 !important; }
+        #page-po-approvals .appr-btn-accept {
+            background: var(--success); color: #fff; border-color: var(--success);
+        }
+        #page-po-approvals .appr-btn-accept:hover {
+            background: color-mix(in srgb, var(--success) 88%, #000);
+            box-shadow: 0 3px 8px color-mix(in srgb, var(--success) 35%, transparent);
+        }
+        /* Used inside reject modal footer for "Edit PO Instead" */
+        .appr-btn.primary-outline { padding: 9px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--primary); background: var(--white); color: var(--primary); font-family: 'DM Sans', sans-serif; }
+        .appr-btn.primary-outline:hover { background: var(--primary); color: #fff; }
+        [data-dark="true"] .appr-btn.primary-outline { background: #252836 !important; }
+
+        /* Decision row for non-pending */
+        #page-po-approvals .appr-decision {
+            padding: 7px 18px; font-size: 11.5px; color: var(--gray-700);
+            display: flex; align-items: center; gap: 7px;
+            background: var(--info-light);
+            border-top: 1px solid color-mix(in srgb, var(--info) 20%, transparent);
+        }
+        #page-po-approvals .appr-decision svg { color: var(--info); flex-shrink: 0; width: 13px; height: 13px; }
+        #page-po-approvals .appr-decision.rejected {
+            background: var(--danger-light);
+            border-top-color: color-mix(in srgb, var(--danger) 20%, transparent);
+        }
+        #page-po-approvals .appr-decision.rejected svg { color: var(--danger); }
+        #page-po-approvals .appr-decision strong { color: var(--gray-900); font-weight: 700; }
+        #page-po-approvals .appr-decision em { font-style: normal; color: var(--gray-600); }
+        [data-dark="true"] #page-po-approvals .appr-decision { background: rgba(90,127,168,0.15) !important; color: #d1d5db !important; }
+        [data-dark="true"] #page-po-approvals .appr-decision.rejected { background: rgba(184,92,82,0.15) !important; }
+
+        /* Accept Choice Modal */
+        .appr-choice-modal-box { max-width: 480px; width: 92%; }
+        .appr-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .appr-choice-card { padding: 16px 14px; border: 1.5px solid var(--gray-200); border-radius: 12px; background: var(--white); cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+        .appr-choice-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+        [data-dark="true"] .appr-choice-card { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .appr-choice-card:hover { background: rgba(45,74,53,0.2) !important; }
+        .appr-choice-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; }
+        .appr-choice-card:nth-child(2) .appr-choice-icon { background: var(--success-light); color: var(--success); }
+        .appr-choice-title { font-size: 13px; font-weight: 700; color: var(--gray-900); font-family: 'Fraunces', serif; }
+        .appr-choice-desc { font-size: 11px; color: var(--gray-500); line-height: 1.4; }
+
+        /* Edit Drawer */
+        .appr-edit-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2500; display: none; opacity: 0; transition: var(--transition); }
+        .appr-edit-drawer-overlay.active { display: block; opacity: 1; }
+        .appr-edit-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(620px, 96vw); background: var(--white); box-shadow: -12px 0 40px rgba(0,0,0,0.15); z-index: 2501; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        [data-dark="true"] .appr-edit-drawer { background: #1e2130 !important; }
+        .appr-edit-drawer-overlay.active .appr-edit-drawer { transform: translateX(0); }
+        .appr-edit-drawer-head { padding: 16px 22px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        [data-dark="true"] .appr-edit-drawer-head { border-color: #2d3145 !important; }
+        .appr-edit-drawer-title { font-size: 17px; font-weight: 700; color: var(--gray-900); font-family: 'Fraunces', serif; }
+        .appr-edit-drawer-sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+        .appr-edit-drawer-body { flex: 1; overflow-y: auto; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+        .appr-edit-drawer-foot { padding: 14px 22px; border-top: 1px solid var(--gray-100); display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--surface); }
+        [data-dark="true"] .appr-edit-drawer-foot { background: #1e2130 !important; border-color: #2d3145 !important; }
+        .appr-edit-drawer-info-bar { padding: 10px 14px; background: var(--info-light); border-radius: 10px; display: flex; align-items: flex-start; gap: 9px; font-size: 12px; color: var(--gray-700); }
+        .appr-edit-drawer-info-bar svg { width: 14px; height: 14px; color: var(--info); flex-shrink: 0; margin-top: 2px; }
+        [data-dark="true"] .appr-edit-drawer-info-bar { background: rgba(90,127,168,0.15) !important; color: #d1d5db !important; }
+
+        /* Reject modals (linked / unlinked) */
+        .appr-reject-modal-box { max-width: 520px; width: 92%; }
+        .appr-linked-warning { display: flex; flex-direction: column; gap: 12px; }
+        .appr-linked-alert { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: var(--warning-light); border-radius: 12px; border: 1px solid color-mix(in srgb, var(--warning) 22%, transparent); }
+        .appr-linked-alert-icon { width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--warning) 18%, transparent); color: var(--warning); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .appr-linked-alert-title { font-size: 14px; font-weight: 700; color: var(--gray-900); font-family: 'Fraunces', serif; margin-bottom: 3px; }
+        .appr-linked-alert-desc { font-size: 12.5px; color: var(--gray-700); line-height: 1.5; }
+        [data-dark="true"] .appr-linked-alert { background: rgba(184,137,58,0.15) !important; }
+        [data-dark="true"] .appr-linked-alert-desc { color: #d1d5db !important; }
+
+        .appr-linked-list { display: flex; flex-direction: column; gap: 8px; }
+        .appr-linked-item { display: flex; align-items: center; gap: 11px; padding: 11px 13px; background: var(--gray-50); border-radius: 10px; border: 1px solid var(--gray-100); }
+        [data-dark="true"] .appr-linked-item { background: #252836 !important; border-color: #363b52 !important; }
+        .appr-linked-item-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--white); display: flex; align-items: center; justify-content: center; color: var(--gray-500); flex-shrink: 0; border: 1px solid var(--gray-200); }
+        [data-dark="true"] .appr-linked-item-icon { background: #1e2130 !important; border-color: #363b52 !important; }
+        .appr-linked-item-main { flex: 1; min-width: 0; }
+        .appr-linked-item-title { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+        .appr-linked-item-sub { font-size: 11.5px; color: var(--gray-500); margin-top: 1px; }
+        .appr-linked-item-count { font-size: 12px; font-weight: 700; color: var(--warning); background: color-mix(in srgb, var(--warning) 18%, transparent); padding: 3px 9px; border-radius: 6px; }
+
+        .appr-instructions-box { padding: 12px 14px; background: var(--info-light); border-radius: 10px; border: 1px solid color-mix(in srgb, var(--info) 20%, transparent); }
+        .appr-instructions-title { font-size: 12px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+        .appr-instructions-title svg { width: 13px; height: 13px; color: var(--info); }
+        .appr-instructions-list { margin: 0; padding-left: 18px; font-size: 12px; color: var(--gray-700); line-height: 1.7; }
+        [data-dark="true"] .appr-instructions-box { background: rgba(90,127,168,0.15) !important; }
+        [data-dark="true"] .appr-instructions-list { color: #d1d5db !important; }
+
+        .appr-reject-form { display: flex; flex-direction: column; gap: 14px; }
+        .appr-reject-textarea { width: 100%; min-height: 88px; padding: 10px 12px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--gray-900); background: var(--white); resize: vertical; outline: none; transition: var(--transition); }
+        .appr-reject-textarea:focus { border-color: var(--danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 10%, transparent); }
+        [data-dark="true"] .appr-reject-textarea { background: #252836 !important; border-color: #363b52 !important; color: #d1d5db !important; }
+
+        .appr-delete-option { display: flex; align-items: flex-start; gap: 10px; padding: 11px 13px; background: var(--danger-light); border-radius: 10px; border: 1px solid color-mix(in srgb, var(--danger) 22%, transparent); cursor: pointer; transition: var(--transition); }
+        .appr-delete-option:hover { background: color-mix(in srgb, var(--danger) 10%, var(--danger-light)); }
+        .appr-delete-option input[type="checkbox"] { width: 16px; height: 16px; margin-top: 1px; accent-color: var(--danger); cursor: pointer; flex-shrink: 0; }
+        .appr-delete-option-label { flex: 1; font-size: 12.5px; color: var(--gray-800); font-weight: 500; }
+        .appr-delete-option-sub { font-size: 11px; color: var(--gray-600); margin-top: 2px; font-weight: 400; }
+        [data-dark="true"] .appr-delete-option { background: rgba(184,92,82,0.12) !important; }
+        [data-dark="true"] .appr-delete-option-label { color: #d1d5db !important; }
+
+        .btn-reject-confirm { padding: 9px 20px; background: var(--danger); color: #fff; border: none; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+        .btn-reject-confirm:hover { transform: translateY(-1px); box-shadow: 0 6px 16px color-mix(in srgb, var(--danger) 35%, transparent); }
+        .btn-reject-confirm:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Toast */
+        .appr-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); padding: 11px 20px; background: var(--gray-900); color: #fff; border-radius: 50px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 28px rgba(0,0,0,0.22); z-index: 3000; opacity: 0; transition: var(--transition); display: flex; align-items: center; gap: 9px; pointer-events: none; }
+        .appr-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .appr-toast.success { background: var(--success); }
+        .appr-toast.danger { background: var(--danger); }
+        .appr-toast svg { width: 16px; height: 16px; }
+
+        /* Responsive stacking */
+        @media (max-width: 1100px) {
+            #page-po-approvals .appr-card-main {
+                grid-template-columns: minmax(190px, 230px) 1fr minmax(130px, 160px);
+                gap: 18px;
+            }
+        }
+        @media (max-width: 900px) {
+            #page-po-approvals .appr-card-main { grid-template-columns: 1fr; gap: 10px; padding: 12px 14px; }
+            #page-po-approvals .appr-amount-block { text-align: left; }
+            #page-po-approvals .appr-card-foot { flex-direction: column; align-items: stretch; gap: 8px; padding: 10px 14px; }
+            #page-po-approvals .appr-actions { justify-content: flex-end; }
+            #page-po-approvals .appr-types { padding-left: 0; border-left: none; }
+        }
 
         /* ══ WCC PAGE CSS ══ */
         #page-wcc .wcc-page-content { padding: 16px 0 0; flex: 1; display: flex; flex-direction: column; gap: 12px; overflow: hidden; min-height: 0; }
@@ -9650,6 +9940,10 @@
                     </button>
                     <div class="nav-submenu">
                         <a href="#" class="nav-submenu-link" onclick="showPage('po-listing','PO Listing');return false;">PO Listing</a>
+                        <a href="#" class="nav-submenu-link" onclick="showPage('po-approvals','Approval Queue');return false;" style="display:flex;align-items:center;justify-content:space-between;">
+                            <span>Approvals</span>
+                            <span id="navApprovalsBadge" style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;background:var(--cta);color:#fff;border-radius:9px;font-size:10px;font-weight:700;">0</span>
+                        </a>
                         <a href="#" class="nav-submenu-link" onclick="showPage('wcc','WCC');return false;">WCC</a>
                     </div>
                 </div>
@@ -9661,6 +9955,17 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                             </svg>
                             Work Done
+                        </div>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <a href="#" class="nav-link" onclick="showPage('salary-management','Salary Management');return false;">
+                        <div class="nav-link-content">
+                            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Salary Management
                         </div>
                     </a>
                 </div>
@@ -10297,8 +10602,8 @@
                 <div class="details-section">
                     <div class="tabs-container">
                         <div class="tabs">
-                            <button class="tab active" onclick="switchTab('activities')">Type / Activity</button>
-                            <button class="tab" onclick="switchTab('reimbursement')">Reimbursement</button>
+                            <button class="tab active" onclick="adSwitchTab('activities', this)">Type / Activity</button>
+                            <button class="tab" onclick="adSwitchTab('reimbursement', this)">Reimbursement</button>
                         </div>
                     </div>
 
@@ -10599,23 +10904,23 @@
                 <div id="page-invoice-tracking" class="page-section">
     <div class="it-content">
       <div class="page-hdr">
-        <!-- Compact 4-stat header row only -->
-        <div class="quick-stats">
-          <div class="stat-card">
-            <div class="stat-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
-            <div class="stat-content"><div class="stat-label">PO Value</div><div class="stat-value">₹540L</div><div class="stat-sub">All entries</div></div>
+        <!-- Stats banner — matches Attendance / Users admin panel pattern -->
+        <div class="stats-banner">
+          <div class="stats-banner-item">
+            <div class="stats-banner-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+            <div class="stats-banner-content"><div class="stats-banner-label">PO Value</div><div class="stats-banner-value">₹540L</div></div>
           </div>
-          <div class="stat-card">
-            <div class="stat-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div>
-            <div class="stat-content"><div class="stat-label">Invoices</div><div class="stat-value">60</div><div class="stat-sub">3 per entry</div></div>
+          <div class="stats-banner-item">
+            <div class="stats-banner-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div>
+            <div class="stats-banner-content"><div class="stats-banner-label">Invoices</div><div class="stats-banner-value">60</div></div>
           </div>
-          <div class="stat-card">
-            <div class="stat-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
-            <div class="stat-content"><div class="stat-label">Credit Notes</div><div class="stat-value">20</div><div class="stat-sub">Issued</div></div>
+          <div class="stats-banner-item">
+            <div class="stats-banner-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+            <div class="stats-banner-content"><div class="stats-banner-label">Credit Notes</div><div class="stats-banner-value">20</div></div>
           </div>
-          <div class="stat-card">
-            <div class="stat-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
-            <div class="stat-content"><div class="stat-label">Completion</div><div class="stat-value" id="sc-pct">—</div><div class="stat-sub">Done ratio</div></div>
+          <div class="stats-banner-item">
+            <div class="stats-banner-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+            <div class="stats-banner-content"><div class="stats-banner-label">Completion</div><div class="stats-banner-value" id="sc-pct">—</div></div>
           </div>
         </div>
 
@@ -11531,6 +11836,196 @@
 
                 </div><!-- /#page-po-listing -->
 
+                <!-- ══════════════ APPROVAL QUEUE PAGE ══════════════ -->
+                <div id="page-po-approvals" class="page-section">
+
+                    <!-- Control Bar -->
+                    <div class="control-bar">
+                        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:4px;">
+                            <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;font-family:'Fraunces',serif;white-space:nowrap;color:var(--gray-900);letter-spacing:-0.2px;">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--primary);flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                Approval Queue
+                            </span>
+                            <span id="apprRecordCount" style="font-size:11px;font-weight:600;background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--primary);border:1px solid color-mix(in srgb,var(--primary) 20%,transparent);border-radius:5px;padding:2px 8px;white-space:nowrap;">0 records</span>
+                        </div>
+
+                        <div class="search-container">
+                            <span class="search-icon"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
+                            <input type="text" class="search-input" id="apprSearchInput" placeholder="Search by PO number, client, project, or submitter…" oninput="apprHandleSearch(this.value)">
+                        </div>
+
+                        <button class="cb-icon-btn" onclick="apprRefresh()" title="Refresh"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+                    </div>
+
+                    <!-- Status Tabs -->
+                    <div class="appr-tabs">
+                        <div class="appr-tab active" data-tab="pending" onclick="apprSwitchTab('pending')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Pending<span class="appr-tab-badge" id="appr-badge-pending">0</span>
+                        </div>
+                        <div class="appr-tab" data-tab="accepted" onclick="apprSwitchTab('accepted')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            Approved<span class="appr-tab-badge" id="appr-badge-accepted">0</span>
+                        </div>
+                        <div class="appr-tab" data-tab="rejected" onclick="apprSwitchTab('rejected')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            Rejected<span class="appr-tab-badge" id="appr-badge-rejected">0</span>
+                        </div>
+                    </div>
+
+                    <!-- List Card -->
+                    <div class="appr-list-card">
+                        <div class="appr-list-wrap" id="apprListWrap">
+                            <!-- Cards rendered by JS -->
+                        </div>
+                    </div>
+
+                </div><!-- /#page-po-approvals -->
+
+                <!-- ══════════════ APPROVAL – ACCEPT CHOICE MODAL ══════════════ -->
+                <div class="modal-overlay" id="apprAcceptModal" onclick="if(event.target===this)apprCloseAcceptModal()">
+                    <div class="modal-box appr-choice-modal-box">
+                        <div class="modal-header">
+                            <div>
+                                <div class="modal-title">Approve Purchase Order?</div>
+                                <div class="modal-subtitle" id="apprAcceptModalSub">—</div>
+                            </div>
+                            <button class="modal-close" onclick="apprCloseAcceptModal()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="font-size:12.5px;color:var(--gray-600);line-height:1.55;">Review the PO before approving. You can edit any details first, or approve it exactly as submitted.</div>
+                            <div class="appr-choice-grid">
+                                <div class="appr-choice-card" onclick="apprAcceptChooseEdit()">
+                                    <div class="appr-choice-icon">
+                                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="appr-choice-title">Edit &amp; Approve</div>
+                                        <div class="appr-choice-desc">Make changes, then approve</div>
+                                    </div>
+                                </div>
+                                <div class="appr-choice-card" onclick="apprAcceptChooseAsIs()">
+                                    <div class="appr-choice-icon">
+                                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="appr-choice-title">Approve as-is</div>
+                                        <div class="appr-choice-desc">Accept exactly as submitted</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-cancel" onclick="apprCloseAcceptModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════ APPROVAL – EDIT DRAWER ══════════════ -->
+                <div class="appr-edit-drawer-overlay" id="apprEditDrawer" onclick="if(event.target===this)apprCloseEditDrawer()">
+                    <div class="appr-edit-drawer">
+                        <div class="appr-edit-drawer-head">
+                            <div>
+                                <div class="appr-edit-drawer-title">Edit &amp; Approve PO</div>
+                                <div class="appr-edit-drawer-sub" id="apprEditSub">—</div>
+                            </div>
+                            <button class="modal-close" onclick="apprCloseEditDrawer()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="appr-edit-drawer-body">
+                            <div class="appr-edit-drawer-info-bar">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                <div>Any edits you make here will be saved before the PO is approved. The submitter will see your updated values.</div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">PO Number</label>
+                                    <input type="text" class="form-input" id="apprEdit_poNumber" readonly style="background:var(--gray-50);cursor:not-allowed;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">PO Date <span class="required">*</span></label>
+                                    <input type="date" class="form-input" id="apprEdit_poDate">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Client <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="apprEdit_client">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Project <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="apprEdit_project">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Circle</label>
+                                    <input type="text" class="form-input" id="apprEdit_circle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-input" id="apprEdit_location">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Quantity <span class="required">*</span></label>
+                                    <input type="number" min="0" class="form-input" id="apprEdit_qty">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Total PO Value (₹) <span class="required">*</span></label>
+                                    <input type="number" min="0" class="form-input" id="apprEdit_amount">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Valid From</label>
+                                    <input type="date" class="form-input" id="apprEdit_validFrom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Valid To</label>
+                                    <input type="date" class="form-input" id="apprEdit_validTo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Types</label>
+                                <input type="text" class="form-input" id="apprEdit_types" placeholder="Installation, Commissioning, …">
+                                <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Comma-separated list</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Admin Notes (optional)</label>
+                                <textarea class="appr-reject-textarea" id="apprEdit_notes" placeholder="Any notes for the submitter about your edits…" style="min-height:64px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="appr-edit-drawer-foot">
+                            <button class="btn-cancel" onclick="apprCloseEditDrawer()">Cancel</button>
+                            <button class="btn-save" onclick="apprSaveAndApprove()">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                Save &amp; Approve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══════════════ APPROVAL – REJECT MODAL (two modes) ══════════════ -->
+                <div class="modal-overlay" id="apprRejectModal" onclick="if(event.target===this)apprCloseRejectModal()">
+                    <div class="modal-box appr-reject-modal-box">
+                        <div class="modal-header">
+                            <div>
+                                <div class="modal-title" id="apprRejectTitle">Reject Purchase Order</div>
+                                <div class="modal-subtitle" id="apprRejectSub">—</div>
+                            </div>
+                            <button class="modal-close" onclick="apprCloseRejectModal()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="apprRejectBody">
+                            <!-- Populated by JS: either linked-warning or reject-form -->
+                        </div>
+                        <div class="modal-footer" id="apprRejectFooter">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toast -->
+                <div class="appr-toast" id="apprToast"><span id="apprToastText"></span></div>
+
                 <div id="page-wcc" class="page-section">
                   <div class="wcc-page-content">
 
@@ -11647,6 +12142,40 @@
                     </div><!-- /wcc-table-card -->
                   </div><!-- /wcc-page-content -->
                 </div><!-- /#page-wcc -->
+
+                <div id="page-salary-management" class="page-section">
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
+                        <div style="max-width:560px;text-align:center;">
+                            <div style="width:72px;height:72px;margin:0 auto 18px;border-radius:20px;background:linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, var(--cta)));display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(0,0,0,0.14);">
+                                <svg width="34" height="34" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h1 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--gray-900);margin:0 0 8px;letter-spacing:-0.3px;">Salary Management</h1>
+                            <p style="font-size:14px;color:var(--gray-600);margin:0 0 26px;line-height:1.6;">Manage salary structures, monthly payroll runs, allowances, deductions, and payslip generation — integrated with attendance and work-done data from the rest of the Onaqt panel.</p>
+                            <div style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;background:color-mix(in srgb, var(--cta) 14%, transparent);border:1px solid color-mix(in srgb, var(--cta) 30%, transparent);border-radius:50px;font-size:12px;font-weight:700;color:var(--cta);letter-spacing:0.4px;text-transform:uppercase;margin-bottom:28px;">
+                                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Coming soon
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin-top:8px;">
+                                <div style="padding:13px 14px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;">
+                                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary);margin-bottom:5px;">Salary Structures</div>
+                                    <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">Define CTC components, grade-based templates, and custom allowance heads.</div>
+                                </div>
+                                <div style="padding:13px 14px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;">
+                                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary);margin-bottom:5px;">Payroll Runs</div>
+                                    <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">Monthly payroll with attendance-based prorating and OOD handling.</div>
+                                </div>
+                                <div style="padding:13px 14px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;">
+                                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary);margin-bottom:5px;">Deductions &amp; Taxes</div>
+                                    <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">TDS, PF, ESI, professional tax, and custom recurring deductions.</div>
+                                </div>
+                                <div style="padding:13px 14px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;">
+                                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary);margin-bottom:5px;">Payslips</div>
+                                    <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">Generate, email, and archive monthly payslips with Zoho Books sync.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /#page-salary-management -->
 
                 <div id="page-work-done" class="page-section">
 
@@ -20027,6 +20556,7 @@ function render(){
 
 function selectRow(idx){
   selIdx=idx; render();
+  const mg = document.getElementById('mainGrid'); if (mg) mg.classList.add('detail-open');
   const r=DATA[idx];
   document.getElementById('detailPanel').innerHTML=`
     <div class="det-hdr">
@@ -20168,6 +20698,7 @@ function toggleInvoices(){
 
 function closeDetail(){
   selIdx=null; render();
+  const mg = document.getElementById('mainGrid'); if (mg) mg.classList.remove('detail-open');
   document.getElementById('detailPanel').innerHTML=`<div class="empty-det"><div class="empty-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div class="empty-title">No entry selected</div><div class="empty-text">Click any row to view invoice details, PO info and credit notes</div></div>`;
 }
 
@@ -20179,6 +20710,9 @@ function switchTab(tab, btn){
   document.getElementById('tab-master').style.display   = tab==='master'   ? '' : 'none';
   document.getElementById('tab-sitewise').style.display = tab==='sitewise' ? '' : 'none';
   document.getElementById('tab-summary').style.display  = tab==='summary'  ? '' : 'none';
+  // Reset both grids to full-width when leaving their tab so the other opens fresh
+  if (tab !== 'master')   { const mg   = document.getElementById('mainGrid');   if (mg)   mg.classList.remove('detail-open'); }
+  if (tab !== 'sitewise') { const swmg = document.getElementById('swMainGrid'); if (swmg) swmg.classList.remove('detail-open'); }
   if(tab==='sitewise') renderSiteWise();
   if(tab==='summary')  renderSummary();
 }
@@ -20260,6 +20794,7 @@ function toggleSiteRow(si, count){
 }
 
 function showSiteDetail(s){
+  const swmg = document.getElementById('swMainGrid'); if (swmg) swmg.classList.add('detail-open');
   const completed   = s.entries.filter(e=>e.status==='Completed').length;
   const uniqueTypes = [...new Set(s.entries.map(e=>typeLabel(e.type)))];
   const totalInv    = s.entries.length * 3;
@@ -20494,6 +21029,7 @@ function showSwActivityDetail(idx){
 function closeSWDetail(){
   swSelIdx = null;
   renderSiteWise();
+  const swmg = document.getElementById('swMainGrid'); if (swmg) swmg.classList.remove('detail-open');
   document.getElementById('swDetailPanel').innerHTML=`<div class="empty-det"><div class="empty-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div><div class="empty-title">No entry selected</div><div class="empty-text">Click any row to view full invoice details, PO info, WCC/GRN data and credit notes</div></div>`;
 }
 
@@ -20623,6 +21159,671 @@ render();
 renderSummary();
 document.addEventListener("DOMContentLoaded",function(){render();renderSummary();});
 
+</script>
+
+<!-- ══ APPROVAL QUEUE JS ══ -->
+<script>
+(function(){
+    // Mock approval queue data
+    const APPR_DATA = [
+        {
+            id: 'apr-001',
+            status: 'pending',
+            poNumber: 'PO-2026-0451',
+            poDate: '2026-04-18',
+            client: 'Voult Inc',
+            project: 'Voult Network Rollout',
+            circle: 'Punjab',
+            location: 'Mohali',
+            qty: 12,
+            amount: 425000,
+            validFrom: '2026-04-20',
+            validTo: '2026-05-30',
+            types: ['Installation', 'Commissioning'],
+            submitter: { name: 'Rahul Verma', role: 'pm', initials: 'RV', email: 'rahul.v@atvantiq.in' },
+            submittedAt: '2026-04-22T06:10:00',
+            // Linked items: when non-null, this PO is referenced elsewhere
+            linked: { wccs: 0, workDone: 0, invoices: 0 }
+        },
+        {
+            id: 'apr-002',
+            status: 'pending',
+            poNumber: 'PO-2026-0452',
+            poDate: '2026-04-19',
+            client: 'Airtel Bharti',
+            project: 'BTS Maintenance Q2',
+            circle: 'Haryana',
+            location: 'Gurugram',
+            qty: 28,
+            amount: 1180000,
+            validFrom: '2026-04-22',
+            validTo: '2026-07-22',
+            types: ['Maintenance', 'Survey'],
+            submitter: { name: 'Priya Sharma', role: 'pm', initials: 'PS', email: 'priya.s@atvantiq.in' },
+            submittedAt: '2026-04-21T14:32:00',
+            linked: { wccs: 3, workDone: 2, invoices: 1 }  // Has linked items
+        },
+        {
+            id: 'apr-003',
+            status: 'pending',
+            poNumber: 'PO-2026-0453',
+            poDate: '2026-04-20',
+            client: 'Reliance Jio',
+            project: 'Fiber Backbone Expansion',
+            circle: 'Delhi NCR',
+            location: 'Noida',
+            qty: 6,
+            amount: 285000,
+            validFrom: '2026-04-25',
+            validTo: '2026-05-25',
+            types: ['Installation'],
+            submitter: { name: 'Amit Kumar', role: 'employee', initials: 'AK', email: 'amit.k@atvantiq.in' },
+            submittedAt: '2026-04-21T09:45:00',
+            linked: { wccs: 0, workDone: 0, invoices: 0 }
+        },
+        {
+            id: 'apr-004',
+            status: 'pending',
+            poNumber: 'PO-2026-0454',
+            poDate: '2026-04-21',
+            client: 'Vodafone Idea',
+            project: 'Tower Consolidation',
+            circle: 'Rajasthan',
+            location: 'Jaipur',
+            qty: 15,
+            amount: 675000,
+            validFrom: '2026-04-25',
+            validTo: '2026-06-25',
+            types: ['Commissioning', 'Testing'],
+            submitter: { name: 'Neha Gupta', role: 'employee', initials: 'NG', email: 'neha.g@atvantiq.in' },
+            submittedAt: '2026-04-22T05:15:00',
+            linked: { wccs: 1, workDone: 0, invoices: 0 }  // Has one linked WCC
+        },
+        {
+            id: 'apr-005',
+            status: 'accepted',
+            poNumber: 'PO-2026-0448',
+            poDate: '2026-04-15',
+            client: 'BSNL',
+            project: 'Rural Connectivity Phase 2',
+            circle: 'Himachal Pradesh',
+            location: 'Shimla',
+            qty: 20,
+            amount: 860000,
+            validFrom: '2026-04-18',
+            validTo: '2026-07-18',
+            types: ['Installation', 'Commissioning', 'Survey'],
+            submitter: { name: 'Rahul Verma', role: 'pm', initials: 'RV', email: 'rahul.v@atvantiq.in' },
+            submittedAt: '2026-04-15T11:20:00',
+            decidedAt: '2026-04-16T09:30:00',
+            decidedBy: 'Admin',
+            linked: { wccs: 0, workDone: 0, invoices: 0 }
+        },
+        {
+            id: 'apr-006',
+            status: 'rejected',
+            poNumber: 'PO-2026-0446',
+            poDate: '2026-04-12',
+            client: 'Tata Communications',
+            project: 'DC Migration',
+            circle: 'Maharashtra',
+            location: 'Pune',
+            qty: 8,
+            amount: 340000,
+            validFrom: '2026-04-15',
+            validTo: '2026-05-15',
+            types: ['Migration'],
+            submitter: { name: 'Amit Kumar', role: 'employee', initials: 'AK', email: 'amit.k@atvantiq.in' },
+            submittedAt: '2026-04-12T16:40:00',
+            decidedAt: '2026-04-13T10:15:00',
+            decidedBy: 'Admin',
+            rejectReason: 'Validity period too short for scope. Please extend to 8 weeks and resubmit.',
+            linked: { wccs: 0, workDone: 0, invoices: 0 }
+        }
+    ];
+
+    let state = {
+        tab: 'pending',
+        search: '',
+        currentId: null
+    };
+
+    // ─── Utilities ─────────────────────────────────────────────────
+    function fmtINR(n) {
+        if (n == null) return '—';
+        return '₹' + Number(n).toLocaleString('en-IN');
+    }
+    function fmtDate(d) {
+        if (!d) return '—';
+        const p = d.split('-');
+        if (p.length !== 3) return d;
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return p[2] + ' ' + months[+p[1]-1] + ' ' + p[0];
+    }
+    function timeAgo(iso) {
+        if (!iso) return '—';
+        const then = new Date(iso).getTime();
+        const now = Date.now();
+        const diff = Math.max(0, now - then);
+        const m = Math.floor(diff/60000);
+        if (m < 1) return 'just now';
+        if (m < 60) return m + 'm ago';
+        const h = Math.floor(m/60);
+        if (h < 24) return h + 'h ago';
+        const d = Math.floor(h/24);
+        if (d < 7) return d + 'd ago';
+        return fmtDate(iso.split('T')[0]);
+    }
+    function esc(s) {
+        return (s == null ? '' : String(s)).replace(/[&<>"']/g, function(c){
+            return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+        });
+    }
+    function toast(msg, kind) {
+        const t = document.getElementById('apprToast');
+        const tx = document.getElementById('apprToastText');
+        if (!t || !tx) return;
+        t.className = 'appr-toast' + (kind ? ' ' + kind : '');
+        let icon = '';
+        if (kind === 'success') icon = '<svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+        if (kind === 'danger')  icon = '<svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+        tx.innerHTML = icon + '<span>' + esc(msg) + '</span>';
+        t.classList.add('show');
+        clearTimeout(toast._to);
+        toast._to = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+    }
+    function hasLinked(item) {
+        if (!item || !item.linked) return false;
+        return (item.linked.wccs + item.linked.workDone + item.linked.invoices) > 0;
+    }
+    function findItem(id) { return APPR_DATA.find(function(x){ return x.id === id; }); }
+
+    // ─── Rendering ─────────────────────────────────────────────────
+    function updateCounts() {
+        const pendingCount = APPR_DATA.filter(function(x){ return x.status === 'pending'; }).length;
+        const acceptedCount = APPR_DATA.filter(function(x){ return x.status === 'accepted'; }).length;
+        const rejectedCount = APPR_DATA.filter(function(x){ return x.status === 'rejected'; }).length;
+
+        const bp = document.getElementById('appr-badge-pending');
+        const ba = document.getElementById('appr-badge-accepted');
+        const br = document.getElementById('appr-badge-rejected');
+        if (bp) bp.textContent = pendingCount;
+        if (ba) ba.textContent = acceptedCount;
+        if (br) br.textContent = rejectedCount;
+
+        // Sidebar badge
+        const nb = document.getElementById('navApprovalsBadge');
+        if (nb) {
+            nb.textContent = pendingCount;
+            nb.style.display = pendingCount > 0 ? 'inline-flex' : 'none';
+        }
+    }
+
+    function apprRender() {
+        const wrap = document.getElementById('apprListWrap');
+        const countEl = document.getElementById('apprRecordCount');
+        if (!wrap) return;
+
+        let items = APPR_DATA.filter(function(x){ return x.status === state.tab; });
+        if (state.search) {
+            const q = state.search.toLowerCase();
+            items = items.filter(function(x){
+                return (x.poNumber||'').toLowerCase().includes(q) ||
+                       (x.client||'').toLowerCase().includes(q) ||
+                       (x.project||'').toLowerCase().includes(q) ||
+                       (x.submitter.name||'').toLowerCase().includes(q);
+            });
+        }
+
+        // Sort newest first
+        items.sort(function(a,b){ return new Date(b.submittedAt) - new Date(a.submittedAt); });
+
+        if (countEl) countEl.textContent = items.length + ' record' + (items.length === 1 ? '' : 's');
+
+        if (items.length === 0) {
+            wrap.innerHTML = emptyStateHtml();
+            updateCounts();
+            return;
+        }
+
+        wrap.innerHTML = items.map(function(it){ return cardHtml(it); }).join('');
+        updateCounts();
+    }
+
+    function emptyStateHtml() {
+        const msgs = {
+            pending:  { t: 'No pending approvals', s: 'All submitted POs have been reviewed.' },
+            accepted: { t: 'No approved POs yet', s: 'POs you approve will appear here.' },
+            rejected: { t: 'No rejected POs', s: 'Rejected POs will appear here for reference.' }
+        };
+        const m = msgs[state.tab] || msgs.pending;
+        return '<div class="appr-empty">' +
+               '  <div class="appr-empty-icon"><svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg></div>' +
+               '  <div class="appr-empty-title">' + esc(m.t) + '</div>' +
+               '  <div class="appr-empty-sub">' + esc(m.s) + '</div>' +
+               '</div>';
+    }
+
+    function cardHtml(it) {
+        const isPending = it.status === 'pending';
+        const roleLabel = it.submitter.role === 'pm' ? 'PM' : 'Employee';
+        const linkedTotal = it.linked.wccs + it.linked.workDone + it.linked.invoices;
+        const linkedBits = [];
+        if (it.linked.wccs)     linkedBits.push(it.linked.wccs + ' WCC' + (it.linked.wccs > 1 ? 's' : ''));
+        if (it.linked.workDone) linkedBits.push(it.linked.workDone + ' work-done');
+        if (it.linked.invoices) linkedBits.push(it.linked.invoices + ' invoice' + (it.linked.invoices > 1 ? 's' : ''));
+
+        const sbLabel = it.status === 'pending' ? 'Pending' : (it.status === 'accepted' ? 'Approved' : 'Rejected');
+
+        // Linked hint (left of foot strip)
+        const linkedHintHtml = linkedTotal > 0
+            ? '<div class="appr-linked has-linked">' +
+                '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+                '<span>Linked: ' + esc(linkedBits.join(', ')) + '</span>' +
+              '</div>'
+            : '<div class="appr-linked clean">' +
+                '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' +
+                '<span>No linked items</span>' +
+              '</div>';
+
+        // Types chips (only if present)
+        const typesHtml = (it.types && it.types.length)
+            ? '<div class="appr-types">' +
+                it.types.map(function(t){ return '<span class="appr-type-chip">' + esc(t) + '</span>'; }).join('') +
+              '</div>'
+            : '';
+
+        // Decision row for non-pending
+        let decisionRow = '';
+        if (it.status === 'accepted') {
+            decisionRow = '<div class="appr-decision">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' +
+                'Approved by <strong>' + esc(it.decidedBy || 'Admin') + '</strong> on ' + esc(fmtDate((it.decidedAt || '').split('T')[0])) +
+                '</div>';
+        } else if (it.status === 'rejected') {
+            decisionRow = '<div class="appr-decision rejected">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' +
+                'Rejected by <strong>' + esc(it.decidedBy || 'Admin') + '</strong> on ' + esc(fmtDate((it.decidedAt || '').split('T')[0])) +
+                (it.rejectReason ? ' · <em>' + esc(it.rejectReason) + '</em>' : '') +
+                '</div>';
+        }
+
+        // Action buttons — always visible on right side of foot
+        const actionsHtml = isPending
+            ? '<button class="appr-btn appr-btn-view" onclick="apprOpenView(\'' + it.id + '\')">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+                'View' +
+              '</button>' +
+              '<button class="appr-btn appr-btn-reject" onclick="apprOpenReject(\'' + it.id + '\')">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                'Reject' +
+              '</button>' +
+              '<button class="appr-btn appr-btn-accept" onclick="apprOpenAccept(\'' + it.id + '\')">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' +
+                'Approve' +
+              '</button>'
+            : '<button class="appr-btn appr-btn-view" onclick="apprOpenView(\'' + it.id + '\')">' +
+                '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+                'View Details' +
+              '</button>';
+
+        return (
+            '<div class="appr-card is-' + it.status + '" data-id="' + esc(it.id) + '">' +
+                '<div class="appr-card-main">' +
+                    // Col 1 — Submitter
+                    '<div class="appr-submitter">' +
+                        '<div class="appr-avatar">' + esc(it.submitter.initials) + '</div>' +
+                        '<div class="appr-submitter-info">' +
+                            '<div class="appr-submitter-name">' +
+                                esc(it.submitter.name) +
+                                '<span class="appr-role-chip ' + esc(it.submitter.role) + '">' + esc(roleLabel) + '</span>' +
+                            '</div>' +
+                            '<div class="appr-submitter-sub">' + esc(timeAgo(it.submittedAt)) + ' &middot; ' + esc(it.submitter.email) + '</div>' +
+                        '</div>' +
+                    '</div>' +
+
+                    // Col 2 — PO details
+                    '<div class="appr-details">' +
+                        '<div class="appr-details-top">' +
+                            '<span class="appr-po-num">' + esc(it.poNumber) + '</span>' +
+                            '<span class="appr-sep">·</span>' +
+                            '<span class="appr-po-date">Dated ' + esc(fmtDate(it.poDate)) + '</span>' +
+                        '</div>' +
+                        '<div class="appr-client">' + esc(it.client) + '</div>' +
+                        '<div class="appr-project">' + esc(it.project) + (it.circle ? ' &middot; ' + esc(it.circle) : '') + '</div>' +
+                        '<div class="appr-meta-line">' +
+                            '<span><span class="appr-meta-k">Qty</span><strong>' + esc(it.qty) + '</strong></span>' +
+                            '<span><span class="appr-meta-k">Valid</span><strong>' + esc(fmtDate(it.validFrom)) + ' – ' + esc(fmtDate(it.validTo)) + '</strong></span>' +
+                        '</div>' +
+                        typesHtml +
+                    '</div>' +
+
+                    // Col 3 — Amount + status
+                    '<div class="appr-amount-block">' +
+                        '<div class="appr-amount-label">Total Value</div>' +
+                        '<div class="appr-amount-value">' + esc(fmtINR(it.amount)) + '</div>' +
+                        '<div class="appr-status-badge ' + it.status + '">' + esc(sbLabel) + '</div>' +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="appr-card-foot">' +
+                    '<div class="appr-foot-left">' +
+                        linkedHintHtml +
+                    '</div>' +
+                    '<div class="appr-actions">' + actionsHtml + '</div>' +
+                '</div>' +
+
+                decisionRow +
+            '</div>'
+        );
+    }
+
+    // ─── Actions ───────────────────────────────────────────────────
+    function apprSwitchTab(tab) {
+        state.tab = tab;
+        document.querySelectorAll('#page-po-approvals .appr-tab').forEach(function(el){
+            el.classList.toggle('active', el.getAttribute('data-tab') === tab);
+        });
+        apprRender();
+    }
+
+    function apprHandleSearch(v) {
+        state.search = (v || '').trim();
+        apprRender();
+    }
+
+    function apprRefresh() {
+        apprRender();
+        toast('Refreshed', 'success');
+    }
+
+    function apprOpenView(id) {
+        const it = findItem(id);
+        if (!it) return;
+        // For now, viewing just jumps to the edit drawer in read-only-ish mode, or we just open accept choice.
+        // Simplest: open the edit drawer in view mode (still editable but user can cancel).
+        populateEditDrawer(it);
+        document.getElementById('apprEditSub').textContent = it.poNumber + ' · ' + it.client;
+        state.currentId = id;
+        document.getElementById('apprEditDrawer').classList.add('active');
+    }
+
+    // ─── Accept flow ───────────────────────────────────────────────
+    function apprOpenAccept(id) {
+        const it = findItem(id);
+        if (!it) return;
+        state.currentId = id;
+        const sub = document.getElementById('apprAcceptModalSub');
+        if (sub) sub.textContent = it.poNumber + ' · ' + it.client + ' · ' + fmtINR(it.amount);
+        document.getElementById('apprAcceptModal').classList.add('active');
+    }
+
+    function apprCloseAcceptModal() {
+        document.getElementById('apprAcceptModal').classList.remove('active');
+    }
+
+    function apprAcceptChooseEdit() {
+        apprCloseAcceptModal();
+        const it = findItem(state.currentId);
+        if (!it) return;
+        populateEditDrawer(it);
+        document.getElementById('apprEditSub').textContent = it.poNumber + ' · ' + it.client;
+        document.getElementById('apprEditDrawer').classList.add('active');
+    }
+
+    function apprAcceptChooseAsIs() {
+        const it = findItem(state.currentId);
+        if (!it) return;
+        it.status = 'accepted';
+        it.decidedAt = new Date().toISOString();
+        it.decidedBy = 'Admin';
+        apprCloseAcceptModal();
+        toast('Approved ' + it.poNumber, 'success');
+        apprRender();
+    }
+
+    function populateEditDrawer(it) {
+        document.getElementById('apprEdit_poNumber').value  = it.poNumber;
+        document.getElementById('apprEdit_poDate').value    = it.poDate;
+        document.getElementById('apprEdit_client').value    = it.client;
+        document.getElementById('apprEdit_project').value   = it.project;
+        document.getElementById('apprEdit_circle').value    = it.circle || '';
+        document.getElementById('apprEdit_location').value  = it.location || '';
+        document.getElementById('apprEdit_qty').value       = it.qty;
+        document.getElementById('apprEdit_amount').value    = it.amount;
+        document.getElementById('apprEdit_validFrom').value = it.validFrom || '';
+        document.getElementById('apprEdit_validTo').value   = it.validTo || '';
+        document.getElementById('apprEdit_types').value     = (it.types || []).join(', ');
+        document.getElementById('apprEdit_notes').value     = '';
+    }
+
+    function apprCloseEditDrawer() {
+        document.getElementById('apprEditDrawer').classList.remove('active');
+    }
+
+    function apprSaveAndApprove() {
+        const it = findItem(state.currentId);
+        if (!it) return;
+
+        // Validate required fields
+        const client  = document.getElementById('apprEdit_client').value.trim();
+        const project = document.getElementById('apprEdit_project').value.trim();
+        const qtyVal  = document.getElementById('apprEdit_qty').value;
+        const amtVal  = document.getElementById('apprEdit_amount').value;
+        if (!client || !project || qtyVal === '' || amtVal === '') {
+            toast('Please fill all required fields', 'danger');
+            return;
+        }
+
+        // Save edits back
+        it.poDate    = document.getElementById('apprEdit_poDate').value;
+        it.client    = client;
+        it.project   = project;
+        it.circle    = document.getElementById('apprEdit_circle').value.trim();
+        it.location  = document.getElementById('apprEdit_location').value.trim();
+        it.qty       = Number(qtyVal);
+        it.amount    = Number(amtVal);
+        it.validFrom = document.getElementById('apprEdit_validFrom').value;
+        it.validTo   = document.getElementById('apprEdit_validTo').value;
+        it.types     = document.getElementById('apprEdit_types').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+
+        // Mark approved
+        it.status    = 'accepted';
+        it.decidedAt = new Date().toISOString();
+        it.decidedBy = 'Admin';
+
+        apprCloseEditDrawer();
+        toast('Edited & approved ' + it.poNumber, 'success');
+        apprRender();
+    }
+
+    // ─── Reject flow ───────────────────────────────────────────────
+    function apprOpenReject(id) {
+        const it = findItem(id);
+        if (!it) return;
+        state.currentId = id;
+
+        const titleEl = document.getElementById('apprRejectTitle');
+        const subEl   = document.getElementById('apprRejectSub');
+        const bodyEl  = document.getElementById('apprRejectBody');
+        const footEl  = document.getElementById('apprRejectFooter');
+
+        subEl.textContent = it.poNumber + ' · ' + it.client;
+
+        if (hasLinked(it)) {
+            // Linked items mode — cannot reject directly
+            titleEl.textContent = 'Cannot Reject – PO Has Linked Items';
+
+            const linkedRows = [];
+            if (it.linked.wccs) {
+                linkedRows.push(linkedItemRow(
+                    '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+                    'Work Completion Certificates',
+                    'WCCs have been submitted against this PO',
+                    it.linked.wccs
+                ));
+            }
+            if (it.linked.workDone) {
+                linkedRows.push(linkedItemRow(
+                    '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+                    'Work Done Entries',
+                    'Work has been reported against this PO',
+                    it.linked.workDone
+                ));
+            }
+            if (it.linked.invoices) {
+                linkedRows.push(linkedItemRow(
+                    '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
+                    'Invoices',
+                    'Invoices have been raised referencing this PO',
+                    it.linked.invoices
+                ));
+            }
+
+            bodyEl.innerHTML =
+                '<div class="appr-linked-warning">' +
+                    '<div class="appr-linked-alert">' +
+                        '<div class="appr-linked-alert-icon">' +
+                            '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="appr-linked-alert-title">This PO is being used elsewhere</div>' +
+                            '<div class="appr-linked-alert-desc">Rejecting and deleting it now would break the linked records below. You can either edit the PO to fix issues, or ask the team to unlink the items first.</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="appr-linked-list">' + linkedRows.join('') + '</div>' +
+                    '<div class="appr-instructions-box">' +
+                        '<div class="appr-instructions-title">' +
+                            '<svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' +
+                            'What you can do' +
+                        '</div>' +
+                        '<ul class="appr-instructions-list">' +
+                            '<li><strong>Edit the PO instead</strong> – fix the issue (wrong amount, dates, types) and approve it so existing work stays valid.</li>' +
+                            '<li>Or ask the submitter to <strong>delete the linked items first</strong> (WCCs, work done entries, invoices) and resubmit for rejection once it\'s safe.</li>' +
+                        '</ul>' +
+                    '</div>' +
+                '</div>';
+
+            footEl.innerHTML =
+                '<button class="btn-cancel" onclick="apprCloseRejectModal()">Close</button>' +
+                '<button class="appr-btn primary-outline" style="padding:9px 18px;border-radius:50px;font-size:13px;" onclick="apprRejectSwitchToEdit()">' +
+                    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+                    'Edit PO Instead' +
+                '</button>';
+
+        } else {
+            // Clean reject mode
+            titleEl.textContent = 'Reject Purchase Order';
+
+            bodyEl.innerHTML =
+                '<div class="appr-reject-form">' +
+                    '<div style="font-size:12.5px;color:var(--gray-600);line-height:1.55;">This PO isn\'t linked to any work yet, so it\'s safe to reject. Please share a brief reason — the submitter will see it.</div>' +
+                    '<div class="form-group">' +
+                        '<label class="form-label">Reason for rejection <span class="required">*</span></label>' +
+                        '<textarea class="appr-reject-textarea" id="apprRejectReason" placeholder="e.g. Validity period too short for scope. Please extend and resubmit." oninput="apprValidateReject()"></textarea>' +
+                    '</div>' +
+                    '<label class="appr-delete-option">' +
+                        '<input type="checkbox" id="apprRejectDeleteChk">' +
+                        '<div>' +
+                            '<div class="appr-delete-option-label">Also delete this PO record permanently</div>' +
+                            '<div class="appr-delete-option-sub">Otherwise it stays in the "Rejected" tab for reference.</div>' +
+                        '</div>' +
+                    '</label>' +
+                '</div>';
+
+            footEl.innerHTML =
+                '<button class="btn-cancel" onclick="apprCloseRejectModal()">Cancel</button>' +
+                '<button class="btn-reject-confirm" id="apprRejectConfirmBtn" onclick="apprConfirmReject()" disabled>' +
+                    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                    'Confirm Reject' +
+                '</button>';
+        }
+
+        document.getElementById('apprRejectModal').classList.add('active');
+    }
+
+    function linkedItemRow(iconSvg, title, sub, count) {
+        return '<div class="appr-linked-item">' +
+                  '<div class="appr-linked-item-icon">' + iconSvg + '</div>' +
+                  '<div class="appr-linked-item-main">' +
+                    '<div class="appr-linked-item-title">' + esc(title) + '</div>' +
+                    '<div class="appr-linked-item-sub">' + esc(sub) + '</div>' +
+                  '</div>' +
+                  '<span class="appr-linked-item-count">' + count + '</span>' +
+               '</div>';
+    }
+
+    function apprValidateReject() {
+        const ta = document.getElementById('apprRejectReason');
+        const btn = document.getElementById('apprRejectConfirmBtn');
+        if (!ta || !btn) return;
+        btn.disabled = ta.value.trim().length < 5;
+    }
+
+    function apprCloseRejectModal() {
+        document.getElementById('apprRejectModal').classList.remove('active');
+    }
+
+    function apprRejectSwitchToEdit() {
+        apprCloseRejectModal();
+        const it = findItem(state.currentId);
+        if (!it) return;
+        populateEditDrawer(it);
+        document.getElementById('apprEditSub').textContent = it.poNumber + ' · ' + it.client;
+        document.getElementById('apprEditDrawer').classList.add('active');
+    }
+
+    function apprConfirmReject() {
+        const it = findItem(state.currentId);
+        if (!it) return;
+        const reason = (document.getElementById('apprRejectReason').value || '').trim();
+        const deleteIt = !!(document.getElementById('apprRejectDeleteChk') || {}).checked;
+
+        if (deleteIt) {
+            const idx = APPR_DATA.findIndex(function(x){ return x.id === it.id; });
+            if (idx >= 0) APPR_DATA.splice(idx, 1);
+            apprCloseRejectModal();
+            toast('PO ' + it.poNumber + ' rejected and deleted', 'danger');
+        } else {
+            it.status = 'rejected';
+            it.decidedAt = new Date().toISOString();
+            it.decidedBy = 'Admin';
+            it.rejectReason = reason;
+            apprCloseRejectModal();
+            toast('Rejected ' + it.poNumber, 'danger');
+        }
+        apprRender();
+    }
+
+    // ─── Expose to window ──────────────────────────────────────────
+    window.apprSwitchTab         = apprSwitchTab;
+    window.apprHandleSearch      = apprHandleSearch;
+    window.apprRefresh           = apprRefresh;
+    window.apprRender            = apprRender;
+    window.apprOpenAccept        = apprOpenAccept;
+    window.apprCloseAcceptModal  = apprCloseAcceptModal;
+    window.apprAcceptChooseEdit  = apprAcceptChooseEdit;
+    window.apprAcceptChooseAsIs  = apprAcceptChooseAsIs;
+    window.apprCloseEditDrawer   = apprCloseEditDrawer;
+    window.apprSaveAndApprove    = apprSaveAndApprove;
+    window.apprOpenReject        = apprOpenReject;
+    window.apprCloseRejectModal  = apprCloseRejectModal;
+    window.apprRejectSwitchToEdit= apprRejectSwitchToEdit;
+    window.apprConfirmReject     = apprConfirmReject;
+    window.apprValidateReject    = apprValidateReject;
+    window.apprOpenView          = apprOpenView;
+
+    // Initial render once DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){
+            apprRender();
+            updateCounts();
+        });
+    } else {
+        apprRender();
+        updateCounts();
+    }
+})();
 </script>
 <!-- ══ WCC PAGE JS ══ -->
 <script>
@@ -22711,22 +23912,23 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
             // Don't load reimbursement on page load - it will load when tab is clicked
         });
 
-        // Tab switching
-        function switchTab(tabName) {
+        // Tab switching (attendance detail — scoped to avoid clobbering other pages' switchTab)
+        function adSwitchTab(tabName, btn) {
             console.log('Switching to tab:', tabName);
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
+
+            // Remove active class from this detail panel's tabs only
+            document.querySelectorAll('#page-attendance-detail .tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
-            // Add active class to clicked tab
-            event.currentTarget.classList.add('active');
-            
+
+            // Add active class to clicked tab (prefer explicit btn, fall back to event.currentTarget)
+            const source = btn || (typeof event !== 'undefined' ? event.currentTarget : null);
+            if (source && source.classList) source.classList.add('active');
+
             // Hide all tab content
             document.getElementById('activitiesTab').style.display = 'none';
             document.getElementById('reimbursementTab').style.display = 'none';
-            
+
             // Show selected tab content
             if (tabName === 'activities') {
                 document.getElementById('activitiesTab').style.display = 'block';
@@ -22872,7 +24074,7 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
 
     // ── Public API ──
     // Expose all the detail-page handlers on window so inline onclicks work.
-    window.switchTab                    = switchTab;
+    window.adSwitchTab                  = adSwitchTab;
     window.toggleActivityDetails        = toggleActivityDetails;
     window.toggleSelection              = toggleSelection;
     window.updateSelectionCount         = updateSelectionCount;
