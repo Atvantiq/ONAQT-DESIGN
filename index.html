@@ -6146,6 +6146,709 @@
         #page-expense-summary .es-no-sub { font-size: 12px; color: var(--gray-400); text-align: center; max-width: 280px; line-height: 1.6; }
 
         /* ═══════════════════════════════════════════════════════════
+           CREATE CLAIM MODAL  —  compact right-side popup
+           All-in-one modal: Type → Local/Outstation → Date → Site → Expenses → Submit
+        ═══════════════════════════════════════════════════════════ */
+
+        /* Control bar "Create Claim" button (primary CTA) */
+        .cb-create-claim-btn {
+            height: 34px; padding: 0 14px 0 11px; gap: 7px;
+            display: inline-flex; align-items: center;
+            background: var(--primary); border: 1.5px solid var(--primary);
+            border-radius: 8px; color: #fff;
+            font-size: 12.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition);
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 35%, transparent);
+            white-space: nowrap; flex-shrink: 0; margin-left: 4px;
+        }
+        .cb-create-claim-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 45%, transparent); background: var(--primary-dark); border-color: var(--primary-dark); }
+        .cb-create-claim-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        /* Backdrop + panel */
+        .cc-backdrop {
+            position: fixed; inset: 0; background: rgba(20,22,30,0.42);
+            backdrop-filter: blur(1.5px); z-index: 10050;
+            opacity: 0; visibility: hidden; transition: opacity .18s ease, visibility .18s;
+        }
+        .cc-backdrop.open { opacity: 1; visibility: visible; }
+        .cc-panel {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 94vw;
+            background: var(--white); box-shadow: -12px 0 32px rgba(0,0,0,0.14);
+            z-index: 10051; display: flex; flex-direction: column;
+            transform: translateX(100%); transition: transform .22s cubic-bezier(0.4,0,0.2,1);
+            overflow: hidden;
+        }
+        .cc-backdrop.open .cc-panel { transform: translateX(0); }
+
+        /* Header */
+        .cc-head {
+            height: 50px; padding: 0 14px 0 18px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100); background: var(--white);
+        }
+        .cc-bc { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; font-family: 'Fraunces', serif; }
+        .cc-bc-title { color: var(--primary); }
+        .cc-bc-sep { color: var(--gray-400); font-weight: 400; }
+        .cc-bc-active {
+            color: var(--primary); cursor: pointer; padding: 2px 8px; border-radius: 6px;
+            display: inline-flex; align-items: center; gap: 4px; font-family: 'Fraunces', serif;
+            transition: var(--transition);
+        }
+        .cc-bc-active:hover { background: var(--primary-light); }
+        .cc-bc-active svg { width: 11px; height: 11px; opacity: 0.6; }
+        .cc-close {
+            width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--gray-200);
+            background: var(--white); color: var(--gray-600); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .cc-close:hover { background: var(--gray-100); color: var(--gray-900); border-color: var(--gray-300); }
+        .cc-close svg { width: 13px; height: 13px; }
+
+        /* Breadcrumb dropdown */
+        .cc-bc-menu {
+            position: absolute; top: 44px; left: 14px; min-width: 180px;
+            background: var(--white); border: 1px solid var(--gray-200); border-radius: 9px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 10;
+            opacity: 0; visibility: hidden; transform: translateY(-4px); transition: all .14s;
+            overflow: hidden; padding: 4px;
+        }
+        .cc-bc-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+        .cc-bc-menu-item {
+            display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+            cursor: pointer; border-radius: 6px; font-size: 12.5px; font-weight: 500;
+            color: var(--gray-700); transition: var(--transition);
+        }
+        .cc-bc-menu-item:hover { background: var(--gray-50); color: var(--gray-900); }
+        .cc-bc-menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+        .cc-bc-menu-item svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .cc-bc-menu-item-desc { font-size: 10px; color: var(--gray-500); margin-top: 1px; font-weight: 400; }
+
+        /* Body (scrollable) */
+        .cc-body {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+            padding: 14px 16px 16px;
+            display: flex; flex-direction: column; gap: 10px;
+            scrollbar-width: thin;
+        }
+        .cc-body > * { flex-shrink: 0; }
+        .cc-body::-webkit-scrollbar { width: 5px; }
+        .cc-body::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+
+        /* Claim-type segmented (Single/Multi) */
+        .cc-type-seg {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+            background: var(--gray-100); border-radius: 8px; padding: 3px;
+        }
+        .cc-type-seg-btn {
+            padding: 6px 8px; border: none; background: transparent; border-radius: 6px;
+            cursor: pointer; transition: var(--transition);
+            font-size: 11.5px; font-weight: 600; color: var(--gray-600);
+            font-family: 'DM Sans', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            position: relative;
+        }
+        .cc-type-seg-btn.active { background: var(--white); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .cc-type-seg-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+        .cc-type-seg-btn svg { width: 12px; height: 12px; }
+        .cc-type-seg-soon {
+            background: var(--warning-light); color: var(--warning);
+            font-size: 8.5px; font-weight: 700; padding: 1px 4px; border-radius: 3px;
+            letter-spacing: 0.3px; text-transform: uppercase;
+        }
+
+        /* Multi-site soft note */
+        .cc-multi-note {
+            background: var(--warning-light); border: 1px dashed var(--warning);
+            border-radius: 8px; padding: 9px 11px; font-size: 11px;
+            color: var(--warning); line-height: 1.5; font-weight: 500;
+            display: flex; gap: 7px; align-items: flex-start;
+        }
+        .cc-multi-note svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 1px; }
+
+        /* Field */
+        .cc-field { display: flex; flex-direction: column; gap: 4px; }
+        .cc-label {
+            font-size: 11.5px; font-weight: 600; color: var(--gray-800);
+            letter-spacing: 0.1px; display: flex; align-items: center; gap: 3px;
+        }
+        .cc-req { color: var(--danger); font-weight: 700; }
+        .cc-input, .cc-select {
+            height: 34px; padding: 0 10px; width: 100%; outline: none;
+            background: var(--white); border: 1.5px solid var(--gray-200);
+            border-radius: 7px; font-size: 12.5px; color: var(--gray-900);
+            font-family: 'DM Sans', sans-serif; transition: var(--transition);
+        }
+        .cc-input:focus, .cc-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+        }
+        .cc-input::placeholder { color: var(--gray-400); font-weight: 400; }
+        .cc-input[readonly], .cc-input.is-auto {
+            background: var(--gray-50); color: var(--gray-800);
+            cursor: default; font-weight: 600;
+        }
+        .cc-input[readonly]:focus { border-color: var(--gray-200); box-shadow: none; }
+        .cc-auto-hint { font-size: 10px; color: var(--gray-400); margin-top: 2px; font-style: italic; }
+
+        /* Expense Details header */
+        .cc-exp-header {
+            font-size: 11.5px; font-weight: 600; color: var(--gray-800);
+            margin-top: 4px; display: flex; align-items: center; gap: 3px;
+        }
+
+        /* Accordion */
+        .cc-acc {
+            background: var(--gray-50); border: 1.5px solid var(--gray-200);
+            border-radius: 8px; flex-shrink: 0;
+            transition: background .15s, border-color .15s, box-shadow .15s;
+        }
+        .cc-acc.open { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent); }
+        .cc-acc-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 9px 12px; cursor: pointer; user-select: none;
+            transition: background .15s;
+        }
+        .cc-acc-head:hover { background: color-mix(in srgb, var(--primary) 5%, transparent); }
+        .cc-acc-head-left { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--gray-900); }
+        .cc-acc-head-total { font-size: 12px; color: var(--primary); font-weight: 700; font-family: 'DM Sans', sans-serif; }
+        .cc-acc-chev {
+            width: 16px; height: 16px; color: var(--gray-500); transition: transform .2s;
+            flex-shrink: 0;
+        }
+        .cc-acc.open .cc-acc-chev { transform: rotate(180deg); color: var(--primary); }
+        .cc-acc-body {
+            padding: 0 12px 11px; display: none;
+            border-top: 1px solid var(--gray-100);
+            margin-top: 0; padding-top: 11px;
+        }
+        .cc-acc.open .cc-acc-body { display: block; }
+
+        /* 3-col / 2-col grids */
+        .cc-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+        .cc-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+        /* Travel-specific grids */
+        .cc-tr-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .cc-tr-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .cc-tr-row-2-gap { margin-top: 9px; }
+        .cc-tr-action-row {
+            display: flex; align-items: center; gap: 8px; margin-top: 10px;
+            padding-top: 10px; border-top: 1px dashed var(--gray-200);
+        }
+        .cc-tr-receipt-label {
+            flex: 1; font-size: 11px; color: var(--gray-500); font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .cc-tr-receipt-label.has-file { color: var(--success); font-weight: 600; }
+
+        /* Employee multi-select picker (Travel with) */
+        .cc-emp-picker {
+            position: relative; cursor: pointer; min-height: 32px;
+            background: var(--white); border: 1.5px solid var(--gray-200);
+            border-radius: 6px; padding: 3px 24px 3px 6px; font-size: 11.5px;
+            display: flex; align-items: center; flex-wrap: wrap; gap: 3px;
+            transition: var(--transition);
+        }
+        .cc-emp-picker:hover { border-color: var(--gray-400); }
+        .cc-emp-picker.open {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+        }
+        .cc-emp-picker-chev {
+            position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+            width: 13px; height: 13px; color: var(--gray-500); pointer-events: none;
+            transition: transform .15s;
+        }
+        .cc-emp-picker.open .cc-emp-picker-chev { transform: translateY(-50%) rotate(180deg); }
+        .cc-emp-placeholder { color: var(--gray-400); padding: 0 4px; line-height: 26px; font-weight: 400; }
+
+        .cc-emp-chip {
+            display: inline-flex; align-items: center; gap: 3px;
+            background: color-mix(in srgb, var(--primary) 10%, var(--white));
+            color: var(--primary);
+            padding: 2px 3px 2px 6px; border-radius: 4px;
+            font-size: 10.5px; font-weight: 600; line-height: 1.3;
+            border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+        }
+        .cc-emp-chip-remove {
+            width: 13px; height: 13px; border: none; background: transparent;
+            color: currentColor; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; padding: 0;
+            opacity: 0.55; border-radius: 3px;
+        }
+        .cc-emp-chip-remove:hover { opacity: 1; background: rgba(0,0,0,0.08); }
+        .cc-emp-chip-remove svg { width: 8px; height: 8px; stroke-width: 3; }
+
+        .cc-emp-dropdown {
+            position: absolute; top: calc(100% + 4px);
+            right: 0; left: auto; width: 280px; max-width: 92vw;
+            background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.14); z-index: 100;
+            max-height: 300px; overflow: hidden; display: none;
+            flex-direction: column;
+        }
+        .cc-emp-picker.open .cc-emp-dropdown { display: flex; }
+        .cc-emp-search-wrap {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 10px; border-bottom: 1px solid var(--gray-100);
+        }
+        .cc-emp-search-wrap svg { width: 12px; height: 12px; color: var(--gray-400); flex-shrink: 0; }
+        .cc-emp-search {
+            flex: 1; height: 26px; padding: 0;
+            border: none; background: transparent; outline: none;
+            font-size: 11.5px; color: var(--gray-900); font-family: 'DM Sans', sans-serif;
+        }
+        .cc-emp-search::placeholder { color: var(--gray-400); }
+        .cc-emp-list { flex: 1; overflow-y: auto; padding: 3px; scrollbar-width: thin; }
+        .cc-emp-list::-webkit-scrollbar { width: 4px; }
+        .cc-emp-list::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 2px; }
+        .cc-emp-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 8px; cursor: pointer; border-radius: 5px;
+            font-size: 11.5px; color: var(--gray-800); transition: background .1s;
+        }
+        .cc-emp-item:hover { background: var(--gray-50); }
+        .cc-emp-item.selected { background: color-mix(in srgb, var(--primary) 7%, transparent); }
+        .cc-emp-cb {
+            width: 14px; height: 14px; border: 1.5px solid var(--gray-300);
+            border-radius: 3px; flex-shrink: 0; background: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; transition: var(--transition);
+        }
+        .cc-emp-item.selected .cc-emp-cb { background: var(--primary); border-color: var(--primary); }
+        .cc-emp-cb svg { width: 9px; height: 9px; stroke-width: 3.5; opacity: 0; }
+        .cc-emp-item.selected .cc-emp-cb svg { opacity: 1; }
+        .cc-emp-av {
+            width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+            color: #fff; font-size: 9px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            letter-spacing: 0.2px;
+        }
+        .cc-emp-info { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .cc-emp-name { font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+        .cc-emp-role { font-size: 10px; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cc-emp-empty { padding: 16px; text-align: center; font-size: 11px; color: var(--gray-400); }
+        .cc-emp-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 6px 10px; border-top: 1px solid var(--gray-100);
+            font-size: 10.5px; color: var(--gray-500);
+        }
+        .cc-emp-done {
+            padding: 3px 10px; background: var(--primary); color: #fff;
+            border: 1.5px solid var(--primary); border-radius: 5px;
+            font-size: 11px; font-weight: 600; cursor: pointer; transition: var(--transition);
+            font-family: 'DM Sans', sans-serif;
+        }
+        .cc-emp-done:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+
+        [data-dark="true"] .cc-emp-picker { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-emp-dropdown { background: var(--white) !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-emp-cb { background: #1e2130 !important; border-color: #363b52 !important; }
+
+        /* ─── Multi-site: sites-picker button + selected list ───── */
+        .cc-ms-site-count {
+            font-size: 10px; color: var(--primary); font-weight: 700;
+            background: var(--primary-light); padding: 1px 6px; border-radius: 4px;
+            margin-left: 4px;
+        }
+        .cc-ms-site-count:empty { display: none; }
+        .cc-ms-sites-btn {
+            height: 36px; padding: 0 12px; gap: 7px;
+            display: flex; align-items: center; width: 100%;
+            background: var(--white); border: 1.5px dashed var(--gray-300);
+            border-radius: 7px; color: var(--primary);
+            font-size: 12.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition); text-align: left;
+        }
+        .cc-ms-sites-btn:hover:not(:disabled) {
+            border-color: var(--primary); background: var(--primary-light);
+        }
+        .cc-ms-sites-btn:disabled {
+            color: var(--gray-400); cursor: not-allowed;
+            border-style: dashed; border-color: var(--gray-200);
+            background: var(--gray-50);
+        }
+        .cc-ms-sites-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .cc-ms-selected { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .cc-ms-selected:empty { display: none; }
+        .cc-ms-selected-row {
+            display: flex; align-items: center; gap: 9px;
+            padding: 8px 10px;
+            background: color-mix(in srgb, var(--primary) 5%, var(--white));
+            border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+            border-radius: 8px;
+        }
+        .cc-ms-selected-body { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .cc-ms-selected-name {
+            font-size: 12px; font-weight: 700; color: var(--gray-900);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .cc-ms-selected-po {
+            font-size: 10.5px; color: var(--gray-600); font-weight: 500;
+            display: flex; align-items: center; gap: 5px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .cc-ms-selected-po-chip {
+            font-family: 'Courier New', monospace; font-weight: 700; color: var(--primary);
+            background: var(--primary-light); padding: 1px 5px; border-radius: 3px;
+            font-size: 10px; letter-spacing: 0.2px; flex-shrink: 0;
+        }
+        .cc-ms-selected-po-btn {
+            background: none; border: none; padding: 0;
+            color: var(--info); font-size: 10.5px; font-weight: 600;
+            cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .cc-ms-selected-po-btn:hover { color: var(--primary); }
+        .cc-ms-selected-po-missing {
+            color: var(--danger); font-weight: 600; font-size: 10.5px;
+            display: inline-flex; align-items: center; gap: 3px;
+        }
+        .cc-ms-selected-po-missing svg { width: 11px; height: 11px; }
+        .cc-ms-selected-del {
+            width: 22px; height: 22px; border: none; background: transparent;
+            color: var(--gray-400); cursor: pointer; border-radius: 5px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .cc-ms-selected-del:hover { background: var(--danger-light); color: var(--danger); }
+        .cc-ms-selected-del svg { width: 12px; height: 12px; }
+
+        /* ─── Multi-site: Sites picker drawer (overlays the modal body) ───── */
+        .cc-ms-drawer {
+            position: absolute; inset: 0; background: var(--white); z-index: 200;
+            display: flex; flex-direction: column;
+            transform: translateX(100%); transition: transform .22s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: none;
+        }
+        .cc-ms-drawer.open { transform: translateX(0); pointer-events: auto; }
+        .cc-ms-drawer-head {
+            height: 50px; padding: 0 14px; flex-shrink: 0;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid var(--gray-100); background: var(--white);
+        }
+        .cc-ms-drawer-back {
+            width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--gray-200);
+            background: var(--white); color: var(--gray-600); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .cc-ms-drawer-back:hover { background: var(--gray-100); color: var(--gray-900); border-color: var(--gray-300); }
+        .cc-ms-drawer-back svg { width: 13px; height: 13px; }
+        .cc-ms-drawer-title-wrap { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .cc-ms-drawer-title { font-size: 14px; font-weight: 700; color: var(--gray-900); font-family: 'Fraunces', serif; }
+        .cc-ms-drawer-sub { font-size: 10.5px; color: var(--gray-500); margin-top: 1px; }
+        .cc-ms-drawer-search {
+            display: flex; align-items: center; gap: 7px;
+            padding: 8px 14px; border-bottom: 1px solid var(--gray-100);
+            flex-shrink: 0; background: var(--white);
+        }
+        .cc-ms-drawer-search svg { width: 13px; height: 13px; color: var(--gray-400); flex-shrink: 0; }
+        .cc-ms-drawer-search input {
+            flex: 1; height: 28px; padding: 0;
+            border: none; background: transparent; outline: none;
+            font-size: 12.5px; color: var(--gray-900); font-family: 'DM Sans', sans-serif;
+        }
+        .cc-ms-drawer-search input::placeholder { color: var(--gray-400); }
+        .cc-ms-drawer-list {
+            flex: 1; overflow-y: auto; padding: 10px 14px;
+            display: flex; flex-direction: column; gap: 7px;
+            scrollbar-width: thin;
+        }
+        .cc-ms-drawer-list::-webkit-scrollbar { width: 5px; }
+        .cc-ms-drawer-list::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+        .cc-ms-drawer-empty {
+            padding: 30px 20px; text-align: center; color: var(--gray-400);
+            font-size: 12px; line-height: 1.5;
+        }
+        .cc-ms-drawer-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 11px;
+            background: var(--white); border: 1.5px solid var(--gray-200);
+            border-radius: 9px; cursor: pointer; transition: var(--transition);
+        }
+        .cc-ms-drawer-item:hover { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 5%, var(--white)); }
+        .cc-ms-drawer-item.selected {
+            border-color: var(--primary); background: var(--primary-light);
+        }
+        .cc-ms-drawer-item-cb {
+            width: 16px; height: 16px; border: 1.5px solid var(--gray-300);
+            border-radius: 4px; flex-shrink: 0; background: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; transition: var(--transition);
+        }
+        .cc-ms-drawer-item.selected .cc-ms-drawer-item-cb { background: var(--primary); border-color: var(--primary); }
+        .cc-ms-drawer-item-cb svg { width: 10px; height: 10px; stroke-width: 3.5; opacity: 0; }
+        .cc-ms-drawer-item.selected .cc-ms-drawer-item-cb svg { opacity: 1; }
+        .cc-ms-drawer-item-body { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .cc-ms-drawer-item-name {
+            font-size: 12.5px; font-weight: 600; color: var(--gray-900);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .cc-ms-drawer-item-meta {
+            font-size: 10.5px; color: var(--gray-500);
+            display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+        }
+        .cc-ms-drawer-item-po-count {
+            font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
+            letter-spacing: 0.2px; text-transform: uppercase;
+            background: var(--info-light); color: var(--info);
+        }
+        .cc-ms-drawer-item-po-count.multi { background: var(--warning-light); color: var(--warning); }
+        .cc-ms-drawer-foot {
+            flex-shrink: 0; padding: 10px 14px;
+            border-top: 1px solid var(--gray-100); background: var(--white);
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        }
+        .cc-ms-drawer-count { font-size: 11.5px; color: var(--gray-600); font-weight: 600; }
+        .cc-ms-drawer-done {
+            height: 32px; padding: 0 16px;
+            background: var(--primary); border: 1.5px solid var(--primary);
+            border-radius: 7px; color: #fff;
+            font-size: 12px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition);
+        }
+        .cc-ms-drawer-done:hover:not(:disabled) { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-1px); }
+        .cc-ms-drawer-done:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        /* ─── PO chooser (when site has multiple POs) ───── */
+        .cc-po-chooser {
+            position: absolute; inset: 0; background: rgba(20,22,30,0.38);
+            z-index: 300; display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .cc-po-chooser.open { display: flex; }
+        .cc-po-chooser-box {
+            width: 100%; max-width: 360px; background: var(--white); border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; overflow: hidden; max-height: 82%;
+        }
+        .cc-po-chooser-head { padding: 14px 16px 10px; border-bottom: 1px solid var(--gray-100); }
+        .cc-po-chooser-title { font-size: 14px; font-weight: 700; color: var(--gray-900); font-family: 'Fraunces', serif; }
+        .cc-po-chooser-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+        .cc-po-chooser-list {
+            flex: 1; overflow-y: auto; padding: 10px 12px;
+            display: flex; flex-direction: column; gap: 7px;
+        }
+        .cc-po-option {
+            padding: 10px 12px; border: 1.5px solid var(--gray-200); border-radius: 8px;
+            cursor: pointer; transition: var(--transition); background: var(--white);
+            display: flex; flex-direction: column; gap: 3px;
+        }
+        .cc-po-option:hover { border-color: var(--primary); background: var(--primary-light); }
+        .cc-po-option-head {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        }
+        .cc-po-option-num {
+            font-family: 'Courier New', monospace; font-weight: 700; color: var(--primary);
+            font-size: 12px; letter-spacing: 0.2px;
+        }
+        .cc-po-option-val {
+            font-family: 'Courier New', monospace; font-weight: 700; color: var(--gray-800);
+            font-size: 11.5px;
+        }
+        .cc-po-option-desc { font-size: 10.5px; color: var(--gray-500); line-height: 1.4; }
+        .cc-po-chooser-foot {
+            flex-shrink: 0; padding: 10px 12px;
+            border-top: 1px solid var(--gray-100); display: flex; justify-content: flex-end;
+        }
+
+        [data-dark="true"] .cc-ms-sites-btn { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-ms-selected-row { background: #1e2130 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-ms-drawer { background: var(--white) !important; }
+        [data-dark="true"] .cc-ms-drawer-head,
+        [data-dark="true"] .cc-ms-drawer-search,
+        [data-dark="true"] .cc-ms-drawer-foot { background: var(--white) !important; border-color: rgba(255,255,255,0.07) !important; }
+        [data-dark="true"] .cc-ms-drawer-item { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-ms-drawer-item.selected { background: color-mix(in srgb, var(--primary) 15%, #252836) !important; }
+        [data-dark="true"] .cc-po-chooser-box { background: var(--white) !important; }
+        [data-dark="true"] .cc-po-option { background: #252836 !important; border-color: #363b52 !important; }
+
+        /* ─── Multi-site: Sites picker — inline multi-select dropdown ───── */
+        .cc-ms-site-picker {
+            position: relative; cursor: pointer; min-height: 36px;
+            background: var(--white); border: 1.5px solid var(--gray-200);
+            border-radius: 7px; padding: 0 30px 0 12px;
+            display: flex; align-items: center; width: 100%;
+            font-size: 12.5px; font-weight: 600;
+            color: var(--primary); font-family: 'DM Sans', sans-serif;
+            transition: var(--transition);
+        }
+        .cc-ms-site-picker:not(.disabled):hover { border-color: var(--gray-400); background: color-mix(in srgb, var(--primary) 3%, var(--white)); }
+        .cc-ms-site-picker.open {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+        }
+        .cc-ms-site-picker.disabled {
+            color: var(--gray-400); cursor: not-allowed;
+            background: var(--gray-50); border-color: var(--gray-200);
+        }
+        .cc-ms-site-picker-label {
+            flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+        .cc-ms-site-picker-chev {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            width: 13px; height: 13px; color: var(--gray-500); pointer-events: none;
+            transition: transform .15s;
+        }
+        .cc-ms-site-picker.open .cc-ms-site-picker-chev { transform: translateY(-50%) rotate(180deg); }
+
+        .cc-ms-site-dropdown {
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.14); z-index: 100;
+            max-height: 320px; overflow: hidden; display: none;
+            flex-direction: column;
+        }
+        .cc-ms-site-picker.open .cc-ms-site-dropdown { display: flex; }
+
+        /* Compact drawer-style internals inside dropdown */
+        .cc-ms-site-dropdown .cc-ms-drawer-search { padding: 7px 10px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-search svg { width: 12px; height: 12px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-search input { height: 26px; font-size: 11.5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-list { padding: 6px; gap: 5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item { padding: 7px 9px; border-radius: 6px; border-width: 1px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-cb { width: 14px; height: 14px; border-radius: 3px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-cb svg { width: 9px; height: 9px; stroke-width: 3.5; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-name { font-size: 11.5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-meta { font-size: 10px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-foot { padding: 7px 10px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-count { font-size: 10.5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-done { height: 28px; padding: 0 12px; font-size: 11.5px; border-radius: 5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-empty { padding: 20px 14px; font-size: 11.5px; }
+
+        [data-dark="true"] .cc-ms-site-picker { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-ms-site-picker.disabled { background: #1e2130 !important; }
+        [data-dark="true"] .cc-ms-site-dropdown { background: var(--white) !important; border-color: #363b52 !important; }
+
+        /* Small input for accordion inputs */
+        .cc-acc .cc-input, .cc-acc .cc-select { height: 32px; font-size: 11.5px; padding: 0 9px; border-radius: 6px; }
+
+        /* Travel input row: from | to | camera | Add */
+        .cc-travel-input-row {
+            display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 7px;
+            align-items: center; margin-top: 7px;
+        }
+        .cc-camera-btn {
+            width: 34px; height: 32px; border-radius: 6px;
+            border: none; background: transparent;
+            color: var(--primary); cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: var(--transition); position: relative;
+        }
+        .cc-camera-btn:hover { background: color-mix(in srgb, var(--primary) 10%, transparent); }
+        .cc-camera-btn.has-file { color: var(--success); }
+        .cc-camera-btn.has-file:hover { background: color-mix(in srgb, var(--success) 12%, transparent); }
+        .cc-camera-btn svg { width: 18px; height: 18px; }
+        .cc-camera-btn input[type="file"] { display: none; }
+        .cc-camera-dot {
+            position: absolute; top: 2px; right: 4px; width: 8px; height: 8px;
+            background: var(--success); border: 1.5px solid var(--white); border-radius: 50%;
+        }
+        .cc-add-btn {
+            height: 32px; padding: 0 14px; gap: 5px;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--primary); border: 1.5px solid var(--primary);
+            border-radius: 6px; color: #fff;
+            font-size: 11.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition);
+        }
+        .cc-add-btn:hover:not(:disabled) { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-1px); }
+        .cc-add-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .cc-add-btn svg { width: 11px; height: 11px; }
+
+        /* Travel chips list */
+        .cc-chips { display: flex; flex-direction: column; gap: 5px; margin-top: 9px; }
+        .cc-chip {
+            display: flex; align-items: center; gap: 8px; padding: 7px 9px;
+            background: color-mix(in srgb, var(--primary) 6%, var(--white));
+            border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent);
+            border-radius: 7px; font-size: 11px; color: var(--gray-800);
+        }
+        .cc-chip-mode { font-weight: 700; color: var(--primary); text-transform: uppercase; font-size: 10px; letter-spacing: 0.4px; flex-shrink: 0; }
+        .cc-chip-body { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; overflow: hidden; }
+        .cc-chip-route { font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
+        .cc-chip-meta { font-size: 10px; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cc-chip-amount { font-weight: 700; color: var(--gray-900); font-family: 'Courier New', monospace; font-size: 11.5px; flex-shrink: 0; }
+        .cc-chip-attach { color: var(--success); flex-shrink: 0; display: flex; align-items: center; }
+        .cc-chip-attach svg { width: 11px; height: 11px; }
+        .cc-chip-del {
+            width: 20px; height: 20px; border: none; background: transparent;
+            color: var(--gray-400); cursor: pointer; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .cc-chip-del:hover { background: var(--danger-light); color: var(--danger); }
+        .cc-chip-del svg { width: 11px; height: 11px; }
+
+        /* DA / Hotel / Other body: amount + upload */
+        .cc-simple-row {
+            display: grid; grid-template-columns: 1fr auto; gap: 10px;
+            align-items: end;
+        }
+        .cc-simple-field { display: flex; flex-direction: column; gap: 4px; }
+        .cc-simple-label {
+            font-size: 10.5px; font-weight: 600; color: var(--gray-600);
+            letter-spacing: 0.2px; text-transform: uppercase;
+        }
+        .cc-simple-receipt-slot {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            min-width: 52px;
+        }
+        .cc-simple-receipt-slot .cc-camera-btn { width: 40px; height: 32px; }
+
+        /* Footer */
+        .cc-foot {
+            flex-shrink: 0; padding: 10px 16px;
+            border-top: 1px solid var(--gray-100); background: var(--white);
+            display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+        }
+        .cc-foot-total { margin-right: auto; display: flex; flex-direction: column; }
+        .cc-foot-total-label { font-size: 9.5px; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+        .cc-foot-total-val { font-size: 15px; font-weight: 800; color: var(--primary); font-family: 'Fraunces', serif; line-height: 1.15; }
+        .cc-btn-cancel {
+            height: 34px; padding: 0 16px; background: var(--white);
+            border: 1.5px solid var(--gray-200); border-radius: 7px; color: var(--gray-700);
+            font-size: 12.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition);
+        }
+        .cc-btn-cancel:hover { border-color: var(--gray-400); background: var(--gray-50); }
+        .cc-btn-submit {
+            height: 34px; padding: 0 18px; background: var(--primary);
+            border: 1.5px solid var(--primary); border-radius: 7px; color: #fff;
+            font-size: 12.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: var(--transition);
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 30%, transparent);
+        }
+        .cc-btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 40%, transparent); background: var(--primary-dark); border-color: var(--primary-dark); }
+        .cc-btn-submit:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+        /* Validation hint (shown briefly) */
+        .cc-hint {
+            font-size: 10.5px; color: var(--danger); margin-top: 4px;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .cc-hint svg { width: 11px; height: 11px; }
+
+        /* Dark mode overrides */
+        [data-dark="true"] .cc-panel { background: var(--white) !important; }
+        [data-dark="true"] .cc-head { background: var(--white) !important; border-color: rgba(255,255,255,0.07) !important; }
+        [data-dark="true"] .cc-close { background: #252836 !important; border-color: #363b52 !important; color: var(--gray-600) !important; }
+        [data-dark="true"] .cc-input,
+        [data-dark="true"] .cc-select { background: #252836 !important; border-color: #363b52 !important; color: var(--gray-900) !important; }
+        [data-dark="true"] .cc-input[readonly], [data-dark="true"] .cc-input.is-auto { background: #1e2130 !important; }
+        [data-dark="true"] .cc-type-seg { background: #1e2130 !important; }
+        [data-dark="true"] .cc-type-seg-btn.active { background: #252836 !important; }
+        [data-dark="true"] .cc-acc { background: #1e2130 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-acc.open { background: var(--white) !important; }
+        [data-dark="true"] .cc-acc-body { border-top-color: #363b52 !important; }
+        [data-dark="true"] .cc-camera-btn { background: #252836 !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-foot { background: var(--white) !important; border-color: rgba(255,255,255,0.07) !important; }
+        [data-dark="true"] .cc-btn-cancel { background: #252836 !important; border-color: #363b52 !important; color: var(--gray-600) !important; }
+        [data-dark="true"] .cc-bc-menu { background: var(--white) !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-chip { background: #1e2130 !important; border-color: #363b52 !important; }
+
+        /* ═══════════════════════════════════════════════════════════
            DISBURSEMENT PAGE  —  scoped under #page-disbursement
         ═══════════════════════════════════════════════════════════ */
         #page-disbursement .table-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
@@ -10751,6 +11454,10 @@
                       <button class="cb-icon-btn" title="Refresh">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                       </button>
+                      <button class="cb-create-claim-btn" onclick="ccOpenCreateClaim()" title="Create new expense claim">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+                        <span>Create Claim</span>
+                      </button>
                     </div>
                     <!-- Active filters bar -->
                     <div class="emp-active-filters-bar" id="reimActiveFiltersBar" style="display:none;margin-bottom:8px;">
@@ -10766,6 +11473,7 @@
                     </div>
 
                 </div><!-- /#page-reimbursements -->
+
 
                 <!-- ═══════════════════════════════════════════════
                      #page-expense-summary — Claims summary by employee
@@ -24126,6 +24834,1224 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
             window.showPage('attendance', 'Attendance Records');
         }
     };
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════
+     CREATE CLAIM MODAL  —  compact right-side popup
+═══════════════════════════════════════════════ -->
+<div class="cc-backdrop" id="ccBackdrop" onclick="ccOnBackdropClick(event)">
+    <div class="cc-panel" onclick="event.stopPropagation()">
+
+        <!-- Header -->
+        <div class="cc-head" style="position:relative;">
+            <div class="cc-bc">
+                <span class="cc-bc-title">Create Claim</span>
+                <span class="cc-bc-sep">›</span>
+                <span class="cc-bc-active" id="ccBcActive" onclick="ccToggleBcMenu(event)">
+                    <span id="ccBcActiveText">Local</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                </span>
+            </div>
+            <button class="cc-close" onclick="ccClose()" title="Close">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <!-- Breadcrumb dropdown -->
+            <div class="cc-bc-menu" id="ccBcMenu">
+                <div class="cc-bc-menu-item active" id="ccBcMenuLocal" onclick="ccSetExpType('local', event)">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <div><div>Local</div><div class="cc-bc-menu-item-desc">Travel, DA, Others</div></div>
+                </div>
+                <div class="cc-bc-menu-item" id="ccBcMenuOutstation" onclick="ccSetExpType('outstation', event)">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 14.25l-5.584 2.718a.75.75 0 01-.99-.813l.5-4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0zM15 9.5l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    <div><div>Outstation</div><div class="cc-bc-menu-item-desc">+ Hotel expense</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="cc-body">
+
+            <!-- Single / Multi toggle -->
+            <div class="cc-type-seg">
+                <button class="cc-type-seg-btn active" id="ccTypeSingle" onclick="ccSetClaimType('single')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Single Site
+                </button>
+                <button class="cc-type-seg-btn" id="ccTypeMulti" onclick="ccSetClaimType('multi')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                    Multi Site
+                </button>
+            </div>
+
+            <!-- Multi-site soft note (hidden by default, used only for informational messaging if needed) -->
+            <div class="cc-multi-note" id="ccMultiNote" style="display:none;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span id="ccMultiNoteText"></span>
+            </div>
+
+            <!-- ─── SINGLE-SITE fields ────────────────────────── -->
+            <div id="ccSingleFields">
+                <!-- Date -->
+                <div class="cc-field">
+                    <label class="cc-label" for="ccDate">Date <span class="cc-req">*</span></label>
+                    <input type="date" class="cc-input" id="ccDate" onchange="ccOnDateChange()">
+                </div>
+
+                <!-- Site -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label" for="ccSite">Site <span class="cc-req">*</span></label>
+                    <select class="cc-select" id="ccSite" onchange="ccOnSiteChange()">
+                        <option value="">Select a date first</option>
+                    </select>
+                </div>
+
+                <!-- Circle (auto) -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label">Circle <span class="cc-req">*</span></label>
+                    <input type="text" class="cc-input is-auto" id="ccCircle" readonly placeholder="Auto-filled from site" value="">
+                </div>
+
+                <!-- Project (auto) -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label">Project <span class="cc-req">*</span></label>
+                    <input type="text" class="cc-input is-auto" id="ccProject" readonly placeholder="Auto-filled from site" value="">
+                </div>
+            </div>
+
+            <!-- ─── MULTI-SITE fields ─────────────────────────── -->
+            <div id="ccMultiFields" style="display:none;">
+                <!-- Date (optional) — kept at top to match single-site position -->
+                <div class="cc-field">
+                    <label class="cc-label" for="ccMsDate">Date <span style="color:var(--gray-400);font-weight:500;letter-spacing:0;">(optional)</span></label>
+                    <input type="date" class="cc-input" id="ccMsDate">
+                </div>
+
+                <!-- Purpose (required) -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label" for="ccMsPurpose">Purpose <span class="cc-req">*</span></label>
+                    <select class="cc-select" id="ccMsPurpose" onchange="ccMsOnPurposeChange()">
+                        <option value="">Select purpose</option>
+                        <option value="MRN">MRN</option>
+                        <option value="MIN">MIN</option>
+                        <option value="Billing">Billing</option>
+                    </select>
+                </div>
+
+                <!-- Project (required, drives site list) -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label" for="ccMsProject">Project <span class="cc-req">*</span></label>
+                    <select class="cc-select" id="ccMsProject" onchange="ccMsOnProjectChange()">
+                        <option value="">Select project</option>
+                    </select>
+                </div>
+
+                <!-- Sites picker (inline multi-select dropdown with checkboxes) -->
+                <div class="cc-field" style="margin-top:10px;">
+                    <label class="cc-label">Sites <span class="cc-req">*</span> <span class="cc-ms-site-count" id="ccMsSiteCount"></span></label>
+                    <div class="cc-ms-site-picker disabled" id="ccMsSitesPicker" onclick="ccMsToggleSitesDropdown(event)">
+                        <span class="cc-ms-site-picker-label" id="ccMsSitesBtnLabel">Select a project first</span>
+                        <svg class="cc-ms-site-picker-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                        <div class="cc-ms-site-dropdown" id="ccMsSitesDropdown" onclick="event.stopPropagation()">
+                            <div class="cc-ms-drawer-search">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <input type="text" id="ccMsSiteSearch" placeholder="Search sites…" oninput="ccMsRenderDropdownList()">
+                            </div>
+                            <div class="cc-ms-drawer-list" id="ccMsDropdownList"></div>
+                            <div class="cc-ms-drawer-foot">
+                                <span id="ccMsDropdownCount" class="cc-ms-drawer-count">0 selected</span>
+                                <button type="button" class="cc-ms-drawer-done" onclick="ccMsCloseSitesDropdown(event)">Done</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Selected sites list (appears below the picker) -->
+                    <div class="cc-ms-selected" id="ccMsSelectedList"></div>
+                </div>
+            </div>
+
+            <!-- Expense Details header -->
+            <div class="cc-exp-header" style="margin-top:4px;">Expense Details <span class="cc-req">*</span></div>
+
+            <!-- Travel accordion -->
+            <div class="cc-acc open" id="ccAccTravel">
+                <div class="cc-acc-head" onclick="ccToggleAcc('ccAccTravel')">
+                    <div class="cc-acc-head-left">
+                        Travel
+                        <span class="cc-acc-head-total" id="ccTravelHeadTotal"></span>
+                    </div>
+                    <svg class="cc-acc-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div class="cc-acc-body">
+                    <!-- Row 1: Mode | Amount | Travel with -->
+                    <div class="cc-tr-row-3">
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Mode</label>
+                            <select class="cc-select" id="ccTrMode">
+                                <option value="">Select</option>
+                                <option>Cab / Taxi</option>
+                                <option>Auto Rickshaw</option>
+                                <option>Own Vehicle</option>
+                                <option>Bike</option>
+                                <option>Bus</option>
+                                <option>Train</option>
+                                <option>Flight</option>
+                                <option>Metro</option>
+                            </select>
+                        </div>
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Amount (₹)</label>
+                            <input type="number" class="cc-input" id="ccTrAmount" placeholder="0.00" min="0" step="0.01">
+                        </div>
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Travel with</label>
+                            <div class="cc-emp-picker" id="ccTrWithPicker" onclick="ccEmpOpen(event)">
+                                <div class="cc-emp-picker-input" id="ccTrWithInput">
+                                    <span class="cc-emp-placeholder" id="ccTrWithPlaceholder">Select</span>
+                                </div>
+                                <svg class="cc-emp-picker-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                                <div class="cc-emp-dropdown" id="ccTrWithDropdown" onclick="event.stopPropagation()">
+                                    <div class="cc-emp-search-wrap">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                        <input type="text" class="cc-emp-search" id="ccEmpSearch" placeholder="Search employees…" oninput="ccEmpFilterList()">
+                                    </div>
+                                    <div class="cc-emp-list" id="ccEmpList"></div>
+                                    <div class="cc-emp-footer">
+                                        <span id="ccEmpCount">0 selected</span>
+                                        <button type="button" class="cc-emp-done" onclick="ccEmpClose()">Done</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 2: From | To | Camera | Add -->
+                    <div class="cc-tr-row-2 cc-tr-row-2-gap">
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">From</label>
+                            <input type="text" class="cc-input" id="ccTrFrom" placeholder="e.g., Office">
+                        </div>
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">To</label>
+                            <input type="text" class="cc-input" id="ccTrTo" placeholder="e.g., Site">
+                        </div>
+                    </div>
+                    <div class="cc-tr-action-row">
+                        <label class="cc-camera-btn" id="ccTrCameraBtn" title="Attach receipt">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <input type="file" accept="image/*,application/pdf" id="ccTrReceipt" onchange="ccOnTravelReceipt(this)">
+                        </label>
+                        <span class="cc-tr-receipt-label" id="ccTrReceiptLabel">Attach receipt</span>
+                        <button type="button" class="cc-add-btn" onclick="ccAddTravelEntry()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" d="M12 4v16m8-8H4"/></svg>
+                            Add entry
+                        </button>
+                    </div>
+                    <!-- Chips for added entries -->
+                    <div class="cc-chips" id="ccTravelChips"></div>
+                </div>
+            </div>
+
+            <!-- DA accordion -->
+            <div class="cc-acc" id="ccAccDA">
+                <div class="cc-acc-head" onclick="ccToggleAcc('ccAccDA')">
+                    <div class="cc-acc-head-left">
+                        DA
+                        <span class="cc-acc-head-total" id="ccDAHeadTotal"></span>
+                    </div>
+                    <svg class="cc-acc-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div class="cc-acc-body">
+                    <div class="cc-simple-row">
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Amount (₹)</label>
+                            <input type="number" class="cc-input" id="ccDAAmount" placeholder="e.g., 150" min="0" step="0.01" oninput="ccUpdateTotals()">
+                        </div>
+                        <div class="cc-simple-receipt-slot">
+                            <label class="cc-simple-label">Receipt</label>
+                            <label class="cc-camera-btn" id="ccDACameraBtn" title="Attach receipt">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <input type="file" accept="image/*,application/pdf" onchange="ccOnSimpleReceipt(this, 'da')">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hotel accordion (only for Outstation) -->
+            <div class="cc-acc" id="ccAccHotel" style="display:none;">
+                <div class="cc-acc-head" onclick="ccToggleAcc('ccAccHotel')">
+                    <div class="cc-acc-head-left">
+                        Hotel
+                        <span class="cc-acc-head-total" id="ccHotelHeadTotal"></span>
+                    </div>
+                    <svg class="cc-acc-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div class="cc-acc-body">
+                    <div class="cc-simple-row">
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Amount (₹)</label>
+                            <input type="number" class="cc-input" id="ccHotelAmount" placeholder="e.g., 1800" min="0" step="0.01" oninput="ccUpdateTotals()">
+                        </div>
+                        <div class="cc-simple-receipt-slot">
+                            <label class="cc-simple-label">Receipt</label>
+                            <label class="cc-camera-btn" id="ccHotelCameraBtn" title="Attach receipt">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <input type="file" accept="image/*,application/pdf" onchange="ccOnSimpleReceipt(this, 'hotel')">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other accordion -->
+            <div class="cc-acc" id="ccAccOther">
+                <div class="cc-acc-head" onclick="ccToggleAcc('ccAccOther')">
+                    <div class="cc-acc-head-left">
+                        Other
+                        <span class="cc-acc-head-total" id="ccOtherHeadTotal"></span>
+                    </div>
+                    <svg class="cc-acc-chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div class="cc-acc-body">
+                    <div class="cc-simple-field" style="margin-bottom:8px;">
+                        <label class="cc-simple-label">Description <span style="color:var(--gray-400);font-weight:500;text-transform:none;letter-spacing:0;">(optional)</span></label>
+                        <input type="text" class="cc-input" id="ccOtherDesc" placeholder="e.g., Printing, courier, stationery">
+                    </div>
+                    <div class="cc-simple-row">
+                        <div class="cc-simple-field">
+                            <label class="cc-simple-label">Amount (₹)</label>
+                            <input type="number" class="cc-input" id="ccOtherAmount" placeholder="0.00" min="0" step="0.01" oninput="ccUpdateTotals()">
+                        </div>
+                        <div class="cc-simple-receipt-slot">
+                            <label class="cc-simple-label">Receipt</label>
+                            <label class="cc-camera-btn" id="ccOtherCameraBtn" title="Attach receipt">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <input type="file" accept="image/*,application/pdf" onchange="ccOnSimpleReceipt(this, 'other')">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remarks -->
+            <div class="cc-field" style="margin-top:4px;">
+                <label class="cc-label" for="ccRemarks">Remarks</label>
+                <input type="text" class="cc-input" id="ccRemarks" placeholder="Enter remarks">
+            </div>
+
+        </div><!-- /.cc-body -->
+
+        <!-- Footer -->
+        <div class="cc-foot">
+            <div class="cc-foot-total">
+                <div class="cc-foot-total-label">Total</div>
+                <div class="cc-foot-total-val" id="ccGrandTotal">₹0</div>
+            </div>
+            <button type="button" class="cc-btn-cancel" onclick="ccClose()">Cancel</button>
+            <button type="button" class="cc-btn-submit" id="ccSubmitBtn" onclick="ccSubmit()" disabled>Submit</button>
+        </div>
+
+        <!-- PO chooser (modal within modal) for sites with multiple POs -->
+        <div class="cc-po-chooser" id="ccPoChooser">
+            <div class="cc-po-chooser-box" onclick="event.stopPropagation()">
+                <div class="cc-po-chooser-head">
+                    <div class="cc-po-chooser-title">Select PO</div>
+                    <div class="cc-po-chooser-sub" id="ccPoChooserSub">Multiple POs available for this site</div>
+                </div>
+                <div class="cc-po-chooser-list" id="ccPoChooserList"></div>
+                <div class="cc-po-chooser-foot">
+                    <button type="button" class="cc-btn-cancel" onclick="ccPoChooserClose()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.cc-panel -->
+</div><!-- /.cc-backdrop -->
+
+
+<script>
+/* ═══════════════════════════════════════════════
+   CREATE CLAIM — state + handlers
+═══════════════════════════════════════════════ */
+(function(){
+
+    // ─── Mock data ──────────────────────────────────────────────
+    var CC_ALL_SITES = [
+        { id:'S001', name:'TEST-LIVE',                    project:'Voult',              circle:'CHD' },
+        { id:'S002', name:'Phase 8B Tower - Mohali',      project:'Punjab 5G Rollout',  circle:'Punjab' },
+        { id:'S003', name:'Sector 17 BTS Site',           project:'Punjab 5G Rollout',  circle:'Punjab' },
+        { id:'S004', name:'Zirakpur Relay Tower',         project:'Tricity Expansion',  circle:'Punjab' },
+        { id:'S005', name:'Panchkula Sec-5 Hub',          project:'Haryana Backhaul',   circle:'Haryana' },
+        { id:'S006', name:'IT Park Fibre Node',           project:'Punjab 5G Rollout',  circle:'Punjab' },
+        { id:'S007', name:'Ambala Cantt Site',            project:'Haryana Backhaul',   circle:'Haryana' },
+        { id:'S008', name:'Ludhiana Central BTS',         project:'LDH Densification',  circle:'Punjab' },
+        { id:'S009', name:'Kharar Ring Road Tower',       project:'Tricity Expansion',  circle:'Punjab' }
+    ];
+    var CC_EMPLOYEES = [
+        { id:'E001', name:'Rahul Sharma',    role:'Site Engineer' },
+        { id:'E002', name:'Priya Singh',     role:'Project Manager' },
+        { id:'E003', name:'Amit Kumar',      role:'Technician' },
+        { id:'E004', name:'Sneha Patel',     role:'QA Lead' },
+        { id:'E005', name:'Vikram Chauhan',  role:'Field Engineer' },
+        { id:'E006', name:'Anjali Mehra',    role:'Coordinator' },
+        { id:'E007', name:'Rohit Verma',     role:'Supervisor' },
+        { id:'E008', name:'Kavya Iyer',      role:'Installation Lead' },
+        { id:'E009', name:'Arjun Reddy',     role:'Network Engineer' },
+        { id:'E010', name:'Meera Das',       role:'Telecom Specialist' },
+        { id:'E011', name:'Karan Malhotra',  role:'Safety Officer' },
+        { id:'E012', name:'Divya Nair',      role:'Documentation' }
+    ];
+    var CC_EMP_COLORS = ['#2D4A35','#5a7fa8','#8b5fa8','#b8893a','#4a7c59','#b85c52','#6e2d40','#5C5650'];
+    function ccEmpColor(id){ var h=0; for (var i=0;i<id.length;i++) h=(h*31+id.charCodeAt(i))&0xffff; return CC_EMP_COLORS[h % CC_EMP_COLORS.length]; }
+    function ccEmpInitials(name){ return name.split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase(); }
+    var CC_DATE_SITES = {};
+    (function seed(){
+        var today = new Date(); today.setHours(0,0,0,0);
+        for (var d=0; d<30; d++) {
+            var dt = new Date(today); dt.setDate(dt.getDate()-d);
+            var key = dt.toISOString().slice(0,10);
+            var seed = d*7+3, count = (seed%3)+1, picks=[];
+            for (var i=0;i<count;i++) picks.push(CC_ALL_SITES[(seed+i*5) % CC_ALL_SITES.length]);
+            CC_DATE_SITES[key] = picks;
+        }
+    })();
+
+    // ─── Multi-site: projects, and per-project site list with POs ─
+    var CC_PROJECTS = [
+        { id:'P001', name:'Voult',               circle:'CHD' },
+        { id:'P002', name:'Punjab 5G Rollout',   circle:'Punjab' },
+        { id:'P003', name:'Tricity Expansion',   circle:'Punjab' },
+        { id:'P004', name:'Haryana Backhaul',    circle:'Haryana' },
+        { id:'P005', name:'LDH Densification',   circle:'Punjab' }
+    ];
+    // Map project id → array of sites. Each site has 1 or more POs.
+    var CC_PROJECT_SITES = {
+        P001: [
+            { id:'S101', name:'TEST-LIVE',               pos:[{ id:'PO-V-001', number:'PO-V-001', value:180000, desc:'Materials & services FY26' }] }
+        ],
+        P002: [
+            { id:'S201', name:'Phase 8B Tower - Mohali', pos:[
+                { id:'PO-P5-023', number:'PO-P5-023', value:420000, desc:'Tower install + commissioning' },
+                { id:'PO-P5-044', number:'PO-P5-044', value:95000,  desc:'Supplementary civil work' }
+            ]},
+            { id:'S202', name:'Sector 17 BTS Site',      pos:[{ id:'PO-P5-031', number:'PO-P5-031', value:210000, desc:'BTS mounting kit + power' }] },
+            { id:'S203', name:'IT Park Fibre Node',      pos:[
+                { id:'PO-P5-017', number:'PO-P5-017', value:350000, desc:'Fibre drop + splicing' },
+                { id:'PO-P5-029', number:'PO-P5-029', value:120000, desc:'Rack fitout' },
+                { id:'PO-P5-055', number:'PO-P5-055', value:80000,  desc:'Additional patch panels' }
+            ]}
+        ],
+        P003: [
+            { id:'S301', name:'Zirakpur Relay Tower',    pos:[{ id:'PO-TC-012', number:'PO-TC-012', value:145000, desc:'Relay equipment install' }] },
+            { id:'S302', name:'Kharar Ring Road Tower',  pos:[
+                { id:'PO-TC-019', number:'PO-TC-019', value:230000, desc:'Tower + RF commissioning' },
+                { id:'PO-TC-027', number:'PO-TC-027', value:60000,  desc:'Safety audit & rectifications' }
+            ]}
+        ],
+        P004: [
+            { id:'S401', name:'Panchkula Sec-5 Hub',     pos:[{ id:'PO-HB-004', number:'PO-HB-004', value:310000, desc:'Backhaul hub setup' }] },
+            { id:'S402', name:'Ambala Cantt Site',       pos:[{ id:'PO-HB-011', number:'PO-HB-011', value:175000, desc:'Site refurbishment' }] }
+        ],
+        P005: [
+            { id:'S501', name:'Ludhiana Central BTS',    pos:[{ id:'PO-LD-002', number:'PO-LD-002', value:190000, desc:'Densification rollout' }] }
+        ]
+    };
+
+    // ─── State ──────────────────────────────────────────────────
+    var cc = {
+        claimType:'single', expType:'local',
+        date:'', site:null,
+        // Multi-site fields
+        msPurpose:'', msProjectId:'', msDate:'',
+        msSelectedSites:[],  // [{id, name, project, circle, po:{id,number,value,desc}|null, allPOs:[...]}]
+        _msPickerTempIds:[], // temp selection inside drawer
+        _msPoChooserTargetId:null, // siteId whose PO we're picking
+        travelEntries:[],
+        da:    {amount:'', receipt:null},
+        hotel: {amount:'', receipt:null},
+        other: {amount:'', desc:'', receipt:null},
+        remarks:'',
+        _travelDraftReceipt:null,
+        _travelDraftEmployees:[],
+        _seq:0
+    };
+
+    // ─── Open / Close ───────────────────────────────────────────
+    window.ccOpenCreateClaim = function(){
+        ccReset();
+        var bd = document.getElementById('ccBackdrop');
+        if (bd) bd.classList.add('open');
+        // Default date = today
+        var t = new Date().toISOString().slice(0,10);
+        var inp = document.getElementById('ccDate');
+        if (inp) { inp.value = t; cc.date = t; ccPopulateSites(); }
+    };
+
+    window.ccClose = function(){
+        var singleDirty = cc.site;
+        var multiDirty = cc.msPurpose || cc.msProjectId || cc.msSelectedSites.length;
+        var expenseDirty = cc.travelEntries.length || cc.da.amount || cc.hotel.amount || cc.other.amount || cc.remarks;
+        var dirty = singleDirty || multiDirty || expenseDirty;
+        if (dirty && !confirm('Discard this claim? Entered details will be lost.')) return;
+        var bd = document.getElementById('ccBackdrop');
+        if (bd) bd.classList.remove('open');
+        ccCloseBcMenu();
+    };
+
+    window.ccOnBackdropClick = function(e){
+        if (e.target && e.target.id === 'ccBackdrop') ccClose();
+    };
+
+    function ccReset(){
+        cc = {
+            claimType:'single', expType:'local',
+            date:'', site:null,
+            msPurpose:'', msProjectId:'', msDate:'',
+            msSelectedSites:[],
+            _msPickerTempIds:[],
+            _msPoChooserTargetId:null,
+            travelEntries:[],
+            da:    {amount:'', receipt:null},
+            hotel: {amount:'', receipt:null},
+            other: {amount:'', desc:'', receipt:null},
+            remarks:'',
+            _travelDraftReceipt:null,
+            _travelDraftEmployees:[],
+            _seq:0
+        };
+        // Reset UI fields
+        var ids = ['ccDate','ccSite','ccCircle','ccProject','ccTrMode','ccTrAmount','ccTrFrom','ccTrTo','ccTrReceipt','ccDAAmount','ccHotelAmount','ccOtherDesc','ccOtherAmount','ccRemarks','ccEmpSearch','ccMsPurpose','ccMsProject','ccMsDate','ccMsSiteSearch'];
+        ids.forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+        // Reset travel receipt label
+        var trLbl = document.getElementById('ccTrReceiptLabel');
+        if (trLbl) { trLbl.textContent = 'Attach receipt'; trLbl.classList.remove('has-file'); }
+        // Reset camera buttons
+        ['ccTrCameraBtn','ccDACameraBtn','ccHotelCameraBtn','ccOtherCameraBtn'].forEach(function(id){
+            var el = document.getElementById(id);
+            if (el) { el.classList.remove('has-file'); var d = el.querySelector('.cc-camera-dot'); if (d) d.remove(); }
+        });
+        // Reset employee picker
+        ccEmpRenderInput();
+        ccEmpClose();
+        // Reset accordions
+        var accs = ['ccAccTravel','ccAccDA','ccAccHotel','ccAccOther'];
+        accs.forEach(function(id, idx){ var el = document.getElementById(id); if (el) el.classList.toggle('open', idx===0); });
+        // Single / Local defaults
+        var s = document.getElementById('ccTypeSingle'); if (s) s.classList.add('active');
+        var m = document.getElementById('ccTypeMulti');  if (m) m.classList.remove('active');
+        var mn = document.getElementById('ccMultiNote'); if (mn) mn.style.display = 'none';
+        ccApplyExpType('local');
+        // Show single fields, hide multi fields
+        ccShowFieldsForType('single');
+        // Populate project select
+        ccMsPopulateProjects();
+        // Reset multi-site UI
+        ccMsRenderSelectedSites();
+        ccMsSetSitesBtnState();
+        ccMsCloseSitesPicker();
+        ccPoChooserClose();
+        // Clear chips + totals
+        document.getElementById('ccTravelChips').innerHTML = '';
+        ccUpdateTotals();
+    }
+
+    // ─── Breadcrumb dropdown (Local/Outstation) ─────────────────
+    window.ccToggleBcMenu = function(ev){
+        ev.stopPropagation();
+        var m = document.getElementById('ccBcMenu');
+        if (m) m.classList.toggle('open');
+    };
+    function ccCloseBcMenu(){
+        var m = document.getElementById('ccBcMenu');
+        if (m) m.classList.remove('open');
+    }
+    document.addEventListener('click', function(e){
+        var m = document.getElementById('ccBcMenu');
+        var bc = document.getElementById('ccBcActive');
+        if (!m || !bc) return;
+        if (!m.contains(e.target) && !bc.contains(e.target)) ccCloseBcMenu();
+    });
+
+    // ─── Claim type ─────────────────────────────────────────────
+    window.ccSetClaimType = function(type){
+        if (type === 'multi') {
+            document.getElementById('ccTypeSingle').classList.remove('active');
+            document.getElementById('ccTypeMulti').classList.add('active');
+            document.getElementById('ccMultiNote').style.display = 'none';
+            cc.claimType = 'multi';
+            ccShowFieldsForType('multi');
+        } else {
+            document.getElementById('ccTypeSingle').classList.add('active');
+            document.getElementById('ccTypeMulti').classList.remove('active');
+            document.getElementById('ccMultiNote').style.display = 'none';
+            cc.claimType = 'single';
+            ccShowFieldsForType('single');
+        }
+        ccUpdateSubmitBtn();
+    };
+
+    function ccShowFieldsForType(type){
+        var sf = document.getElementById('ccSingleFields');
+        var mf = document.getElementById('ccMultiFields');
+        if (sf) sf.style.display = (type === 'single') ? 'block' : 'none';
+        if (mf) mf.style.display = (type === 'multi')  ? 'block' : 'none';
+    }
+
+    // ─── Multi-site: populate projects + handlers ───────────────
+    function ccMsPopulateProjects(){
+        var sel = document.getElementById('ccMsProject');
+        if (!sel) return;
+        var html = '<option value="">Select project</option>';
+        CC_PROJECTS.forEach(function(p){
+            html += '<option value="'+ccEsc(p.id)+'">'+ccEsc(p.name)+' — '+ccEsc(p.circle)+'</option>';
+        });
+        sel.innerHTML = html;
+    }
+
+    window.ccMsOnPurposeChange = function(){
+        var el = document.getElementById('ccMsPurpose');
+        cc.msPurpose = el ? el.value : '';
+        ccUpdateSubmitBtn();
+    };
+
+    window.ccMsOnProjectChange = function(){
+        var el = document.getElementById('ccMsProject');
+        cc.msProjectId = el ? el.value : '';
+        // Changing project invalidates previously selected sites
+        cc.msSelectedSites = [];
+        ccMsRenderSelectedSites();
+        ccMsSetSitesBtnState();
+        ccUpdateSubmitBtn();
+    };
+
+    function ccMsSetSitesBtnState(){
+        var picker = document.getElementById('ccMsSitesPicker');
+        var lbl = document.getElementById('ccMsSitesBtnLabel');
+        var cnt = document.getElementById('ccMsSiteCount');
+        if (!picker || !lbl) return;
+        if (!cc.msProjectId) {
+            picker.classList.add('disabled');
+            picker.classList.remove('open');
+            lbl.textContent = 'Select a project first';
+        } else {
+            picker.classList.remove('disabled');
+            var n = cc.msSelectedSites.length;
+            if (n === 0) {
+                lbl.textContent = 'Select sites';
+            } else if (n === 1) {
+                lbl.textContent = cc.msSelectedSites[0].name;
+            } else {
+                lbl.textContent = n + ' sites selected';
+            }
+        }
+        if (cnt) cnt.textContent = cc.msSelectedSites.length ? (cc.msSelectedSites.length + ' selected') : '';
+    }
+
+    // ─── Sites dropdown: open / close / toggle ──────────────────
+    window.ccMsToggleSitesDropdown = function(ev){
+        if (ev) ev.stopPropagation();
+        var picker = document.getElementById('ccMsSitesPicker');
+        if (!picker || picker.classList.contains('disabled')) return;
+        if (picker.classList.contains('open')) { ccMsCloseSitesDropdown(); return; }
+        ccMsOpenSitesDropdown();
+    };
+
+    window.ccMsOpenSitesDropdown = function(){
+        if (!cc.msProjectId) return;
+        var picker = document.getElementById('ccMsSitesPicker');
+        if (!picker) return;
+        // Clear search
+        var s = document.getElementById('ccMsSiteSearch'); if (s) s.value = '';
+        ccMsRenderDropdownList();
+        picker.classList.add('open');
+        // Focus search
+        setTimeout(function(){
+            var si = document.getElementById('ccMsSiteSearch');
+            if (si) si.focus();
+        }, 60);
+    };
+
+    window.ccMsCloseSitesDropdown = function(ev){
+        if (ev) ev.stopPropagation();
+        var picker = document.getElementById('ccMsSitesPicker');
+        if (picker) picker.classList.remove('open');
+        var s = document.getElementById('ccMsSiteSearch'); if (s) s.value = '';
+    };
+
+    // Back-compat alias (reset() calls this)
+    window.ccMsCloseSitesPicker = function(){ ccMsCloseSitesDropdown(); };
+
+    window.ccMsRenderDropdownList = function(){
+        var wrap = document.getElementById('ccMsDropdownList');
+        var countEl = document.getElementById('ccMsDropdownCount');
+        if (!wrap) return;
+        var q = (document.getElementById('ccMsSiteSearch') || {value:''}).value.toLowerCase().trim();
+        var sites = CC_PROJECT_SITES[cc.msProjectId] || [];
+        var filtered = sites.filter(function(s){
+            if (!q) return true;
+            return s.name.toLowerCase().indexOf(q) !== -1;
+        });
+        var selectedIds = cc.msSelectedSites.map(function(s){ return s.id; });
+        if (countEl) countEl.textContent = selectedIds.length + ' selected';
+        if (!filtered.length) {
+            wrap.innerHTML = '<div class="cc-ms-drawer-empty">No sites found for this project.</div>';
+            return;
+        }
+        wrap.innerHTML = filtered.map(function(s){
+            var sel = selectedIds.indexOf(s.id) !== -1;
+            var poCount = (s.pos || []).length;
+            var poBadge = poCount > 1
+                ? '<span class="cc-ms-drawer-item-po-count multi">'+poCount+' POs</span>'
+                : '<span class="cc-ms-drawer-item-po-count">1 PO</span>';
+            var poPreview = poCount === 1 ? (s.pos[0].number) : (poCount + ' to choose from');
+            return '<div class="cc-ms-drawer-item'+(sel?' selected':'')+'" onclick="ccMsToggleSiteSelection(\''+ccEsc(s.id)+'\', event)">' +
+                     '<div class="cc-ms-drawer-item-cb"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>' +
+                     '<div class="cc-ms-drawer-item-body">' +
+                       '<div class="cc-ms-drawer-item-name">'+ccEsc(s.name)+'</div>' +
+                       '<div class="cc-ms-drawer-item-meta">'+poBadge+'<span>'+ccEsc(poPreview)+'</span></div>' +
+                     '</div>' +
+                   '</div>';
+        }).join('');
+    };
+
+    // Direct-commit toggle: updates cc.msSelectedSites immediately on each click
+    window.ccMsToggleSiteSelection = function(siteId, ev){
+        if (ev) ev.stopPropagation();
+        var proj = CC_PROJECTS.find(function(p){ return p.id === cc.msProjectId; });
+        var sites = CC_PROJECT_SITES[cc.msProjectId] || [];
+        var idx = cc.msSelectedSites.findIndex(function(s){ return s.id === siteId; });
+        if (idx >= 0) {
+            // Deselect
+            cc.msSelectedSites.splice(idx, 1);
+        } else {
+            // Select
+            var s = sites.find(function(x){ return x.id === siteId; });
+            if (!s) return;
+            var pos = s.pos || [];
+            var po = (pos.length === 1) ? pos[0] : null;
+            cc.msSelectedSites.push({
+                id: s.id, name: s.name,
+                project: proj ? proj.name : '',
+                circle: proj ? proj.circle : '',
+                po: po, allPOs: pos
+            });
+        }
+        ccMsRenderDropdownList();
+        ccMsRenderSelectedSites();
+        ccMsSetSitesBtnState();
+        ccUpdateSubmitBtn();
+    };
+
+    function ccMsRenderSelectedSites(){
+        var wrap = document.getElementById('ccMsSelectedList');
+        if (!wrap) return;
+        if (!cc.msSelectedSites.length) { wrap.innerHTML = ''; return; }
+        wrap.innerHTML = cc.msSelectedSites.map(function(s){
+            var poPart;
+            if (s.po) {
+                poPart = '<span class="cc-ms-selected-po-chip">'+ccEsc(s.po.number)+'</span>' +
+                         ((s.allPOs || []).length > 1
+                            ? '<button type="button" class="cc-ms-selected-po-btn" onclick="ccPoChooserOpen(\''+ccEsc(s.id)+'\')">change</button>'
+                            : '');
+            } else {
+                poPart = '<span class="cc-ms-selected-po-missing"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>Pick PO</span>' +
+                         '<button type="button" class="cc-ms-selected-po-btn" onclick="ccPoChooserOpen(\''+ccEsc(s.id)+'\')">choose</button>';
+            }
+            return '<div class="cc-ms-selected-row">' +
+                     '<div class="cc-ms-selected-body">' +
+                       '<div class="cc-ms-selected-name">'+ccEsc(s.name)+'</div>' +
+                       '<div class="cc-ms-selected-po">'+poPart+'</div>' +
+                     '</div>' +
+                     '<button type="button" class="cc-ms-selected-del" onclick="ccMsRemoveSite(\''+ccEsc(s.id)+'\')" title="Remove site">' +
+                       '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                     '</button>' +
+                   '</div>';
+        }).join('');
+    }
+
+    window.ccMsRemoveSite = function(siteId){
+        cc.msSelectedSites = cc.msSelectedSites.filter(function(s){ return s.id !== siteId; });
+        ccMsRenderSelectedSites();
+        ccMsSetSitesBtnState();
+        ccUpdateSubmitBtn();
+    };
+
+    // ─── PO chooser ─────────────────────────────────────────────
+    window.ccPoChooserOpen = function(siteId){
+        cc._msPoChooserTargetId = siteId;
+        var site = cc.msSelectedSites.find(function(s){ return s.id === siteId; });
+        if (!site) return;
+        var sub = document.getElementById('ccPoChooserSub');
+        if (sub) sub.textContent = site.name + ' — ' + (site.allPOs || []).length + ' POs available';
+        var list = document.getElementById('ccPoChooserList');
+        if (list) {
+            list.innerHTML = (site.allPOs || []).map(function(po){
+                var val = '\u20b9' + Number(po.value || 0).toLocaleString('en-IN');
+                return '<div class="cc-po-option" onclick="ccPoChooserSelect(\''+ccEsc(po.id)+'\')">' +
+                         '<div class="cc-po-option-head">' +
+                           '<span class="cc-po-option-num">'+ccEsc(po.number)+'</span>' +
+                           '<span class="cc-po-option-val">'+val+'</span>' +
+                         '</div>' +
+                         '<div class="cc-po-option-desc">'+ccEsc(po.desc || '')+'</div>' +
+                       '</div>';
+            }).join('');
+        }
+        var m = document.getElementById('ccPoChooser');
+        if (m) m.classList.add('open');
+    };
+    window.ccPoChooserClose = function(){
+        var m = document.getElementById('ccPoChooser');
+        if (m) m.classList.remove('open');
+        cc._msPoChooserTargetId = null;
+    };
+    window.ccPoChooserSelect = function(poId){
+        var site = cc.msSelectedSites.find(function(s){ return s.id === cc._msPoChooserTargetId; });
+        if (!site) { ccPoChooserClose(); return; }
+        var po = (site.allPOs || []).find(function(p){ return p.id === poId; });
+        if (po) site.po = po;
+        ccPoChooserClose();
+        ccMsRenderSelectedSites();
+        ccUpdateSubmitBtn();
+    };
+
+    // ─── Expense type (Local/Outstation) ────────────────────────
+    window.ccSetExpType = function(type, ev){
+        if (ev) ev.stopPropagation();
+        ccApplyExpType(type);
+        ccCloseBcMenu();
+        ccUpdateTotals();
+    };
+    function ccApplyExpType(type){
+        cc.expType = type;
+        document.getElementById('ccBcActiveText').textContent = (type === 'outstation' ? 'Outstation' : 'Local');
+        document.getElementById('ccBcMenuLocal').classList.toggle('active', type === 'local');
+        document.getElementById('ccBcMenuOutstation').classList.toggle('active', type === 'outstation');
+        var hotelAcc = document.getElementById('ccAccHotel');
+        if (hotelAcc) {
+            hotelAcc.style.display = (type === 'outstation') ? 'block' : 'none';
+            if (type !== 'outstation') {
+                hotelAcc.classList.remove('open');
+                cc.hotel = {amount:'', receipt:null};
+                var h = document.getElementById('ccHotelAmount'); if (h) h.value = '';
+                var cb = document.getElementById('ccHotelCameraBtn');
+                if (cb) { cb.classList.remove('has-file'); var d = cb.querySelector('.cc-camera-dot'); if (d) d.remove(); }
+            }
+        }
+    }
+
+    // ─── Date / Site ────────────────────────────────────────────
+    window.ccOnDateChange = function(){
+        var inp = document.getElementById('ccDate');
+        cc.date = inp ? inp.value : '';
+        cc.site = null;
+        var circle = document.getElementById('ccCircle'); if (circle) circle.value = '';
+        var proj   = document.getElementById('ccProject'); if (proj)   proj.value = '';
+        ccPopulateSites();
+        ccUpdateSubmitBtn();
+    };
+    function ccPopulateSites(){
+        var sel = document.getElementById('ccSite');
+        if (!sel) return;
+        var sites = CC_DATE_SITES[cc.date] || [];
+        if (!sites.length) {
+            sel.innerHTML = '<option value="">No sites for this date</option>';
+            return;
+        }
+        var html = '<option value="">Select site</option>';
+        sites.forEach(function(s){ html += '<option value="'+ccEsc(s.id)+'">'+ccEsc(s.name)+'</option>'; });
+        sel.innerHTML = html;
+    }
+    window.ccOnSiteChange = function(){
+        var sel = document.getElementById('ccSite');
+        var id = sel ? sel.value : '';
+        var sites = CC_DATE_SITES[cc.date] || [];
+        var s = sites.find(function(x){ return x.id === id; });
+        cc.site = s || null;
+        document.getElementById('ccCircle').value  = s ? s.circle  : '';
+        document.getElementById('ccProject').value = s ? s.project : '';
+        ccUpdateSubmitBtn();
+    };
+
+    // ─── Accordions ─────────────────────────────────────────────
+    window.ccToggleAcc = function(id){
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('open');
+    };
+
+    // ─── Travel input: Add entry ────────────────────────────────
+    window.ccOnTravelReceipt = function(input){
+        var f = input.files && input.files[0];
+        cc._travelDraftReceipt = f ? { name: f.name, size: f.size } : null;
+        var btn = document.getElementById('ccTrCameraBtn');
+        if (btn) {
+            btn.classList.toggle('has-file', !!f);
+            var existing = btn.querySelector('.cc-camera-dot');
+            if (f && !existing) {
+                var dot = document.createElement('span');
+                dot.className = 'cc-camera-dot';
+                btn.appendChild(dot);
+            } else if (!f && existing) {
+                existing.remove();
+            }
+        }
+        var lbl = document.getElementById('ccTrReceiptLabel');
+        if (lbl) {
+            if (f) { lbl.textContent = f.name; lbl.classList.add('has-file'); }
+            else { lbl.textContent = 'Attach receipt'; lbl.classList.remove('has-file'); }
+        }
+    };
+
+    window.ccAddTravelEntry = function(){
+        var mode   = (document.getElementById('ccTrMode').value || '').trim();
+        var amount = (document.getElementById('ccTrAmount').value || '').trim();
+        var emps   = (cc._travelDraftEmployees || []).slice();
+        var from   = (document.getElementById('ccTrFrom').value || '').trim();
+        var to     = (document.getElementById('ccTrTo').value || '').trim();
+        var errs = [];
+        if (!mode)   errs.push('mode');
+        if (!amount || parseFloat(amount) <= 0) errs.push('amount');
+        if (!from)   errs.push('from');
+        if (!to)     errs.push('to');
+        if (errs.length) {
+            alert('Please fill: ' + errs.join(', '));
+            return;
+        }
+        cc._seq += 1;
+        cc.travelEntries.push({
+            id:'t'+cc._seq, mode:mode, amount:parseFloat(amount)||0,
+            employees: emps,  // [{id, name, role}]
+            from:from, to:to, receipt: cc._travelDraftReceipt
+        });
+        // Clear inputs
+        ['ccTrMode','ccTrAmount','ccTrFrom','ccTrTo','ccTrReceipt'].forEach(function(id){
+            var el = document.getElementById(id); if (el) el.value = '';
+        });
+        cc._travelDraftReceipt = null;
+        cc._travelDraftEmployees = [];
+        var btn = document.getElementById('ccTrCameraBtn');
+        if (btn) { btn.classList.remove('has-file'); var d = btn.querySelector('.cc-camera-dot'); if (d) d.remove(); }
+        var trLbl = document.getElementById('ccTrReceiptLabel');
+        if (trLbl) { trLbl.textContent = 'Attach receipt'; trLbl.classList.remove('has-file'); }
+        ccEmpRenderInput();
+        ccEmpClose();
+        ccRenderTravelChips();
+        ccUpdateTotals();
+    };
+
+    window.ccRemoveTravelEntry = function(id){
+        cc.travelEntries = cc.travelEntries.filter(function(e){ return e.id !== id; });
+        ccRenderTravelChips();
+        ccUpdateTotals();
+    };
+
+    function ccRenderTravelChips(){
+        var wrap = document.getElementById('ccTravelChips');
+        if (!wrap) return;
+        if (!cc.travelEntries.length) { wrap.innerHTML = ''; return; }
+        var fmt = function(n){ return '\u20b9' + Number(n||0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); };
+        wrap.innerHTML = cc.travelEntries.map(function(e){
+            var modeShort = (e.mode||'').split('/')[0].trim().slice(0,8);
+            var empMeta = '';
+            if (e.employees && e.employees.length) {
+                if (e.employees.length === 1) {
+                    empMeta = 'with ' + e.employees[0].name;
+                } else if (e.employees.length === 2) {
+                    empMeta = 'with ' + e.employees[0].name + ' & ' + e.employees[1].name;
+                } else {
+                    empMeta = 'with ' + e.employees[0].name + ' +' + (e.employees.length - 1) + ' more';
+                }
+            }
+            return '' +
+            '<div class="cc-chip">' +
+              '<span class="cc-chip-mode">'+ccEsc(modeShort)+'</span>' +
+              '<div class="cc-chip-body">' +
+                '<div class="cc-chip-route">'+ccEsc(e.from)+' → '+ccEsc(e.to)+'</div>' +
+                (empMeta ? '<div class="cc-chip-meta">'+ccEsc(empMeta)+'</div>' : '') +
+              '</div>' +
+              '<span class="cc-chip-amount">'+fmt(e.amount)+'</span>' +
+              (e.receipt ? '<span class="cc-chip-attach" title="'+ccEsc(e.receipt.name)+'"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></span>' : '') +
+              '<button type="button" class="cc-chip-del" onclick="ccRemoveTravelEntry(\''+ccEsc(e.id)+'\')" title="Remove"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>' +
+            '</div>';
+        }).join('');
+    }
+
+    // ─── Simple receipt (DA/Hotel/Other) ────────────────────────
+    // ─── Employee picker (Travel with) ──────────────────────────
+    window.ccEmpOpen = function(ev){
+        if (ev) ev.stopPropagation();
+        var p = document.getElementById('ccTrWithPicker');
+        if (!p) return;
+        // If already open, toggle closed
+        if (p.classList.contains('open')) { ccEmpClose(); return; }
+        p.classList.add('open');
+        ccEmpRenderList();
+        // Focus search
+        setTimeout(function(){
+            var s = document.getElementById('ccEmpSearch');
+            if (s) s.focus();
+        }, 50);
+    };
+    window.ccEmpClose = function(){
+        var p = document.getElementById('ccTrWithPicker');
+        if (p) p.classList.remove('open');
+        var s = document.getElementById('ccEmpSearch');
+        if (s) s.value = '';
+    };
+    window.ccEmpToggle = function(id, ev){
+        if (ev) ev.stopPropagation();
+        var emp = CC_EMPLOYEES.find(function(x){ return x.id === id; });
+        if (!emp) return;
+        var idx = cc._travelDraftEmployees.findIndex(function(x){ return x.id === id; });
+        if (idx >= 0) {
+            cc._travelDraftEmployees.splice(idx, 1);
+        } else {
+            cc._travelDraftEmployees.push(emp);
+        }
+        ccEmpRenderInput();
+        ccEmpRenderList();
+    };
+    window.ccEmpRemove = function(id, ev){
+        if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+        cc._travelDraftEmployees = cc._travelDraftEmployees.filter(function(x){ return x.id !== id; });
+        ccEmpRenderInput();
+        ccEmpRenderList();
+    };
+    window.ccEmpFilterList = function(){
+        ccEmpRenderList();
+    };
+    function ccEmpRenderInput(){
+        var input = document.getElementById('ccTrWithInput');
+        if (!input) return;
+        var selected = cc._travelDraftEmployees;
+        if (!selected.length) {
+            input.innerHTML = '<span class="cc-emp-placeholder">Select</span>';
+            return;
+        }
+        input.innerHTML = selected.map(function(e){
+            return '<span class="cc-emp-chip">' +
+              ccEsc(e.name) +
+              '<button type="button" class="cc-emp-chip-remove" onclick="ccEmpRemove(\''+ccEsc(e.id)+'\', event)" title="Remove">' +
+                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>' +
+              '</button>' +
+            '</span>';
+        }).join('');
+    }
+    function ccEmpRenderList(){
+        var wrap = document.getElementById('ccEmpList');
+        var countEl = document.getElementById('ccEmpCount');
+        if (!wrap) return;
+        var q = (document.getElementById('ccEmpSearch') || {value:''}).value.toLowerCase().trim();
+        var filtered = CC_EMPLOYEES.filter(function(e){
+            if (!q) return true;
+            return e.name.toLowerCase().indexOf(q) !== -1 || e.role.toLowerCase().indexOf(q) !== -1;
+        });
+        var selectedIds = cc._travelDraftEmployees.map(function(e){ return e.id; });
+        if (countEl) countEl.textContent = selectedIds.length + ' selected';
+        if (!filtered.length) {
+            wrap.innerHTML = '<div class="cc-emp-empty">No employees found</div>';
+            return;
+        }
+        wrap.innerHTML = filtered.map(function(e){
+            var sel = selectedIds.indexOf(e.id) !== -1;
+            return '<div class="cc-emp-item'+(sel?' selected':'')+'" onclick="ccEmpToggle(\''+ccEsc(e.id)+'\', event)">' +
+              '<div class="cc-emp-cb"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>' +
+              '<div class="cc-emp-av" style="background:'+ccEmpColor(e.id)+';">'+ccEsc(ccEmpInitials(e.name))+'</div>' +
+              '<div class="cc-emp-info">' +
+                '<div class="cc-emp-name">'+ccEsc(e.name)+'</div>' +
+                '<div class="cc-emp-role">'+ccEsc(e.role)+'</div>' +
+              '</div>' +
+            '</div>';
+        }).join('');
+    }
+    // Click outside closes picker
+    document.addEventListener('click', function(e){
+        var p = document.getElementById('ccTrWithPicker');
+        if (!p || !p.classList.contains('open')) return;
+        if (!p.contains(e.target)) ccEmpClose();
+    });
+
+    // Click outside closes the sites multi-select dropdown
+    document.addEventListener('click', function(e){
+        var p = document.getElementById('ccMsSitesPicker');
+        if (!p || !p.classList.contains('open')) return;
+        if (!p.contains(e.target)) ccMsCloseSitesDropdown();
+    });
+
+    window.ccOnSimpleReceipt = function(input, kind){
+        var f = input.files && input.files[0];
+        var bucket = cc[kind];
+        if (!bucket) return;
+        bucket.receipt = f ? { name: f.name, size: f.size } : null;
+        var btnMap = { da:'ccDACameraBtn', hotel:'ccHotelCameraBtn', other:'ccOtherCameraBtn' };
+        var btn = document.getElementById(btnMap[kind]);
+        if (btn) {
+            btn.classList.toggle('has-file', !!f);
+            var existing = btn.querySelector('.cc-camera-dot');
+            if (f && !existing) {
+                var dot = document.createElement('span');
+                dot.className = 'cc-camera-dot';
+                btn.appendChild(dot);
+            } else if (!f && existing) {
+                existing.remove();
+            }
+        }
+    };
+
+    // ─── Totals ─────────────────────────────────────────────────
+    window.ccUpdateTotals = function(){
+        var fmt = function(n){ return '\u20b9' + Number(n||0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); };
+        var tr = cc.travelEntries.reduce(function(s,e){ return s + (parseFloat(e.amount)||0); }, 0);
+        var daEl = document.getElementById('ccDAAmount');
+        var hoEl = document.getElementById('ccHotelAmount');
+        var otEl = document.getElementById('ccOtherAmount');
+        var da   = parseFloat(daEl ? daEl.value : 0) || 0;
+        var ho   = (cc.expType === 'outstation') ? (parseFloat(hoEl ? hoEl.value : 0) || 0) : 0;
+        var ot   = parseFloat(otEl ? otEl.value : 0) || 0;
+
+        cc.da.amount    = da    || '';
+        cc.hotel.amount = ho    || '';
+        cc.other.amount = ot    || '';
+
+        // Head totals: only show when non-zero
+        var setHead = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v > 0 ? '('+fmt(v)+')' : ''; };
+        setHead('ccTravelHeadTotal', tr);
+        setHead('ccDAHeadTotal',     da);
+        setHead('ccHotelHeadTotal',  ho);
+        setHead('ccOtherHeadTotal',  ot);
+
+        var g = tr + da + ho + ot;
+        var gt = document.getElementById('ccGrandTotal');
+        if (gt) gt.textContent = fmt(g);
+
+        ccUpdateSubmitBtn();
+    };
+
+    function ccUpdateSubmitBtn(){
+        var tr = cc.travelEntries.reduce(function(s,e){ return s + (parseFloat(e.amount)||0); }, 0);
+        var da = parseFloat(cc.da.amount)    || 0;
+        var ho = (cc.expType === 'outstation') ? (parseFloat(cc.hotel.amount) || 0) : 0;
+        var ot = parseFloat(cc.other.amount) || 0;
+        var hasAmount = (tr + da + ho + ot) > 0;
+        var ok;
+        if (cc.claimType === 'multi') {
+            var allSitesHavePOs = cc.msSelectedSites.length > 0 && cc.msSelectedSites.every(function(s){ return !!s.po; });
+            ok = cc.msPurpose && cc.msProjectId && allSitesHavePOs && hasAmount;
+        } else {
+            ok = cc.date && cc.site && hasAmount;
+        }
+        var btn = document.getElementById('ccSubmitBtn');
+        if (btn) btn.disabled = !ok;
+    }
+
+    // Remarks + Other description live-sync
+    document.addEventListener('DOMContentLoaded', function(){
+        var r = document.getElementById('ccRemarks');
+        if (r) r.addEventListener('input', function(){ cc.remarks = r.value; });
+        var od = document.getElementById('ccOtherDesc');
+        if (od) od.addEventListener('input', function(){ cc.other.desc = od.value; });
+        var md = document.getElementById('ccMsDate');
+        if (md) md.addEventListener('change', function(){ cc.msDate = md.value; });
+    });
+
+    // ─── Submit ─────────────────────────────────────────────────
+    window.ccSubmit = function(){
+        var remarksEl = document.getElementById('ccRemarks');
+        if (remarksEl) cc.remarks = remarksEl.value;
+
+        var payload, g;
+
+        if (cc.claimType === 'multi') {
+            if (!cc.msPurpose)  { alert('Please select a purpose'); return; }
+            if (!cc.msProjectId){ alert('Please select a project'); return; }
+            if (!cc.msSelectedSites.length) { alert('Please select at least one site'); return; }
+            var missingPO = cc.msSelectedSites.filter(function(s){ return !s.po; });
+            if (missingPO.length) {
+                alert('Please pick a PO for: ' + missingPO.map(function(s){ return s.name; }).join(', '));
+                return;
+            }
+            payload = {
+                claimType: 'multi',
+                expenseType: cc.expType,
+                purpose: cc.msPurpose,
+                project: (function(){ var p = CC_PROJECTS.find(function(x){ return x.id === cc.msProjectId; }); return p ? { id:p.id, name:p.name, circle:p.circle } : null; })(),
+                date: cc.msDate || null,
+                sites: cc.msSelectedSites.map(function(s){
+                    return { id:s.id, name:s.name, po: s.po ? { id:s.po.id, number:s.po.number, value:s.po.value } : null };
+                }),
+                travel: cc.travelEntries.map(function(e){ return {
+                    mode:e.mode, amount:e.amount,
+                    employees: (e.employees || []).map(function(em){ return { id: em.id, name: em.name }; }),
+                    from:e.from, to:e.to, receipt: e.receipt ? e.receipt.name : null
+                }; }),
+                da:    { amount: parseFloat(cc.da.amount)||0,    receipt: cc.da.receipt    ? cc.da.receipt.name    : null },
+                hotel: (cc.expType === 'outstation') ? { amount: parseFloat(cc.hotel.amount)||0, receipt: cc.hotel.receipt ? cc.hotel.receipt.name : null } : null,
+                other: { amount: parseFloat(cc.other.amount)||0, desc: cc.other.desc || '', receipt: cc.other.receipt ? cc.other.receipt.name : null },
+                remarks: cc.remarks || ''
+            };
+            g = payload.travel.reduce(function(s,t){ return s+t.amount; },0)
+                  + payload.da.amount
+                  + (payload.hotel ? payload.hotel.amount : 0)
+                  + payload.other.amount;
+            console.log('[Create Claim] multi-site submitted:', payload);
+            alert('Multi-site claim submitted!\n\n' +
+                  'Purpose: ' + cc.msPurpose + '\n' +
+                  'Project: ' + (payload.project ? payload.project.name : '-') + '\n' +
+                  'Sites: ' + payload.sites.length + '\n' +
+                  'Type: ' + (cc.expType === 'outstation' ? 'Outstation' : 'Local') + '\n' +
+                  'Total: \u20b9' + g.toLocaleString('en-IN') + '\n\n' +
+                  '(Payload logged to console)');
+        } else {
+            if (!cc.date)  { alert('Please select a date'); return; }
+            if (!cc.site)  { alert('Please select a site'); return; }
+            payload = {
+                claimType: 'single',
+                expenseType: cc.expType,
+                date: cc.date,
+                site: cc.site,
+                travel: cc.travelEntries.map(function(e){ return {
+                    mode:e.mode, amount:e.amount,
+                    employees: (e.employees || []).map(function(em){ return { id: em.id, name: em.name }; }),
+                    from:e.from, to:e.to, receipt: e.receipt ? e.receipt.name : null
+                }; }),
+                da:    { amount: parseFloat(cc.da.amount)||0,    receipt: cc.da.receipt    ? cc.da.receipt.name    : null },
+                hotel: (cc.expType === 'outstation') ? { amount: parseFloat(cc.hotel.amount)||0, receipt: cc.hotel.receipt ? cc.hotel.receipt.name : null } : null,
+                other: { amount: parseFloat(cc.other.amount)||0, desc: cc.other.desc || '', receipt: cc.other.receipt ? cc.other.receipt.name : null },
+                remarks: cc.remarks || ''
+            };
+            g = payload.travel.reduce(function(s,t){ return s+t.amount; },0)
+                  + payload.da.amount
+                  + (payload.hotel ? payload.hotel.amount : 0)
+                  + payload.other.amount;
+            console.log('[Create Claim] single-site submitted:', payload);
+            alert('Claim submitted successfully!\n\n' +
+                  'Site: ' + cc.site.name + '\n' +
+                  'Type: ' + (cc.expType === 'outstation' ? 'Outstation' : 'Local') + '\n' +
+                  'Total: \u20b9' + g.toLocaleString('en-IN') + '\n\n' +
+                  '(Payload logged to console)');
+        }
+
+        var bd = document.getElementById('ccBackdrop');
+        if (bd) bd.classList.remove('open');
+        ccReset();
+    };
+
+    // ─── Helpers ────────────────────────────────────────────────
+    function ccEsc(s){
+        return String(s == null ? '' : s)
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    // ESC key closes
+    document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') {
+            var bd = document.getElementById('ccBackdrop');
+            if (bd && bd.classList.contains('open')) {
+                ccClose();
+            }
+        }
+    });
+
 })();
 </script>
 
