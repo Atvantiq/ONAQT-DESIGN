@@ -6188,14 +6188,6 @@
         }
         .cc-bc { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; font-family: 'Fraunces', serif; }
         .cc-bc-title { color: var(--primary); }
-        .cc-bc-sep { color: var(--gray-400); font-weight: 400; }
-        .cc-bc-active {
-            color: var(--primary); cursor: pointer; padding: 2px 8px; border-radius: 6px;
-            display: inline-flex; align-items: center; gap: 4px; font-family: 'Fraunces', serif;
-            transition: var(--transition);
-        }
-        .cc-bc-active:hover { background: var(--primary-light); }
-        .cc-bc-active svg { width: 11px; height: 11px; opacity: 0.6; }
         .cc-close {
             width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--gray-200);
             background: var(--white); color: var(--gray-600); cursor: pointer;
@@ -6204,24 +6196,36 @@
         .cc-close:hover { background: var(--gray-100); color: var(--gray-900); border-color: var(--gray-300); }
         .cc-close svg { width: 13px; height: 13px; }
 
-        /* Breadcrumb dropdown */
-        .cc-bc-menu {
-            position: absolute; top: 44px; left: 14px; min-width: 180px;
-            background: var(--white); border: 1px solid var(--gray-200); border-radius: 9px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 10;
-            opacity: 0; visibility: hidden; transform: translateY(-4px); transition: all .14s;
-            overflow: hidden; padding: 4px;
+        /* Expense Type tabs wrapper */
+        .cc-exp-type-wrap {
+            display: flex; flex-direction: column; gap: 6px;
         }
-        .cc-bc-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
-        .cc-bc-menu-item {
-            display: flex; align-items: center; gap: 8px; padding: 8px 10px;
-            cursor: pointer; border-radius: 6px; font-size: 12.5px; font-weight: 500;
-            color: var(--gray-700); transition: var(--transition);
+        /* Expense Type tabs (Local / Outstation) — underlined professional tabs */
+        .cc-exp-tabs {
+            display: flex; align-items: stretch; gap: 0;
+            border-bottom: 1.5px solid var(--gray-100);
+            padding: 0;
         }
-        .cc-bc-menu-item:hover { background: var(--gray-50); color: var(--gray-900); }
-        .cc-bc-menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
-        .cc-bc-menu-item svg { width: 13px; height: 13px; flex-shrink: 0; }
-        .cc-bc-menu-item-desc { font-size: 10px; color: var(--gray-500); margin-top: 1px; font-weight: 400; }
+        .cc-exp-tab {
+            flex: 0 0 auto;
+            padding: 8px 16px; background: transparent; border: none;
+            font-size: 12px; font-weight: 600; color: var(--gray-500);
+            cursor: pointer; position: relative;
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'DM Sans', sans-serif;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1.5px;
+            transition: color .15s, border-color .15s;
+        }
+        .cc-exp-tab:hover { color: var(--gray-800); }
+        .cc-exp-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .cc-exp-tab svg { width: 13px; height: 13px; }
+        .cc-exp-header-slim { margin-top: 0 !important; }
+
+        [data-dark="true"] .cc-exp-tabs { border-bottom-color: rgba(255,255,255,0.08) !important; }
 
         /* Body (scrollable) */
         .cc-body {
@@ -6588,12 +6592,6 @@
             font-size: 10.5px; color: var(--gray-500);
             display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
         }
-        .cc-ms-drawer-item-po-count {
-            font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
-            letter-spacing: 0.2px; text-transform: uppercase;
-            background: var(--info-light); color: var(--info);
-        }
-        .cc-ms-drawer-item-po-count.multi { background: var(--warning-light); color: var(--warning); }
         .cc-ms-drawer-foot {
             flex-shrink: 0; padding: 10px 14px;
             border-top: 1px solid var(--gray-100); background: var(--white);
@@ -6697,29 +6695,59 @@
             position: absolute; top: calc(100% + 4px); left: 0; right: 0;
             background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px;
             box-shadow: 0 12px 32px rgba(0,0,0,0.14); z-index: 100;
-            max-height: 320px; overflow: hidden; display: none;
+            max-height: 340px; overflow: hidden; display: none;
             flex-direction: column;
         }
         .cc-ms-site-picker.open .cc-ms-site-dropdown { display: flex; }
 
-        /* Compact drawer-style internals inside dropdown */
-        .cc-ms-site-dropdown .cc-ms-drawer-search { padding: 7px 10px; }
+        /* Clean flat list — no bordered cards per row */
+        .cc-ms-site-dropdown .cc-ms-drawer-search {
+            padding: 8px 10px; border-bottom: 1px solid var(--gray-100);
+        }
         .cc-ms-site-dropdown .cc-ms-drawer-search svg { width: 12px; height: 12px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-search input { height: 26px; font-size: 11.5px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-list { padding: 6px; gap: 5px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-item { padding: 7px 9px; border-radius: 6px; border-width: 1px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-item-cb { width: 14px; height: 14px; border-radius: 3px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-search input { height: 26px; font-size: 12px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-list {
+            padding: 4px; gap: 1px;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-item {
+            padding: 8px 10px; border-radius: 5px;
+            background: transparent !important;
+            border: none !important;
+            gap: 10px;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-item:hover {
+            background: var(--gray-50) !important;
+            border: none !important;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-item.selected {
+            background: color-mix(in srgb, var(--primary) 7%, transparent) !important;
+            border: none !important;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-cb {
+            width: 15px; height: 15px; border-radius: 3px; border-width: 1.5px;
+        }
         .cc-ms-site-dropdown .cc-ms-drawer-item-cb svg { width: 9px; height: 9px; stroke-width: 3.5; }
-        .cc-ms-site-dropdown .cc-ms-drawer-item-name { font-size: 11.5px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-item-meta { font-size: 10px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-foot { padding: 7px 10px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-body { gap: 0; }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-name {
+            font-size: 12px; font-weight: 500; color: var(--gray-900);
+            line-height: 1.3;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-item-meta {
+            font-size: 10.5px; color: var(--gray-500); font-weight: 500;
+            line-height: 1.3;
+        }
+        .cc-ms-site-dropdown .cc-ms-drawer-foot {
+            padding: 7px 10px; font-size: 10.5px;
+            border-top: 1px solid var(--gray-100);
+        }
         .cc-ms-site-dropdown .cc-ms-drawer-count { font-size: 10.5px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-done { height: 28px; padding: 0 12px; font-size: 11.5px; border-radius: 5px; }
-        .cc-ms-site-dropdown .cc-ms-drawer-empty { padding: 20px 14px; font-size: 11.5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-done { height: 28px; padding: 0 14px; font-size: 11.5px; border-radius: 5px; }
+        .cc-ms-site-dropdown .cc-ms-drawer-empty { padding: 24px 14px; font-size: 11.5px; }
 
         [data-dark="true"] .cc-ms-site-picker { background: #252836 !important; border-color: #363b52 !important; }
         [data-dark="true"] .cc-ms-site-picker.disabled { background: #1e2130 !important; }
         [data-dark="true"] .cc-ms-site-dropdown { background: var(--white) !important; border-color: #363b52 !important; }
+        [data-dark="true"] .cc-ms-site-dropdown .cc-ms-drawer-item:hover { background: rgba(255,255,255,0.04) !important; }
 
         /* Small input for accordion inputs */
         .cc-acc .cc-input, .cc-acc .cc-select { height: 32px; font-size: 11.5px; padding: 0 9px; border-radius: 6px; }
@@ -6845,7 +6873,6 @@
         [data-dark="true"] .cc-camera-btn { background: #252836 !important; border-color: #363b52 !important; }
         [data-dark="true"] .cc-foot { background: var(--white) !important; border-color: rgba(255,255,255,0.07) !important; }
         [data-dark="true"] .cc-btn-cancel { background: #252836 !important; border-color: #363b52 !important; color: var(--gray-600) !important; }
-        [data-dark="true"] .cc-bc-menu { background: var(--white) !important; border-color: #363b52 !important; }
         [data-dark="true"] .cc-chip { background: #1e2130 !important; border-color: #363b52 !important; }
 
         /* ═══════════════════════════════════════════════════════════
@@ -24848,26 +24875,10 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         <div class="cc-head" style="position:relative;">
             <div class="cc-bc">
                 <span class="cc-bc-title">Create Claim</span>
-                <span class="cc-bc-sep">›</span>
-                <span class="cc-bc-active" id="ccBcActive" onclick="ccToggleBcMenu(event)">
-                    <span id="ccBcActiveText">Local</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                </span>
             </div>
             <button class="cc-close" onclick="ccClose()" title="Close">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-            <!-- Breadcrumb dropdown -->
-            <div class="cc-bc-menu" id="ccBcMenu">
-                <div class="cc-bc-menu-item active" id="ccBcMenuLocal" onclick="ccSetExpType('local', event)">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    <div><div>Local</div><div class="cc-bc-menu-item-desc">Travel, DA, Others</div></div>
-                </div>
-                <div class="cc-bc-menu-item" id="ccBcMenuOutstation" onclick="ccSetExpType('outstation', event)">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 14.25l-5.584 2.718a.75.75 0 01-.99-.813l.5-4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0zM15 9.5l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    <div><div>Outstation</div><div class="cc-bc-menu-item-desc">+ Hotel expense</div></div>
-                </div>
-            </div>
         </div>
 
         <!-- Body -->
@@ -24970,8 +24981,20 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
                 </div>
             </div>
 
-            <!-- Expense Details header -->
-            <div class="cc-exp-header" style="margin-top:4px;">Expense Details <span class="cc-req">*</span></div>
+            <!-- Expense Type tabs (Local / Outstation) + Details header -->
+            <div class="cc-exp-type-wrap" style="margin-top:4px;">
+                <div class="cc-exp-tabs" role="tablist">
+                    <button type="button" class="cc-exp-tab active" id="ccExpTabLocal" role="tab" onclick="ccSetExpType('local', event)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        Local
+                    </button>
+                    <button type="button" class="cc-exp-tab" id="ccExpTabOutstation" role="tab" onclick="ccSetExpType('outstation', event)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 14.25l-5.584 2.718a.75.75 0 01-.99-.813l.5-4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0zM15 9.5l-3 3m0 0l-3-3m3 3V4"/></svg>
+                        Outstation
+                    </button>
+                </div>
+                <div class="cc-exp-header cc-exp-header-slim">Expense Details <span class="cc-req">*</span></div>
+            </div>
 
             <!-- Travel accordion -->
             <div class="cc-acc open" id="ccAccTravel">
@@ -25295,7 +25318,6 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         if (dirty && !confirm('Discard this claim? Entered details will be lost.')) return;
         var bd = document.getElementById('ccBackdrop');
         if (bd) bd.classList.remove('open');
-        ccCloseBcMenu();
     };
 
     window.ccOnBackdropClick = function(e){
@@ -25354,23 +25376,6 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         document.getElementById('ccTravelChips').innerHTML = '';
         ccUpdateTotals();
     }
-
-    // ─── Breadcrumb dropdown (Local/Outstation) ─────────────────
-    window.ccToggleBcMenu = function(ev){
-        ev.stopPropagation();
-        var m = document.getElementById('ccBcMenu');
-        if (m) m.classList.toggle('open');
-    };
-    function ccCloseBcMenu(){
-        var m = document.getElementById('ccBcMenu');
-        if (m) m.classList.remove('open');
-    }
-    document.addEventListener('click', function(e){
-        var m = document.getElementById('ccBcMenu');
-        var bc = document.getElementById('ccBcActive');
-        if (!m || !bc) return;
-        if (!m.contains(e.target) && !bc.contains(e.target)) ccCloseBcMenu();
-    });
 
     // ─── Claim type ─────────────────────────────────────────────
     window.ccSetClaimType = function(type){
@@ -25500,15 +25505,13 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         wrap.innerHTML = filtered.map(function(s){
             var sel = selectedIds.indexOf(s.id) !== -1;
             var poCount = (s.pos || []).length;
-            var poBadge = poCount > 1
-                ? '<span class="cc-ms-drawer-item-po-count multi">'+poCount+' POs</span>'
-                : '<span class="cc-ms-drawer-item-po-count">1 PO</span>';
-            var poPreview = poCount === 1 ? (s.pos[0].number) : (poCount + ' to choose from');
+            // Simple, quiet secondary line — just the PO number or a count for multi-PO sites
+            var poMeta = poCount === 1 ? ccEsc(s.pos[0].number) : (poCount + ' POs available');
             return '<div class="cc-ms-drawer-item'+(sel?' selected':'')+'" onclick="ccMsToggleSiteSelection(\''+ccEsc(s.id)+'\', event)">' +
                      '<div class="cc-ms-drawer-item-cb"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>' +
                      '<div class="cc-ms-drawer-item-body">' +
                        '<div class="cc-ms-drawer-item-name">'+ccEsc(s.name)+'</div>' +
-                       '<div class="cc-ms-drawer-item-meta">'+poBadge+'<span>'+ccEsc(poPreview)+'</span></div>' +
+                       '<div class="cc-ms-drawer-item-meta">'+poMeta+'</div>' +
                      '</div>' +
                    '</div>';
         }).join('');
@@ -25614,18 +25617,18 @@ document.addEventListener('DOMContentLoaded',function(){wccRender();});
         ccUpdateSubmitBtn();
     };
 
-    // ─── Expense type (Local/Outstation) ────────────────────────
+    // ─── Expense type (Local/Outstation) — driven by tabs ──────
     window.ccSetExpType = function(type, ev){
         if (ev) ev.stopPropagation();
         ccApplyExpType(type);
-        ccCloseBcMenu();
         ccUpdateTotals();
     };
     function ccApplyExpType(type){
         cc.expType = type;
-        document.getElementById('ccBcActiveText').textContent = (type === 'outstation' ? 'Outstation' : 'Local');
-        document.getElementById('ccBcMenuLocal').classList.toggle('active', type === 'local');
-        document.getElementById('ccBcMenuOutstation').classList.toggle('active', type === 'outstation');
+        var tL = document.getElementById('ccExpTabLocal');
+        var tO = document.getElementById('ccExpTabOutstation');
+        if (tL) tL.classList.toggle('active', type === 'local');
+        if (tO) tO.classList.toggle('active', type === 'outstation');
         var hotelAcc = document.getElementById('ccAccHotel');
         if (hotelAcc) {
             hotelAcc.style.display = (type === 'outstation') ? 'block' : 'none';
