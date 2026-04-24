@@ -1089,6 +1089,15 @@
         [data-dark="true"] .ood-applying-as { background:#252836 !important; border-color:#363b52 !important; }
         [data-dark="true"] .ood-applying-name { color:#f3f4f6 !important; }
         [data-dark="true"] .ood-applying-label { color:#9ca3af !important; }
+        /* Duration-type segmented (First half / Second half / Full day) */
+        .ood-dur-seg { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; background:var(--gray-100); padding:4px; border-radius:10px; border:1px solid var(--gray-200); }
+        .ood-dur-seg-btn { padding:8px 10px; background:transparent; border:none; border-radius:7px; font-size:12px; font-weight:600; color:var(--gray-600); cursor:pointer; transition:var(--transition); display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:'DM Sans',sans-serif; }
+        .ood-dur-seg-btn:hover:not(.active) { color:var(--gray-800); }
+        .ood-dur-seg-btn.active { background:var(--white); color:var(--primary); box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+        .ood-dur-seg-btn svg { width:13px; height:13px; }
+        [data-dark="true"] .ood-dur-seg { background:#1a1d27 !important; border-color:#363b52 !important; }
+        [data-dark="true"] .ood-dur-seg-btn { color:#9ca3af !important; }
+        [data-dark="true"] .ood-dur-seg-btn.active { background:#252836 !important; color:#d1d5db !important; }
 
         /* ── EMP FILTER DRAWER (Myntra two-column) ── */
         .emp-filter-panel { position:fixed; right:0; top:0; width:420px; height:100vh; background:var(--white); box-shadow:-4px 0 32px rgba(0,0,0,0.12); z-index:2001; transform:translateX(100%); transition:var(--transition); display:flex; flex-direction:column; }
@@ -10993,11 +11002,34 @@
                                 <span>OOD entries bypass the standard Sign In / Sign Out flow. They require approval from your reporting manager before the dates are marked as present.</span>
                             </div>
                             <div class="ood-grid">
-                                <div class="ae-field">
+                                <div class="ae-field ood-span-2">
+                                    <label class="ae-label">Duration <span class="req">*</span></label>
+                                    <div class="ood-dur-seg" role="tablist">
+                                        <button type="button" class="ood-dur-seg-btn" id="oodDurFirst" onclick="oodSetDuration('first')">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l-2 2M12 3a9 9 0 109 9h-9V3z"/></svg>
+                                            First Half
+                                        </button>
+                                        <button type="button" class="ood-dur-seg-btn" id="oodDurSecond" onclick="oodSetDuration('second')">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2 2M12 3a9 9 0 019 9h-9V3z"/></svg>
+                                            Second Half
+                                        </button>
+                                        <button type="button" class="ood-dur-seg-btn active" id="oodDurFull" onclick="oodSetDuration('full')">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            Full Day
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Single-date block: shown for First Half / Second Half -->
+                                <div class="ae-field ood-span-2" id="ood-single-wrap" style="display:none;">
+                                    <label class="ae-label">Date <span class="req">*</span></label>
+                                    <input type="date" class="ae-input" id="ood-single-date">
+                                </div>
+                                <!-- Range block: shown for Full Day -->
+                                <div class="ae-field" id="ood-range-from-wrap">
                                     <label class="ae-label">From Date <span class="req">*</span></label>
                                     <input type="date" class="ae-input" id="ood-from">
                                 </div>
-                                <div class="ae-field">
+                                <div class="ae-field" id="ood-range-to-wrap">
                                     <label class="ae-label">To Date <span class="req">*</span></label>
                                     <input type="date" class="ae-input" id="ood-to">
                                 </div>
@@ -15513,15 +15545,45 @@
         });
 
         /* ══ OUT ON DUTY (Outstation attendance) ══ */
+        let oodDurationType = 'full'; // 'first' | 'second' | 'full'
+
+        function oodSetDuration(type) {
+            oodDurationType = type;
+            // Toggle segmented buttons
+            ['oodDurFirst','oodDurSecond','oodDurFull'].forEach(id => {
+                const b = document.getElementById(id); if (b) b.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(
+                type === 'first' ? 'oodDurFirst' : (type === 'second' ? 'oodDurSecond' : 'oodDurFull')
+            );
+            if (activeBtn) activeBtn.classList.add('active');
+            // Show/hide the correct date block
+            const singleWrap = document.getElementById('ood-single-wrap');
+            const fromWrap   = document.getElementById('ood-range-from-wrap');
+            const toWrap     = document.getElementById('ood-range-to-wrap');
+            if (type === 'full') {
+                if (singleWrap) singleWrap.style.display = 'none';
+                if (fromWrap)   fromWrap.style.display   = '';
+                if (toWrap)     toWrap.style.display     = '';
+            } else {
+                if (singleWrap) singleWrap.style.display = '';
+                if (fromWrap)   fromWrap.style.display   = 'none';
+                if (toWrap)     toWrap.style.display     = 'none';
+            }
+        }
+
         function oodOpenModal() {
             // Reset form fields on every open so it starts clean
-            ['ood-from','ood-to','ood-location','ood-remarks'].forEach(id => {
+            ['ood-from','ood-to','ood-single-date','ood-location','ood-remarks'].forEach(id => {
                 const el = document.getElementById(id); if (el) el.value = '';
             });
-            // Default From Date to today for convenience
+            // Default to Full Day and prefill today
+            oodSetDuration('full');
             const today = new Date().toISOString().slice(0, 10);
             const fromEl = document.getElementById('ood-from');
             if (fromEl) fromEl.value = today;
+            const singleEl = document.getElementById('ood-single-date');
+            if (singleEl) singleEl.value = today;
             // Populate "Applying as" chip from the signed-in user shown in the top bar
             const nameSrc = document.querySelector('.user-menu .user-name');
             const roleSrc = document.querySelector('.user-menu .user-role');
@@ -15541,24 +15603,36 @@
         }
 
         function oodSubmit() {
-            const from     = (document.getElementById('ood-from')    || {}).value || '';
-            const to       = (document.getElementById('ood-to')      || {}).value || '';
             const location = (document.getElementById('ood-location')|| {}).value || '';
 
-            if (!from)            { alert('Please choose a From Date.');            return; }
-            if (!to)              { alert('Please choose a To Date.');              return; }
-            if (new Date(to) < new Date(from)) { alert('To Date cannot be earlier than From Date.'); return; }
+            let summaryDate = '';
+            let durationLabel = '';
+            let days = 0;
+
+            if (oodDurationType === 'full') {
+                const from = (document.getElementById('ood-from') || {}).value || '';
+                const to   = (document.getElementById('ood-to')   || {}).value || '';
+                if (!from) { alert('Please choose a From Date.'); return; }
+                if (!to)   { alert('Please choose a To Date.');   return; }
+                if (new Date(to) < new Date(from)) { alert('To Date cannot be earlier than From Date.'); return; }
+                const msPerDay = 24 * 60 * 60 * 1000;
+                days = Math.round((new Date(to) - new Date(from)) / msPerDay) + 1;
+                summaryDate = `${from} → ${to} (${days} day${days !== 1 ? 's' : ''})`;
+                durationLabel = 'Full Day';
+            } else {
+                const d = (document.getElementById('ood-single-date') || {}).value || '';
+                if (!d) { alert('Please choose a Date.'); return; }
+                days = 0.5;
+                durationLabel = oodDurationType === 'first' ? 'First Half Day' : 'Second Half Day';
+                summaryDate = `${d} (${durationLabel})`;
+            }
+
             if (!location.trim()) { alert('Please enter the outstation location.'); return; }
 
-            // Compute duration in days (inclusive)
-            const msPerDay = 24 * 60 * 60 * 1000;
-            const days = Math.round((new Date(to) - new Date(from)) / msPerDay) + 1;
-            // Pull current user for the confirmation message
             const nm = (document.querySelector('.user-menu .user-name') || {}).textContent || 'you';
 
             oodCloseModal();
-            // Lightweight feedback — replace with real API call when wiring up backend
-            alert(`✓ OOD request submitted for ${nm.trim()}\n${from} → ${to} (${days} day${days !== 1 ? 's' : ''})\nLocation: ${location}\n\nYour reporting manager will be notified for approval.`);
+            alert(`✓ OOD request submitted for ${nm.trim()}\nDuration: ${durationLabel}\n${summaryDate}\nLocation: ${location}\n\nYour reporting manager will be notified for approval.`);
         }
 
         /* ══ ATTENDANCE IMPORT WIZARD (backfill missed entries) ══ */
